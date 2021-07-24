@@ -1,0 +1,92 @@
+package fly4j.common.back;
+
+import fly4j.common.back.zip.Zip4jTool;
+import fly4j.common.lang.FlyResult;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.nio.file.Path;
+
+/**
+ * alter by qryc in 2020/07/04
+ * 不再先拷贝，删除不需要备份文件，再压缩，直接压缩，通过提前规划好需要备份和不需要备份文件
+ */
+public class DirZipService {
+    static final Logger log = LoggerFactory.getLogger(DirZipService.class);
+    private boolean afterTest = true;
+    private DirCompareService dirCompare;
+
+    public FlyResult zipDirWithVerify(ZipConfig zipConfig) {
+        FlyResult backResult = new FlyResult().success();
+        try {
+            //生成MD5摘要文件
+            dirCompare.genDirMd5VersionTag(zipConfig.getBeZipSourceDir(), zipConfig.getSourceMd5File());
+
+            //执行备份 backFile
+            Zip4jTool.zipDir(zipConfig.getDestZipFile(), zipConfig.getBeZipSourceDir(), zipConfig.getPassword());
+            backResult.append("executeBack success srcFile(" + zipConfig.getBeZipSourceDir()).append(") zipe to (")
+                    .append(zipConfig.getDestZipFile().getAbsolutePath()).append(")")
+                    .append(StringUtils.LF);
+
+            //执行Test
+            if (afterTest) {
+                var checkResult = checkZip(zipConfig.getDestZipFile(), zipConfig.getBeZipSourceDir().getName(), zipConfig.getPassword());
+                backResult.merge(checkResult);
+
+            }
+        } catch (Exception e) {
+            log.error("Zip4jTool.zip  srcFile:" + zipConfig.getBeZipSourceDir(), e);
+            backResult.append("Zip4jTool.zip  srcFile:" + zipConfig.getBeZipSourceDir()).append(" error ").append(e.getMessage()).append(StringUtils.LF);
+        }
+        return backResult;
+    }
+
+
+    private FlyResult checkZip(File zipFile, String inUnzipDirName, String pwd) throws Exception {
+        var backResult = new FlyResult().success();
+        var builder = new StringBuilder();
+        var unzipDirName = "unzipT4"
+                + zipFile.getName().replaceAll("\\.", "_");
+        var unzipPath = Path.of(zipFile.getParent(), unzipDirName);
+        Zip4jTool.unZip(zipFile, unzipPath.toFile(), pwd);
+        builder.append("executeUnzip  (")
+                .append(zipFile.getAbsolutePath())
+                .append(")  to (")
+                .append(unzipPath.toString())
+                .append(")")
+                .append(StringUtils.LF);
+        var checkPath = Path.of(unzipPath.toString(), inUnzipDirName);
+        var md5Path = Path.of(unzipPath.toString(), ".flymd5", inUnzipDirName);
+        FlyResult result = dirCompare.checkDirChange(checkPath.toFile(), md5Path.toFile());
+        builder.append("executeCheckVersion:" + checkPath.toFile().getAbsolutePath()).append(StringUtils.LF);
+        if (result.isSuccess()) {
+            builder.append("*******check ok").append(StringUtils.LF);
+        } else {
+            builder.append("******check fail!!!!!!!!!!!!").append(StringUtils.LF);
+            backResult.fail();
+        }
+        builder.append(result.getMsg()).append(StringUtils.LF);
+
+        return backResult.append(builder.toString());
+    }
+
+    public boolean isAfterTest() {
+        return afterTest;
+    }
+
+    public DirZipService setAfterTest(boolean afterTest) {
+        this.afterTest = afterTest;
+        return this;
+    }
+
+    public DirCompareService getDirCompare() {
+        return dirCompare;
+    }
+
+    public DirZipService setDirCompare(DirCompareService dirCompare) {
+        this.dirCompare = dirCompare;
+        return this;
+    }
+}
