@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 public class DirCompareServiceImpl implements DirCompareService {
     //md5 or size
@@ -84,7 +85,7 @@ public class DirCompareServiceImpl implements DirCompareService {
     public void genDirMd5VersionTag(File beZipSourceDir, File sourceMd5Dir) {
 //        this.deleteMoreMd5Files(zipConfig.getBeZipSourceDir(), 3);
         var md5Map = this.getDirMd5Map(beZipSourceDir);
-        var md5StorePath = Path.of(sourceMd5Dir.getAbsolutePath(), FlyString.getPlanText(beZipSourceDir.getAbsolutePath())+DateUtil.getHourStr4Name(new Date()) + ".md5");
+        var md5StorePath = Path.of(sourceMd5Dir.getAbsolutePath(), FlyString.getPlanText(beZipSourceDir.getAbsolutePath()) + DateUtil.getHourStr4Name(new Date()) + ".md5");
         FileJsonStrStore.saveObject(md5StorePath, md5Map);
         System.out.println("save to file:" + md5StorePath);
     }
@@ -108,7 +109,7 @@ public class DirCompareServiceImpl implements DirCompareService {
             //取得文件夹的Md5
             Map<String, String> currentMd5Map = this.getDirMd5Map(currentDir);
 
-            return compareTwoMap(stringBuilder, flyResult, count, historyMd5MapRead, currentMd5Map);
+            return compareTwoMap(stringBuilder, flyResult, count, trimPath(historyMd5MapRead), trimPath(currentMd5Map));
         } catch (Exception e) {
             e.printStackTrace();
             FlyResult flyResult = new FlyResult().success();
@@ -140,7 +141,7 @@ public class DirCompareServiceImpl implements DirCompareService {
             //取得文件夹的Md5
             Map<String, String> currentMd5Map = this.getDirMd5Map(checkDir);
 
-            return compareTwoMap(stringBuilder, flyResult, count, historyMd5MapRead, currentMd5Map);
+            return compareTwoMap(stringBuilder, flyResult, count, trimPath(historyMd5MapRead), trimPath(currentMd5Map));
         } catch (Exception e) {
             e.printStackTrace();
             FlyResult flyResult = new FlyResult().success();
@@ -149,6 +150,18 @@ public class DirCompareServiceImpl implements DirCompareService {
             return flyResult.append(stringBuilder.toString());
         }
 
+    }
+
+    private Map<String, String> trimPath(Map<String, String> map) {
+//        return map.entrySet().stream().collect(Collectors.toMap(key -> key, value -> value));
+        Map<String, String> mapNew = new LinkedHashMap<>();
+        map.forEach((key, value) -> {
+            if (key.startsWith("/") || key.startsWith("\\")) {
+                key = key.substring(1);
+            }
+            mapNew.put(key, value);
+        });
+        return mapNew;
     }
 
     /**
