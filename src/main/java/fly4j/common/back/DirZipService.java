@@ -1,6 +1,7 @@
 package fly4j.common.back;
 
 import fly4j.common.back.zip.Zip4jTool;
+import fly4j.common.file.FileUtil;
 import fly4j.common.lang.FlyResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public class DirZipService {
         FlyResult backResult = new FlyResult().success();
         try {
             //生成MD5摘要文件
-            dirCompare.genDirMd5VersionTag(zipConfig.getBeZipSourceDir(), zipConfig.getSourceMd5File());
+            dirCompare.genDirMd5VersionTag(zipConfig.getBeZipSourceDir(), zipConfig.getDefaultSourceMd5File());
 
             //执行备份 backFile
             Zip4jTool.zipDir(zipConfig.getDestZipFile(), zipConfig.getBeZipSourceDir(), zipConfig.getPassword());
@@ -32,7 +33,7 @@ public class DirZipService {
 
             //执行Test
             if (afterTest) {
-                var checkResult = checkZip(zipConfig.getDestZipFile(), zipConfig.getBeZipSourceDir().getName(), zipConfig.getPassword());
+                var checkResult = checkZip(zipConfig);
                 backResult.merge(checkResult);
 
             }
@@ -44,22 +45,23 @@ public class DirZipService {
     }
 
 
-    private FlyResult checkZip(File zipFile, String inUnzipDirName, String pwd) throws Exception {
+    private FlyResult checkZip(ZipConfig zipConfig) throws Exception {
+        File zipFile = zipConfig.getDestZipFile();
         var backResult = new FlyResult().success();
         var builder = new StringBuilder();
         var unzipDirName = "unzipT4"
                 + zipFile.getName().replaceAll("\\.", "_");
         var unzipPath = Path.of(zipFile.getParent(), unzipDirName);
-        Zip4jTool.unZip(zipFile, unzipPath.toFile(), pwd);
+        Zip4jTool.unZip(zipFile, unzipPath.toFile(), zipConfig.getPassword());
         builder.append("executeUnzip  (")
                 .append(zipFile.getAbsolutePath())
                 .append(")  to (")
                 .append(unzipPath.toString())
                 .append(")")
                 .append(StringUtils.LF);
-        var checkPath = Path.of(unzipPath.toString(), inUnzipDirName);
-        var md5Path = Path.of(unzipPath.toString(), ".flymd5", inUnzipDirName);
-        FlyResult result = dirCompare.checkDirChange(checkPath.toFile(), md5Path.toFile());
+        var checkPath = Path.of(unzipPath.toString(), zipConfig.getBeZipSourceDir().getName());
+        var md5Path = Path.of(unzipPath.toFile().getAbsolutePath(), zipConfig.getBeZipSourceDir().getName(), ZipConfig.DEFAULT_VERSIONDATA_PATH);
+        FlyResult result = dirCompare.checkDirChange(checkPath.toFile(), FileUtil.getDirLastModifyFile(md5Path.toFile(), ".md5"));
         builder.append("executeCheckVersion:" + checkPath.toFile().getAbsolutePath()).append(StringUtils.LF);
         if (result.isSuccess()) {
             builder.append("*******check ok").append(StringUtils.LF);

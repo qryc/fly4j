@@ -17,6 +17,8 @@ public class ZipConfig {
     private String password;
     private boolean delZip = true;
 
+    public static final String DEFAULT_VERSIONDATA_PATH = "versionData";
+
     public ZipConfig() {
     }
 
@@ -26,19 +28,13 @@ public class ZipConfig {
         this.password = password;
     }
 
-    /**
-     * 版本文件存放路径
-     */
-    public Path getSourceMd5DirName() {
-        return Path.of(getBeZipSourceDir().toString(), ".flyMd5");
-    }
 
-    public File getSourceMd5File() {
-        File dirFile = this.getSourceMd5DirName().toFile();
+    public File getDefaultSourceMd5File() {
+        File dirFile = Path.of(getBeZipSourceDir().getAbsolutePath(), DEFAULT_VERSIONDATA_PATH).toFile();
         if (!dirFile.exists()) {
             dirFile.mkdir();
         }
-        return Path.of(this.getSourceMd5DirName().toString(), DateUtil.getHourStr4Name(new Date()) + ".md5").toFile();
+        return dirFile;
     }
 
     public File getBeZipSourceDir() {

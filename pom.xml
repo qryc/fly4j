@@ -5,8 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>qryc</groupId>
     <artifactId>fly4j-common</artifactId>
-    <version>0.0.5f-SNAPSHOT</version>
+    <version>0.0.6f-SNAPSHOT</version>
     <properties>
+        <fly.version>0.0.5f-SNAPSHOT</fly.version>
+
         <spring.version>5.3.5</spring.version>
         <jackson.version>2.12.2</jackson.version>
         <annotation.version>1.3.2</annotation.version>
@@ -30,7 +32,6 @@
 
         <servlet-api.version>4.0.0</servlet-api.version>
         <jsp-api.version>2.3.3</jsp-api.version>
-        <fly.version>0.0.4f-SNAPSHOT</fly.version>
 
         <!--  only for BackToolFx      -->
         <httpcomponents.version>4.5.12</httpcomponents.version>

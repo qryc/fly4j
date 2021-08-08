@@ -23,31 +23,19 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static fly4b.back.zip.DirTestUtil.backPath;
+import static fly4b.back.zip.DirTestUtil.sourcePath;
+
 /**
  * @author qryc
  */
 @RunWith(BlockJUnit4ClassRunner.class)
 public class TestZip4jTool {
     static final Logger log = LoggerFactory.getLogger(TestZip4jTool.class);
-    //源文件
-    private Path sourcePath = Path.of(TestData.testPath.toString(), "sourcePath");
-    private Path backPath = Path.of(TestData.testPath.toString(), "back");
 
     @Before
     public void setup() throws Exception {
-        if (Files.exists(TestData.testPath))
-            FileUtils.forceDelete(TestData.testPath.toFile());
-        Assert.assertFalse(Files.exists(backPath));
-        Files.createDirectories(backPath);
-        Assert.assertTrue(Files.exists(backPath));
-
-        //创建测试文件
-        Assert.assertFalse(Files.exists(sourcePath));
-        FileStrStore.setValue(Path.of(sourcePath.toString(), "a.txt"), "a中国");
-        FileStrStore.setValue(Path.of(sourcePath.toString(), "b.txt"), "b中国");
-        FileStrStore.setValue(Path.of(sourcePath.toString(), "c.txt"), "c中国");
-        FileStrStore.setValue(Path.of(sourcePath.toString(), "childDir/aa.txt"), "aa中国");
-        FileStrStore.setValue(Path.of(sourcePath.toString(), "childDir/bb.txt"), "bb中国");
+        DirTestUtil.createTestFiles();
     }
 
     @Test

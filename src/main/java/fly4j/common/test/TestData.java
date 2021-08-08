@@ -16,9 +16,9 @@ public class TestData {
 
     static {
         if (OsUtil.isWindows()) {
-            testPath = Path.of("D:/flyTestData");
+            testPath = Path.of("D:/flyDataTest");
         } else {
-            testPath = Path.of("~/flyTestData");
+            testPath = Path.of(System.getProperty("user.home"),"flyDataTest");
         }
     }
 
