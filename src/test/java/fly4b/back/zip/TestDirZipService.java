@@ -1,20 +1,14 @@
 package fly4b.back.zip;
 
 
-import fly4j.common.back.DirCompareService;
 import fly4j.common.back.DirCompareServiceImpl;
 import fly4j.common.back.DirZipService;
 import fly4j.common.back.ZipConfig;
-import fly4j.common.back.zip.Zip4jTool;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.lang.DateUtil;
-import fly4j.common.lang.FlyResult;
 import fly4j.common.os.OsUtil;
-import fly4j.common.pesistence.file.FileStrStore;
-import fly4j.common.test.TestData;
-import org.apache.commons.io.FileUtils;
+import fly4j.test.util.TestData;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,13 +16,11 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Date;
-import java.util.Set;
 
-import static fly4b.back.zip.DirTestUtil.backPath;
-import static fly4b.back.zip.DirTestUtil.sourcePath;
+import static fly4j.test.util.TestData.backDirPath;
+import static fly4j.test.util.TestData.sourceDirPath;
 
 /**
  * @author qryc
@@ -49,14 +41,14 @@ public class TestDirZipService {
 
     @Before
     public void setup() throws Exception {
-        DirTestUtil.createTestFiles();
+        TestData.createTestFiles();
     }
 
     @Test
     public void zipDirWithVerify() throws Exception {
-        var zipFilePath = Path.of(backPath.toString(), OsUtil.getSimpleOsName() + DateUtil.getHourStr4Name(new Date()) + ".zip");
+        var zipFilePath = Path.of(backDirPath.toString(), OsUtil.getSimpleOsName() + DateUtil.getHourStr4Name(new Date()) + ".zip");
         var zipConfig = new ZipConfig()
-                .setBeZipSourceDir(sourcePath.toFile())
+                .setBeZipSourceDir(sourceDirPath.toFile())
                 .setDestZipFile(zipFilePath.toFile())
                 .setPassword("123")
                 .setDelZip(false);

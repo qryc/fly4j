@@ -1,9 +1,8 @@
 package fly4j.common.crypto;
 
-import fly4j.common.test.TestData;
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 
 /**
@@ -13,10 +12,6 @@ import java.nio.file.Path;
 public class XorUtil {
 
 
-    public static void main(String[] args) throws Exception {
-        encryptFile(Path.of(TestData.tSourceDir, "xorSource.txt"), Path.of(TestData.tTargetDir, "xorTarget.fbk"), 123);
-        decryptFile(Path.of(TestData.tTargetDir, "xorTarget.fbk"), Path.of(TestData.tTargetDir, "xorResote.txt"), 123);
-    }
 
 
     public static void encryptFile(Path sourceFileUrl, Path targetFileUrl, int pass) {
