@@ -23,7 +23,7 @@ public class DirZipService {
         FlyResult backResult = new FlyResult().success();
         try {
             //生成MD5摘要文件
-            dirCompare.genDirMd5VersionTag(zipConfig.getBeZipSourceDir(), zipConfig.getDefaultSourceMd5File());
+            dirCompare.genDirMd5VersionTag(zipConfig.getBeZipSourceDir(), zipConfig.getDefaultSourceMd5File(), zipConfig.getVersionType());
 
             //执行备份 backFile
             Zip4jTool.zipDir(zipConfig.getDestZipFile(), zipConfig.getBeZipSourceDir(), zipConfig.getPassword());
@@ -61,7 +61,7 @@ public class DirZipService {
                 .append(StringUtils.LF);
         var checkPath = Path.of(unzipPath.toString(), zipConfig.getBeZipSourceDir().getName());
         var md5Path = Path.of(unzipPath.toFile().getAbsolutePath(), zipConfig.getBeZipSourceDir().getName(), ZipConfig.DEFAULT_VERSIONDATA_PATH);
-        FlyResult result = dirCompare.checkDirChange(checkPath.toFile(), FileUtil.getDirLastModifyFile(md5Path.toFile(), ".md5"));
+        FlyResult result = dirCompare.checkDirChange(checkPath.toFile(), FileUtil.getDirLastModifyFile(md5Path.toFile(), ".md5"), zipConfig.getVersionType());
         builder.append("executeCheckVersion:" + checkPath.toFile().getAbsolutePath()).append(StringUtils.LF);
         if (result.isSuccess()) {
             builder.append("*******check ok").append(StringUtils.LF);

@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class DirCompareServiceImpl implements DirCompareService {
     //md5 or size
-    public static String genType = DirMd5Calculate.DirMd5Param.CHECK_SIZE;
     private FileAndDirFilter noNeedCalMd5FileFilter;
     private boolean checkEmptyDir = true;
 
@@ -25,7 +24,7 @@ public class DirCompareServiceImpl implements DirCompareService {
         this.noNeedCalMd5FileFilter = noNeedCalMd5FileFilter;
     }
 
-    public DirCompareResult compareMulDirBack(List<File> compDirs) {
+    public DirCompareResult compareMulDirBack(List<File> compDirs, VersionType versionType) {
         DirCompareResult result = new DirCompareResult();
         TrackContext.reset();
         int same = 0;
@@ -35,7 +34,7 @@ public class DirCompareServiceImpl implements DirCompareService {
         List<Map<String, String>> allMap = new ArrayList<>();
         for (var compDir : compDirs) {
             TrackContext.appendTrackInfo("comp dir:" + compDir);
-            Map<String, String> md5Map = this.getDirMd5Map(compDir);
+            Map<String, String> md5Map = this.getDirMd5Map(compDir, versionType);
             allMap.add(md5Map);
             allKeys.addAll(md5Map.keySet());
         }
@@ -71,27 +70,28 @@ public class DirCompareServiceImpl implements DirCompareService {
     }
 
     @Override
-    public Map<String, String> getDirMd5Map(File checkDir) {
+    public Map<String, String> getDirMd5Map(File checkDir, VersionType versionType) {
         DirMd5Calculate.DirMd5Param dirMd5Param = new DirMd5Calculate.DirMd5Param();
         dirMd5Param.setCheckBaseDir(checkDir);
         dirMd5Param.setCheckEmptyDir(checkEmptyDir);
-        dirMd5Param.setGenType(genType);
+        dirMd5Param.setGenType(versionType);
         dirMd5Param.setNoNeedCalMd5FileFilter(noNeedCalMd5FileFilter);
         return DirMd5Calculate.getDirMd5Map(dirMd5Param);
     }
 
 
     @Override
-    public void genDirMd5VersionTag(File beZipSourceDir, File sourceMd5Dir) {
+    public String genDirMd5VersionTag(File beZipSourceDir, File sourceMd5Dir, VersionType versionType) {
 //        this.deleteMoreMd5Files(zipConfig.getBeZipSourceDir(), 3);
-        var md5Map = this.getDirMd5Map(beZipSourceDir);
+        var md5Map = this.getDirMd5Map(beZipSourceDir, versionType);
         var md5StorePath = Path.of(sourceMd5Dir.getAbsolutePath(), FlyString.getPlanText(beZipSourceDir.getAbsolutePath()) + DateUtil.getHourStr4Name(new Date()) + ".md5");
         FileJsonStrStore.saveObject(md5StorePath, md5Map);
         System.out.println("save to file:" + md5StorePath);
+        return md5StorePath.toString();
     }
 
     @Override
-    public FlyResult compareMulDir(List<File> compDirs) {
+    public FlyResult compareMulDir(List<File> compDirs, VersionType versionType) {
         try {
             final StringBuilder stringBuilder = new StringBuilder();
             if (compDirs.size() != 2) {
@@ -105,9 +105,9 @@ public class DirCompareServiceImpl implements DirCompareService {
 
             StringConst.appendLine(stringBuilder, "....current file " + currentDir.getAbsolutePath() + " compare to history:" + histoyDir.getAbsolutePath());
             //取得上次的md5
-            Map<String, String> historyMd5MapRead = this.getDirMd5Map(histoyDir);
+            Map<String, String> historyMd5MapRead = this.getDirMd5Map(histoyDir, versionType);
             //取得文件夹的Md5
-            Map<String, String> currentMd5Map = this.getDirMd5Map(currentDir);
+            Map<String, String> currentMd5Map = this.getDirMd5Map(currentDir, versionType);
 
             return compareTwoMap(stringBuilder, flyResult, count, trimPath(historyMd5MapRead), trimPath(currentMd5Map));
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class DirCompareServiceImpl implements DirCompareService {
     }
 
     @Override
-    public FlyResult checkDirChange(File checkDir, File md5File) {
+    public FlyResult checkDirChange(File checkDir, File md5File, VersionType versionType) {
         try {
             final StringBuilder stringBuilder = new StringBuilder();
             StringConst.appendLine(stringBuilder, "checkDir:" + checkDir);
@@ -139,7 +139,7 @@ public class DirCompareServiceImpl implements DirCompareService {
             String historyMd5Str = FileUtils.readFileToString(md5File, Charset.forName("utf-8"));
             Map<String, String> historyMd5MapRead = JsonUtils.readStringStringHashMap(historyMd5Str);
             //取得文件夹的Md5
-            Map<String, String> currentMd5Map = this.getDirMd5Map(checkDir);
+            Map<String, String> currentMd5Map = this.getDirMd5Map(checkDir, versionType);
 
             return compareTwoMap(stringBuilder, flyResult, count, trimPath(historyMd5MapRead), trimPath(currentMd5Map));
         } catch (Exception e) {

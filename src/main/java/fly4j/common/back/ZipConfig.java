@@ -16,6 +16,7 @@ public class ZipConfig {
     private File destZipFile;
     private String password;
     private boolean delZip = true;
+    private VersionType versionType = VersionType.LEN;
 
     public static final String DEFAULT_VERSIONDATA_PATH = "versionData";
 
@@ -71,5 +72,13 @@ public class ZipConfig {
     public ZipConfig setDelZip(boolean delZip) {
         this.delZip = delZip;
         return this;
+    }
+
+    public void setVersionType(VersionType versionType) {
+        this.versionType = versionType;
+    }
+
+    public VersionType getVersionType() {
+        return versionType;
     }
 }

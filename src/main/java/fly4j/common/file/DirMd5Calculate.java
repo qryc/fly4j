@@ -1,5 +1,7 @@
 package fly4j.common.file;
 
+import fly4j.common.back.VersionType;
+
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class DirMd5Calculate {
                     System.out.println("check file " + count + " :" + cfile.getAbsolutePath());
 
                     String key = FileUtil.getSubPathUnix(cfile.toPath(), baseDir.toPath());
-                    if (DirMd5Calculate.DirMd5Param.CHECK_SIZE.equals(dirMd5Param.genType)) {
+                    if (VersionType.LEN.equals(dirMd5Param.genType)) {
                         outputParam.md5Map.put(key, "" + cfile.length());
                     } else {
                         outputParam.md5Map.put(key, FileUtil.getMD5(cfile));
@@ -60,10 +62,8 @@ public class DirMd5Calculate {
     }
 
     public static class DirMd5Param {
-        public static final String CHECK_SIZE = "size";
-        public static final String CHECK_MD5 = "md5";
         private File checkBaseDir;
-        private String genType = CHECK_SIZE;
+        private VersionType genType = VersionType.LEN;
         private FileAndDirFilter noNeedCalMd5FileFilter;
         private boolean checkEmptyDir = true;
 
@@ -75,11 +75,11 @@ public class DirMd5Calculate {
             this.checkBaseDir = checkBaseDir;
         }
 
-        public String getGenType() {
+        public VersionType getGenType() {
             return genType;
         }
 
-        public void setGenType(String genType) {
+        public void setGenType(VersionType genType) {
             this.genType = genType;
         }
 
