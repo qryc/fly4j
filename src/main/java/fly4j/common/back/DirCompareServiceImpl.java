@@ -81,10 +81,9 @@ public class DirCompareServiceImpl implements DirCompareService {
 
 
     @Override
-    public String genDirMd5VersionTag(File beZipSourceDir, File sourceMd5Dir, VersionType versionType) {
+    public String genDirMd5VersionTag(File beZipSourceDir, Path md5StorePath, VersionType versionType) {
 //        this.deleteMoreMd5Files(zipConfig.getBeZipSourceDir(), 3);
         var md5Map = this.getDirMd5Map(beZipSourceDir, versionType);
-        var md5StorePath = Path.of(sourceMd5Dir.getAbsolutePath(), FlyString.getPlanText(beZipSourceDir.getAbsolutePath()) + DateUtil.getHourStr4Name(new Date()) + ".md5");
         FileJsonStrStore.saveObject(md5StorePath, md5Map);
         System.out.println("save to file:" + md5StorePath);
         return md5StorePath.toString();
