@@ -21,8 +21,8 @@ public interface DirCompareService {
 
     FlyResult compareMulDir(List<File> compDirs, VersionType versionType);
 
-    default String getDefaultVersionFileName(File beZipSourceDir, VersionType versionType) {
-        return FlyString.getPlanText(beZipSourceDir.getAbsolutePath()) + DateUtil.getHourStr4Name(new Date()) + versionType + ".md5";
+    default String getDefaultVersionFileName(String beZipSourceDir, VersionType versionType) {
+        return FlyString.getPlanText(beZipSourceDir) + DateUtil.getHourStr4Name(new Date()) + versionType + ".md5";
     }
 
 }

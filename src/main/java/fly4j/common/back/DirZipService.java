@@ -23,7 +23,7 @@ public class DirZipService {
         FlyResult backResult = new FlyResult().success();
         try {
             //生成MD5摘要文件
-            Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(), dirCompare.getDefaultVersionFileName(zipConfig.getBeZipSourceDir(), zipConfig.getVersionType()));
+            Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(), dirCompare.getDefaultVersionFileName(zipConfig.getBeZipSourceDir().getAbsolutePath(), zipConfig.getVersionType()));
             dirCompare.genDirMd5VersionTag(zipConfig.getBeZipSourceDir(), md5StorePath, zipConfig.getVersionType());
 
             //执行备份 backFile

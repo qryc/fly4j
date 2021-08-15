@@ -55,7 +55,7 @@ public class TestDirCompareService {
                 .setDestZipFile(zipFilePath.toFile())
                 .setPassword("123")
                 .setDelZip(false);
-        Path md5StorePath = Path.of(sourceDirPath.toString(), dirCompareService.getDefaultVersionFileName(sourceDirPath.toFile(), VersionType.LEN));
+        Path md5StorePath = Path.of(sourceDirPath.toString(), dirCompareService.getDefaultVersionFileName(sourceDirPath.toString(), VersionType.LEN));
         String md5FileStr = dirCompareService.genDirMd5VersionTag(sourceDirPath.toFile(), md5StorePath, VersionType.LEN);
         Assert.assertEquals(md5, FileStrStore.getValue(Path.of(md5FileStr)));
     }
@@ -70,7 +70,7 @@ public class TestDirCompareService {
                 .setDestZipFile(zipFilePath.toFile())
                 .setPassword("123")
                 .setDelZip(false);
-        Path md5StorePath = Path.of(sourceDirPath.toString(), dirCompareService.getDefaultVersionFileName(sourceDirPath.toFile(), VersionType.MD5));
+        Path md5StorePath = Path.of(sourceDirPath.toString(), dirCompareService.getDefaultVersionFileName(sourceDirPath.toString(), VersionType.MD5));
         String md5FileStr = dirCompareService.genDirMd5VersionTag(sourceDirPath.toFile(), md5StorePath, VersionType.MD5);
         Assert.assertEquals(md5, FileStrStore.getValue(Path.of(md5FileStr)));
     }
