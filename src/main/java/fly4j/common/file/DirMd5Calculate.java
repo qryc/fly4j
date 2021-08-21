@@ -8,24 +8,47 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DirMd5Calculate {
+
+    public static Map<File, String> getDirMd5FileMap(File checkDir, VersionType versionType) {
+        DirMd5Calculate.DirMd5Param dirMd5Param = new DirMd5Calculate.DirMd5Param();
+        dirMd5Param.setCheckBaseDir(checkDir);
+        dirMd5Param.setCheckEmptyDir(false);
+        dirMd5Param.setGenType(versionType);
+        dirMd5Param.setNoNeedCalMd5FileFilter(null);
+        return DirMd5Calculate.getDirMd5FileMap(dirMd5Param);
+    }
+
     public static Map<String, String> getDirMd5Map(DirMd5Param dirMd5Param) {
+
+        Map<File, String> md5FileMap = getDirMd5FileMap(dirMd5Param);
+
         Map<String, String> md5Map = new LinkedHashMap<>();
-        DirMd5OutputParam innerParam = new DirMd5OutputParam(md5Map, new AtomicLong(0));
-        DirMd5Calculate.getMd5FileStr(dirMd5Param.checkBaseDir, innerParam, dirMd5Param);
+        md5FileMap.forEach((file, str) -> {
+            var dirKey = FileUtil.getSubPathUnix(file.toPath(), dirMd5Param.checkBaseDir.toPath());
+            md5Map.put(dirKey, str);
+        });
         return md5Map;
     }
 
+    public static Map<File, String> getDirMd5FileMap(DirMd5Param dirMd5Param) {
+        Map<File, String> md5FileMap = new LinkedHashMap<>();
+        DirMd5OutputParam innerParam = new DirMd5OutputParam(md5FileMap, new AtomicLong(0));
+
+        DirMd5Calculate.getMd5FileStr(dirMd5Param.checkBaseDir, innerParam, dirMd5Param);
+        return md5FileMap;
+    }
+
     private static void getMd5FileStr(File dirFile, DirMd5OutputParam outputParam, DirMd5Param dirMd5Param) {
-        File baseDir = dirMd5Param.checkBaseDir;
+//        File baseDir = dirMd5Param.checkBaseDir;
         try {
             File[] files = dirFile.listFiles();
-            var dirKey = FileUtil.getSubPathUnix(dirFile.toPath(), baseDir.toPath());
+//            var dirKey = FileUtil.getSubPathUnix(dirFile.toPath(), baseDir.toPath());
             //如果不是空文件夹，把父亲文件夹加入
             if (dirMd5Param.checkEmptyDir) {
-                outputParam.md5Map.put(dirKey, "dir");
+                outputParam.md5Map.put(dirFile, "dir");
             } else {
                 if (files.length > 0) {
-                    outputParam.md5Map.put(dirKey, "dir");
+                    outputParam.md5Map.put(dirFile, "dir");
                 }
             }
 
@@ -43,12 +66,8 @@ public class DirMd5Calculate {
                     Long count = outputParam.count.incrementAndGet();
                     System.out.println("check file " + count + " :" + cfile.getAbsolutePath());
 
-                    String key = FileUtil.getSubPathUnix(cfile.toPath(), baseDir.toPath());
-                    if (VersionType.LEN.equals(dirMd5Param.genType)) {
-                        outputParam.md5Map.put(key, "" + cfile.length());
-                    } else {
-                        outputParam.md5Map.put(key, FileUtil.getMD5(cfile));
-                    }
+//                    String key = FileUtil.getSubPathUnix(cfile.toPath(), baseDir.toPath());
+                    outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.genType));
 
                 }
 
@@ -59,6 +78,14 @@ public class DirMd5Calculate {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static String getMd5(File file, VersionType versionType) {
+        if (VersionType.LEN.equals(versionType)) {
+            return "" + file.length();
+        } else {
+            return FileUtil.getMD5(file);
+        }
     }
 
     public static class DirMd5Param {
@@ -100,7 +127,7 @@ public class DirMd5Calculate {
         }
     }
 
-    private static record DirMd5OutputParam(Map<String, String> md5Map, AtomicLong count) {
+    private static record DirMd5OutputParam(Map<File, String> md5Map, AtomicLong count) {
 
     }
 }
