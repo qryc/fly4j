@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DirMd5Calculate {
+    public static boolean ignoreMacShadowFile = true;
 
     public static Map<File, String> getDirMd5FileMap(File checkDir, VersionType versionType) {
         DirMd5Calculate.DirMd5Param dirMd5Param = new DirMd5Calculate.DirMd5Param();
@@ -67,7 +68,13 @@ public class DirMd5Calculate {
                     System.out.println("check file " + count + " :" + cfile.getAbsolutePath());
 
 //                    String key = FileUtil.getSubPathUnix(cfile.toPath(), baseDir.toPath());
-                    outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.genType));
+                    if (ignoreMacShadowFile) {
+                        if (!cfile.getAbsolutePath().contains("._")) {
+                            outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.genType));
+                        }
+                    } else {
+                        outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.genType));
+                    }
 
                 }
 
