@@ -2,6 +2,7 @@ package fly4j.common.file;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -20,6 +21,21 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class FileUtil {
 
+    public static void deleteOneLittleImg(File file) {
+        if (file.isDirectory()) {
+            return;
+        }
+        if (file.length() > 5 * FileUtils.ONE_MB) {
+            return;
+        }
+        if (isImg(file)) {
+            try {
+                FileUtils.forceDelete(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static boolean isImg(File file) {
         try {
