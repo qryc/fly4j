@@ -37,6 +37,16 @@ public class FileUtil {
         }
     }
 
+    public static void deleteOneRepeatFile(File delFile, File retainFile) {
+        if (delFile.length() == retainFile.length() && getMD5(delFile).equals(getMD5(retainFile))) {
+            try {
+                FileUtils.forceDelete(delFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static boolean isImg(File file) {
         try {
             BufferedImage image = ImageIO.read(file);
