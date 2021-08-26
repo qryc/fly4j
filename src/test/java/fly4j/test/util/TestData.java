@@ -14,7 +14,7 @@ import java.nio.file.Path;
  * Created by qryc on 2020/3/15.
  */
 public class TestData {
-    public static Path testPath;
+    public static Path testBasePath;
     //压缩文件目标文件夹
     public static Path backDirPath;
     //源文件
@@ -22,22 +22,19 @@ public class TestData {
 
     static {
         if (OsUtil.isWindows()) {
-            testPath = Path.of("D:/flyDataTest");
+            testBasePath = Path.of("D:/flyDataTest");
         } else {
-            testPath = Path.of(System.getProperty("user.home"), "flyDataTest");
+            testBasePath = Path.of(System.getProperty("user.home"), "flyDataTest");
         }
-        backDirPath = Path.of(testPath.toString(), "back");
-        sourceDirPath = Path.of(testPath.toString(), "sourcePath");
+        backDirPath = Path.of(testBasePath.toString(), "back");
+        sourceDirPath = Path.of(testBasePath.toString(), "sourcePath");
     }
 
 
-    public static String tSourceDir = FilenameUtils.concat(System.getProperty("user.dir"), "testData/source");
-    public static String tTargetDir = FilenameUtils.concat(System.getProperty("user.dir"), "testData/target");
-
     public static void createTestFiles() throws Exception {
-        System.out.println("createTestFiles in:" + testPath);
-        if (Files.exists(testPath))
-            FileUtils.forceDelete(testPath.toFile());
+        System.out.println("createTestFiles in:" + testBasePath);
+        if (Files.exists(testBasePath))
+            FileUtils.forceDelete(testBasePath.toFile());
         Assert.assertFalse(Files.exists(backDirPath));
         Files.createDirectories(backDirPath);
         Assert.assertTrue(Files.exists(backDirPath));
@@ -49,6 +46,10 @@ public class TestData {
         FileStrStore.setValue(Path.of(sourceDirPath.toString(), "c.txt"), "c中国");
         FileStrStore.setValue(Path.of(sourceDirPath.toString(), "childDir/aa.txt"), "aa中国");
         FileStrStore.setValue(Path.of(sourceDirPath.toString(), "childDir/bb.txt"), "bb中国");
+    }
+
+    public static void assertAllSourceFiles() {
+        assertAllFiles(TestData.testBasePath.toFile());
     }
 
     public static void assertAllFiles(File checkDir) {

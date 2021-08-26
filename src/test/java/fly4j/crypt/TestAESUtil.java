@@ -18,8 +18,6 @@ public class TestAESUtil {
 
     @Before
     public void setup() throws Exception {
-
-
     }
 
     @Test
@@ -45,10 +43,6 @@ public class TestAESUtil {
 
     }
 
-    @Test
-    public void testOk2() throws Exception {
-
-    }
 
 
     @After

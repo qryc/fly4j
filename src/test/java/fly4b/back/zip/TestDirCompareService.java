@@ -41,7 +41,7 @@ public class TestDirCompareService {
 
     @Before
     public void setup() throws Exception {
-        FileUtils.deleteQuietly(TestData.testPath.toFile());
+        FileUtils.deleteQuietly(TestData.testBasePath.toFile());
         TestData.createTestFiles();
     }
 

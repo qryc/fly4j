@@ -52,7 +52,7 @@ public class TestZip4jTool {
     @Test
     public void testZip2() throws Exception {
         //测试/结尾压缩
-        Zip4jTool.zipDir(zipFile, new File(TestData.testPath.toString(), "sourcePath/"), "123");
+        Zip4jTool.zipDir(zipFile, new File(TestData.testBasePath.toString(), "sourcePath/"), "123");
         Zip4jTool.unZip(zipFile, backDir, "123");
         TestData.assertAllFiles(backDir);
     }
@@ -75,7 +75,7 @@ public class TestZip4jTool {
 
     @After
     public void tearDown() throws Exception {
-        FileUtils.forceDelete(TestData.testPath.toFile());
+        FileUtils.forceDelete(TestData.testBasePath.toFile());
     }
 
 
