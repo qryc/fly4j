@@ -33,6 +33,7 @@ public class FileUtil {
                 FileUtils.forceDelete(file);
             } catch (IOException e) {
                 e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
@@ -43,6 +44,7 @@ public class FileUtil {
                 FileUtils.forceDelete(delFile);
             } catch (IOException e) {
                 e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
@@ -69,10 +71,8 @@ public class FileUtil {
      * @return md5 value
      */
     public static String getMD5(File file) {
-        FileInputStream fileInputStream = null;
-        try {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
             MessageDigest MD5 = MessageDigest.getInstance("MD5");
-            fileInputStream = new FileInputStream(file);
             byte[] buffer = new byte[8192];
             int length;
             while ((length = fileInputStream.read(buffer)) != -1) {
@@ -81,15 +81,7 @@ public class FileUtil {
             return new String(Hex.encodeHex(MD5.digest()));
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                if (fileInputStream != null) {
-                    fileInputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException(e);
         }
     }
 

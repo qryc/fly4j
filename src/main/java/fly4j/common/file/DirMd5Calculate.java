@@ -47,43 +47,40 @@ public class DirMd5Calculate {
         return md5FileMap;
     }
 
-    public static String saveDirVersionModel2File(String checkDirStr, FileAndDirFilter noNeedCalMd5FileFilter, Path md5StorePath) {
+    public static DirVersionModel saveDirVersionModel2File(String checkDirStr, FileAndDirFilter noNeedCalMd5FileFilter, Path md5StorePath) {
         DirVersionCheckParam checkParam = new DirVersionCheckParam(checkDirStr,
                 noNeedCalMd5FileFilter,
                 DateUtil.getDateStr(new Date()));
         DirVersionModel dirVersionModel = DirMd5Calculate.genDirVersionModel(checkParam);
         FileJsonStrStore.saveObject(md5StorePath, dirVersionModel);
-        System.out.println("save to file:" + md5StorePath);
-        return md5StorePath.toString();
+        return dirVersionModel;
     }
 
     public static DirVersionModel genDirVersionModel(DirVersionCheckParam checkParam) {
         //文件版本信息
-        List<SingleFileVersionModel> modelList = new ArrayList<>();
-        List<SingleDirVersionModel> dirVersionModelList = new ArrayList<>();
-        DirMd5OutputParam2 innerParam = new DirMd5OutputParam2(modelList, dirVersionModelList, new AtomicLong(0));
+        List<SingleFileVersionModel> fileList = new ArrayList<>();
+        List<SingleDirVersionModel> dirList = new ArrayList<>();
+        DirMd5OutputParam2 innerParam = new DirMd5OutputParam2(fileList, dirList, new AtomicLong(0));
         DirMd5Calculate.getMd5FileStr2(new File(checkParam.checkBaseDirStr()), innerParam, checkParam);
 
         //环境信息
         Map<String, String> environment = new HashMap<>();
         environment.put("os.name", OsUtil.getOsName());
+        //结果信息
+        environment.put("files.size", "" + fileList.size());
+        environment.put("dir.size", "" + dirList.size());
 
-        return new DirVersionModel(environment, checkParam, modelList, dirVersionModelList);
+        return new DirVersionModel(environment, checkParam, fileList, dirList);
     }
 
     private static void getMd5FileStr2(File dirFile, DirMd5OutputParam2 outputParam, DirVersionCheckParam checkParam) {
-//        File baseDir = dirMd5Param.checkBaseDirStr;
         try {
             File[] files = dirFile.listFiles();
-//            var dirKey = FileUtil.getSubPathUnix(dirFile.toPath(), baseDir.toPath());
             //如果不是空文件夹，把父亲文件夹加入
-
             outputParam.dirVersionModelList.add(new SingleDirVersionModel(dirFile.getAbsolutePath(),
                     Long.valueOf(files.length)));
 
-
             for (File cfile : files) {
-
                 if (null != checkParam.noNeedCalMd5FileFilter() && checkParam.noNeedCalMd5FileFilter().accept(cfile)) {
                     continue;
                 }
@@ -92,11 +89,8 @@ public class DirMd5Calculate {
                     getMd5FileStr2(cfile, outputParam, checkParam);
                 } else {
                     //生成md5
-
                     Long count = outputParam.count.incrementAndGet();
                     System.out.println("check file " + count + " :" + cfile.getAbsolutePath());
-
-//                    String key = FileUtil.getSubPathUnix(cfile.toPath(), baseDir.toPath());
                     if (ignoreMacShadowFile) {
                         if (!cfile.getAbsolutePath().contains("._")) {
                             outputParam.modelList.add(new SingleFileVersionModel(cfile.getAbsolutePath()
@@ -119,24 +113,15 @@ public class DirMd5Calculate {
         }
 
     }
-//         if (VersionType.LEN.equals(versionType)) {
-//        return "" + file.length();
-//    } else {
-//        return FileUtil.getMD5(file);
-//    }
 
     private static void getMd5FileStr(File dirFile, DirMd5OutputParam outputParam, DirMd5Param dirMd5Param) {
-//        File baseDir = dirMd5Param.checkBaseDirStr;
         try {
             File[] files = dirFile.listFiles();
-//            var dirKey = FileUtil.getSubPathUnix(dirFile.toPath(), baseDir.toPath());
             //如果不是空文件夹，把父亲文件夹加入
             if (dirMd5Param.checkDir) {
                 outputParam.md5Map.put(dirFile, DIR_VALUE);
             }
-
             for (File cfile : files) {
-
                 if (null != dirMd5Param.noNeedCalMd5FileFilter && dirMd5Param.noNeedCalMd5FileFilter.accept(cfile)) {
                     continue;
                 }
@@ -145,11 +130,9 @@ public class DirMd5Calculate {
                     getMd5FileStr(cfile, outputParam, dirMd5Param);
                 } else {
                     //生成md5
-
                     Long count = outputParam.count.incrementAndGet();
                     System.out.println("check file " + count + " :" + cfile.getAbsolutePath());
 
-//                    String key = FileUtil.getSubPathUnix(cfile.toPath(), baseDir.toPath());
                     if (ignoreMacShadowFile) {
                         if (!cfile.getAbsolutePath().contains("._")) {
                             outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.genType));
