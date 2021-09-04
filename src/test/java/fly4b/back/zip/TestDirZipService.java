@@ -46,14 +46,14 @@ public class TestDirZipService {
 
     @Test
     public void zipDirWithVerify() throws Exception {
-        var zipFilePath = Path.of(backDirPath.toString(), OsUtil.getSimpleOsName() + DateUtil.getHourStr4Name(new Date()) + ".zip");
-        var zipConfig = new ZipConfig()
-                .setSourceDir(sourceDirPath.toFile())
-                .setDestZipFile(zipFilePath.toFile())
-                .setPassword("123")
-                .setDelZip(false);
-        var flyResult = dirZipService.zipDirWithVerify(zipConfig);
-        System.out.println(flyResult.getMsg());
+//        var zipFilePath = Path.of(backDirPath.toString(), OsUtil.getSimpleOsName() + DateUtil.getHourStr4Name(new Date()) + ".zip");
+//        var zipConfig = new ZipConfig()
+//                .setSourceDir(sourceDirPath.toFile())
+//                .setDestZipFile(zipFilePath.toFile())
+//                .setPassword("123")
+//                .setDelZip(false);
+//        var flyResult = dirZipService.zipDirWithVerify(zipConfig);
+//        System.out.println(flyResult.getMsg());
 
 //        Zip4jTool.zipDir(Path.of(backPath.toString(), "test.zip").toFile(), sourcePath.toFile(), "123");
 //

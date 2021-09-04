@@ -1,5 +1,6 @@
 package fly4j.common.test;
 
+import fly4j.common.crypto.AESUtil;
 import fly4j.common.file.FileUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -68,7 +69,31 @@ public class TestFileUtil {
 
 
     }
+    @Test
+    public void getSubPathUnix() throws Exception {
+        var key=FileUtil.getSubPathUnix("/export/资料/文件/a.txt","/export/资料/");
+        Assert.assertEquals("文件/a.txt", key);
+        key=FileUtil.getSubPathUnix("/export/资料/文件/a.txt","/export/资料");
+        Assert.assertEquals("文件/a.txt", key);
+        key=FileUtil.getSubPathUnix("D:\\资料\\文件\\a.txt","D:\\资料");
+        Assert.assertEquals("文件/a.txt", key);
+        key=FileUtil.getSubPathUnix("D:\\文件\\a.txt","D:");
+        Assert.assertEquals("文件/a.txt", key);
+        key=FileUtil.getSubPathUnix("/export/资料/文件","/export/资料/文件");
+        Assert.assertEquals("", key);
+        key=FileUtil.getSubPathUnix("/export/资料/文件","/export/资料/文件/");
+        Assert.assertEquals("", key);
+        key=FileUtil.getSubPathUnix("/export/资料/文件/","/export/资料/文件/");
+        Assert.assertEquals("", key);
+        key=FileUtil.getSubPathUnix("/export/资料/文件/a","/export/资料/文件/");
+        Assert.assertEquals("a", key);
+        key=FileUtil.getSubPathUnix("/export/资料/文件/a","/export/资料/文件");
+        Assert.assertEquals("a", key);
+        key=FileUtil.getSubPathUnix("/export/资料/文件/a/","/export/资料/文件/");
+        Assert.assertEquals("a", key);
 
+
+    }
     private static void testFilePath() {
         //测试路径
         StringBuilder msg = new StringBuilder();

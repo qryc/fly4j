@@ -52,7 +52,7 @@ public class TestDirCompareService {
             return;
         }
         String md5 = """
-                {"":"dir","/childDir":"dir","/childDir/aa.txt":"8","/childDir/bb.txt":"8","/c.txt":"7","/b.txt":"7","/a.txt":"7"}""";
+                {"":"dir","childDir":"dir","childDir/aa.txt":"8","childDir/bb.txt":"8","c.txt":"7","b.txt":"7","a.txt":"7"}""";
         var zipFilePath = Path.of(backDirPath.toString(), OsUtil.getSimpleOsName() + DateUtil.getHourStr4Name(new Date()) + ".zip");
         var zipConfig = new ZipConfig()
                 .setSourceDir(sourceDirPath.toFile())
@@ -70,7 +70,7 @@ public class TestDirCompareService {
             return;
         }
         String md5 = """
-                {"":"dir","/childDir":"dir","/childDir/aa.txt":"ce4f75647b15fc7fa4f01ad9f856d307","/childDir/bb.txt":"35cb9fa3d1b1d570a7a64c7d27b4ac27","/c.txt":"29fbb78de8005a02cc22a2550c383745","/b.txt":"f0a408d9c5b8e4b888385a6c630beba4","/a.txt":"c173b145b212ca55558eba13aac59aa3"}""";
+                {"":"dir","childDir":"dir","childDir/aa.txt":"ce4f75647b15fc7fa4f01ad9f856d307","childDir/bb.txt":"35cb9fa3d1b1d570a7a64c7d27b4ac27","c.txt":"29fbb78de8005a02cc22a2550c383745","b.txt":"f0a408d9c5b8e4b888385a6c630beba4","a.txt":"c173b145b212ca55558eba13aac59aa3"}""";
         var zipFilePath = Path.of(backDirPath.toString(), OsUtil.getSimpleOsName() + DateUtil.getHourStr4Name(new Date()) + ".zip");
         var zipConfig = new ZipConfig()
                 .setSourceDir(sourceDirPath.toFile())

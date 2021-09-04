@@ -19,7 +19,7 @@ public record DirVersionModel(Map<String, String> environment,
     public Map<String, String> getFilesMap( VersionType versionType) {
         Map<String, String> map = new LinkedHashMap<>();
         for (SingleFileVersionModel singleFileVersionModel : singleFileVersionModelList) {
-            var dirKey = FileUtil.getSubPathUnix(Path.of(singleFileVersionModel.pathStr()),Path.of(checkParam.checkBaseDirStr()));
+            var dirKey = FileUtil.getSubPathUnix(singleFileVersionModel.pathStr(),checkParam.checkBaseDirStr());
             if(VersionType.LEN.equals(versionType)){
                 map.put(dirKey, ""+singleFileVersionModel.length());
             }else {

@@ -33,7 +33,7 @@ public class DirMd5Calculate {
 
         LinkedHashMap<String, String> md5Map = new LinkedHashMap<>();
         md5FileMap.forEach((file, str) -> {
-            var dirKey = FileUtil.getSubPathUnix(file.toPath(), dirMd5Param.checkBaseDir.toPath());
+            var dirKey = FileUtil.getSubPathUnix(file.getAbsolutePath(), dirMd5Param.checkBaseDir.getAbsolutePath());
             md5Map.put(dirKey, str);
         });
         return md5Map;
