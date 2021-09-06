@@ -23,31 +23,26 @@ public class DirZipService {
 
     public FlyResult zipDirWithVerify(ZipConfig zipConfig) {
         FlyResult backResult = new FlyResult().success();
-        try {
-            //生成MD5摘要文件
-            Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(),
-                    DirVersionGen.getDefaultVersionFileName(zipConfig.sourceDir().getAbsolutePath()));
-            DirVersionModel dirVersionModel = DirVersionGen.saveDirVersionModel2File(zipConfig.sourceDir().toString(),
-                    zipConfig.noNeedCalMd5FileFilter(), md5StorePath);
-            //执行备份 backFile
-            Zip4jTool.zipDir(zipConfig.destZipFile(), zipConfig.sourceDir(), zipConfig.password());
-            backResult.append("executeBack success srcFile(" + zipConfig.sourceDir()).append(") zipe to (")
-                    .append(zipConfig.destZipFile().getAbsolutePath()).append(")")
-                    .append(StringUtils.LF);
+        //生成MD5摘要文件
+        Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(),
+                DirVersionGen.getDefaultVersionFileName(zipConfig.sourceDir().getAbsolutePath()));
+        DirVersionGen.saveDirVersionModel2File(zipConfig.sourceDir().toString(),
+                zipConfig.noNeedCalMd5FileFilter(), md5StorePath);
+        //执行备份 backFile
+        Zip4jTool.zipDir(zipConfig.destZipFile(), zipConfig.sourceDir(), zipConfig.password());
+        backResult.append("executeBack success srcFile(" + zipConfig.sourceDir()).append(") zipe to (")
+                .append(zipConfig.destZipFile().getAbsolutePath()).append(")")
+                .append(StringUtils.LF);
 
-            //执行Test
-            var checkResult = checkZip(zipConfig);
-            backResult.merge(checkResult);
+        //执行Test
+        var checkResult = checkZip(zipConfig);
+        backResult.merge(checkResult);
 
-        } catch (Exception e) {
-            log.error("Zip4jTool.zip  srcFile:" + zipConfig.sourceDir(), e);
-            backResult.append("Zip4jTool.zip  srcFile:" + zipConfig.sourceDir()).append(" error ").append(e.getMessage()).append(StringUtils.LF);
-        }
         return backResult;
     }
 
 
-    private FlyResult checkZip(ZipConfig zipConfig) throws Exception {
+    private FlyResult checkZip(ZipConfig zipConfig) {
         File zipFile = zipConfig.destZipFile();
         var backResult = new FlyResult().success();
         var builder = new StringBuilder();

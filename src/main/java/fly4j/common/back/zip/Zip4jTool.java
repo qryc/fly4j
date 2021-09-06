@@ -12,6 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -36,7 +37,7 @@ public class Zip4jTool {
 
     }
 
-    public static void zipDir(File destZipFile, File sourceDir, String pwd) throws Exception {
+    public static void zipDir(File destZipFile, File sourceDir, String pwd) {
         if (StringUtils.isBlank(pwd)) {
             throw new RuntimeException("password is empty");
         }
@@ -44,10 +45,14 @@ public class Zip4jTool {
             throw new RuntimeException("is not Directory");
         }
 
-        FileUtils.forceMkdirParent(destZipFile);
+        try {
+            FileUtils.forceMkdirParent(destZipFile);
 
-        new ZipFile(destZipFile, pwd.toCharArray())
-                .addFolder(sourceDir, getZipParameters());
+            new ZipFile(destZipFile, pwd.toCharArray())
+                    .addFolder(sourceDir, getZipParameters());
+        } catch (IOException e) {
+           throw new RuntimeException(e);
+        }
 
     }
 
@@ -67,11 +72,11 @@ public class Zip4jTool {
      * 解压
      *
      * @param unZipFile 压缩包文件
-     * @param destFile      目标文件
+     * @param destFile  目标文件
      * @param pwd       密码
      * @throws ZipException 抛出异常
      */
-    public static void unZip(File unZipFile, File destFile, String pwd) throws Exception {
+    public static void unZip(File unZipFile, File destFile, String pwd) {
         if (StringUtils.isBlank(pwd)) {
             throw new RuntimeException("password is empty");
         }
@@ -79,11 +84,14 @@ public class Zip4jTool {
         ZipFile zipFile = new ZipFile(unZipFile.getAbsoluteFile(), pwd.toCharArray());
         zipFile.setCharset(StandardCharsets.UTF_8);//在GBK系统中需要设置
         if (!zipFile.isValidZipFile()) {
-            throw new ZipException("压缩文件不合法，可能已经损坏！");
+            throw new RuntimeException("压缩文件不合法，可能已经损坏！");
         }
-
-        FileUtils.forceMkdir(destFile);
-        zipFile.extractAll(destFile.getAbsolutePath());
+        try {
+            FileUtils.forceMkdir(destFile);
+            zipFile.extractAll(destFile.getAbsolutePath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void unZip(File zipfile, File destFile) throws Exception {
