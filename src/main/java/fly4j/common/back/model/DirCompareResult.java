@@ -1,4 +1,4 @@
-package fly4j.common.back;
+package fly4j.common.back.model;
 
 import java.util.ArrayList;
 import java.util.List;

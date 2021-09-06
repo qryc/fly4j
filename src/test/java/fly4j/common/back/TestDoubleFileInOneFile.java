@@ -1,6 +1,6 @@
 package fly4j.common.back;
 
-import fly4j.common.back.DoubleFileInOneFile;
+import fly4j.common.back.check.DoubleFileInOneFile;
 import fly4j.test.util.TestData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;

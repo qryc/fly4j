@@ -1,11 +1,8 @@
-package fly4j.common.back;
+package fly4j.common.back.check;
 
 import fly4j.common.back.model.VersionType;
-import fly4j.common.back.param.DirVersionCheckParam;
+import fly4j.common.back.model.DirVersionCheckParam;
 import fly4j.common.lang.MapUtil;
-import fly4j.common.lang.StringConst;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
