@@ -1,4 +1,4 @@
-package fly4j.common.test;
+package fly4j.common.file;
 
 import fly4j.common.crypto.AESUtil;
 import fly4j.common.file.FileUtil;

@@ -14,49 +14,8 @@ import java.util.*;
 /**
  * Created by qryc on 2021/8/25
  */
-public class BackTools {
-    public static void main(String[] args) {
-        String checkDirStr = "";
-        String findName = "target,classes";
-        var result = findFile(checkDirStr, findName);
-        System.out.println(result);
-    }
+public class DoubleFileInOneFile {
 
-    public static String findFile(String checkDirStr, String findName) {
-        StringBuilder info = new StringBuilder("文件查找结果：").append(StringUtils.LF);
-        Set<String> fileNameSet = new HashSet<>();
-        Arrays.stream(findName.split(",")).forEach(name -> fileNameSet.add(name));
-        info.append(" findName:").append(fileNameSet).append(StringUtils.LF);
-
-        info.append(checkDirStr).append(" check:").append(StringUtils.LF);
-
-        var files = FileUtils.listFilesAndDirs(new File(checkDirStr), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
-        files.stream().filter(file -> {
-            for (String name : fileNameSet) {
-                if (file.getName().equals(name)) {
-                    return true;
-                }
-            }
-            return false;
-        }).forEach(file -> {
-            StringConst.appendLine(info, file.getAbsolutePath() + " " + FileUtils.byteCountToDisplaySize(file.length()));
-        });
-        return info.toString();
-    }
-
-    public static String maxFile(List<String> checkDirs, int bigFileSize) {
-        StringBuilder info = new StringBuilder("检查大文件结果：").append(StringUtils.LF);
-        checkDirs.forEach(checkDir -> {
-            info.append(checkDir).append(" check:").append(StringUtils.LF);
-            int limit = bigFileSize;
-
-            var files = FileUtils.listFiles(new File(checkDir), null, true);
-            files.stream().filter(file -> !file.isDirectory()).sorted((f1, f2) -> (int) (f2.length() - f1.length())).limit(limit).forEach(file -> {
-                StringConst.appendLine(info, file.getAbsolutePath() + " " + FileUtils.byteCountToDisplaySize(file.length()));
-            });
-        });
-        return info.toString();
-    }
 
     public static LinkedHashMap<String, List<File>> doubleFileCheck(String compareDir) {
         if (StringUtils.isBlank(compareDir)) {

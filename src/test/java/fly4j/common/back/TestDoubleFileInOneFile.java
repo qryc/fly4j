@@ -1,11 +1,8 @@
-package fly4j.common.test;
+package fly4j.common.back;
 
-import fly4j.common.back.BackTools;
-import fly4j.common.file.FileUtil;
+import fly4j.common.back.DoubleFileInOneFile;
 import fly4j.test.util.TestData;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,7 +19,7 @@ import java.util.List;
  * @author qryc
  */
 @RunWith(BlockJUnit4ClassRunner.class)
-public class TestBackTools {
+public class TestDoubleFileInOneFile {
 
 
     @Before
@@ -37,7 +34,7 @@ public class TestBackTools {
         File fileACopy = Path.of(TestData.sourceDirPath.toString(), "aCopy.txt").toFile();
         FileUtils.copyFile(fileA,fileACopy);
 
-        LinkedHashMap<String, List<File>> resultMap= BackTools.doubleFileCheck(TestData.sourceDirPath.toString());
+        LinkedHashMap<String, List<File>> resultMap= DoubleFileInOneFile.doubleFileCheck(TestData.sourceDirPath.toString());
         Assert.assertEquals(1,resultMap.size());
         List<File> files=resultMap.values().iterator().next();
         Assert.assertEquals(2,files.size());

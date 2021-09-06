@@ -1,4 +1,4 @@
-package fly4j.crypt;
+package fly4j.common.crypt;
 
 import fly4j.common.crypto.ByteUtil;
 import org.junit.After;

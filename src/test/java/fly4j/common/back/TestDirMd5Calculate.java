@@ -1,10 +1,8 @@
-package fly4b.back.zip;
+package fly4j.common.back;
 
 
-import fly4j.common.back.*;
 import fly4j.common.back.model.VersionType;
 import fly4j.common.back.param.DirVersionCheckParam;
-import fly4j.common.back.DirMd5Calculate;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.lang.JsonUtils;
 import fly4j.common.os.OsUtil;
@@ -25,15 +23,12 @@ import static fly4j.test.util.TestData.sourceDirPath;
  * @author qryc
  */
 @RunWith(BlockJUnit4ClassRunner.class)
-public class TestDirCompareService {
-    static final Logger log = LoggerFactory.getLogger(TestDirCompareService.class);
-    private DirCompareService dirCompareService;
+public class TestDirMd5Calculate {
+    static final Logger log = LoggerFactory.getLogger(TestDirMd5Calculate.class);
 
-    public TestDirCompareService() {
+    public TestDirMd5Calculate() {
         FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
 //        fileAndDirFilter.setFilterDirNames(Set.of(""));
-        DirCompareService dirCompareServiceImpl = new DirCompareService();
-        dirCompareService = dirCompareServiceImpl;
     }
 
     @Before

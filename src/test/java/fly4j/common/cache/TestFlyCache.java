@@ -1,4 +1,4 @@
-package fly4j.cache;
+package fly4j.common.cache;
 
 import fly4j.common.cache.FlyCache;
 import fly4j.common.cache.impl.FlyCacheJVM;

@@ -1,9 +1,6 @@
-package fly4j.common.test;
+package fly4j.common.lang;
 
-import fly4j.common.lang.DateUtil;
-import fly4j.common.lang.FlyString;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
