@@ -27,7 +27,6 @@ public class TestDirZipService {
         DirCompareService dirCompareService = new DirCompareService();
 //        dirCompareService.setNoNeedCalMd5FileFilter(fileAndDirFilter);
         dirZipService = new DirZipService();
-        dirZipService.setDirCompare(dirCompareService);
     }
 
     @Before

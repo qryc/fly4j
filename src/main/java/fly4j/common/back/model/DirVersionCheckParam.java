@@ -1,6 +1,5 @@
 package fly4j.common.back.model;
 
-import fly4j.common.back.model.VersionType;
 import fly4j.common.file.FileAndDirFilter;
 
 /**
