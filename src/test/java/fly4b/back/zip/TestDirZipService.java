@@ -34,7 +34,7 @@ public class TestDirZipService {
         FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
 //        fileAndDirFilter.setFilterDirNames(Set.of(""));
         DirCompareServiceImpl dirCompareService = new DirCompareServiceImpl();
-        dirCompareService.setNoNeedCalMd5FileFilter(fileAndDirFilter);
+//        dirCompareService.setNoNeedCalMd5FileFilter(fileAndDirFilter);
         dirZipService = new DirZipService();
         dirZipService.setDirCompare(dirCompareService);
     }

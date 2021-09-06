@@ -1,9 +1,9 @@
 package fly4j.common.back;
 
+import fly4j.common.back.param.DirVersionCheckParam;
 import fly4j.common.back.model.DirVersionModel;
 import fly4j.common.file.DirMd5Calculate;
 import fly4j.common.lang.*;
-import fly4j.common.file.FileAndDirFilter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -14,16 +14,10 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class DirCompareServiceImpl implements DirCompareService {
     //md5 or size
-    private FileAndDirFilter noNeedCalMd5FileFilter;
-    private boolean checkEmptyDir = false;
-
-    public void setNoNeedCalMd5FileFilter(FileAndDirFilter noNeedCalMd5FileFilter) {
-        this.noNeedCalMd5FileFilter = noNeedCalMd5FileFilter;
-    }
 
 
     @Override
-    public FlyResult compareMulDir(File histoyDir, File currentDir) {
+    public FlyResult compareTwoDir(File histoyDir, File currentDir, DirVersionCheckParam checkParam) {
         try {
             final StringBuilder stringBuilder = new StringBuilder();
             FlyResult flyResult = new FlyResult().success();
@@ -31,13 +25,9 @@ public class DirCompareServiceImpl implements DirCompareService {
 
             StringConst.appendLine(stringBuilder, "....current file " + currentDir.getAbsolutePath() + " compare to history:" + histoyDir.getAbsolutePath());
             //取得上次的md5
-            DirMd5Calculate.DirVersionCheckParam2 dirMd5ParamHistory = new DirMd5Calculate.DirVersionCheckParam2(histoyDir, VersionType.LEN,
-                    checkEmptyDir, noNeedCalMd5FileFilter);
-            Map<String, String> historyMd5MapRead = DirMd5Calculate.getDirMd5Map(dirMd5ParamHistory);
+            Map<String, String> historyMd5MapRead = DirMd5Calculate.getDirMd5Map(histoyDir.getAbsolutePath(), checkParam);
             //取得文件夹的Md5
-            DirMd5Calculate.DirVersionCheckParam2 dirMd5ParamCurrent = new DirMd5Calculate.DirVersionCheckParam2(currentDir, VersionType.LEN,
-                    checkEmptyDir, noNeedCalMd5FileFilter);
-            Map<String, String> currentMd5Map = DirMd5Calculate.getDirMd5Map(dirMd5ParamCurrent);
+            Map<String, String> currentMd5Map = DirMd5Calculate.getDirMd5Map(currentDir.getAbsolutePath(), checkParam);
 
             return compareTwoMap(stringBuilder, flyResult, count, trimPath(historyMd5MapRead), trimPath(currentMd5Map));
         } catch (Exception e) {
@@ -51,7 +41,7 @@ public class DirCompareServiceImpl implements DirCompareService {
     }
 
     @Override
-    public FlyResult checkDirChange(File checkDir, File md5File, VersionType versionType) {
+    public FlyResult checkDirChange(File checkDir, File md5File, DirVersionCheckParam checkParam) {
         try {
             final StringBuilder stringBuilder = new StringBuilder();
             StringConst.appendLine(stringBuilder, "checkDir:" + checkDir);
@@ -68,11 +58,9 @@ public class DirCompareServiceImpl implements DirCompareService {
             //取得上次的md5
             String historyMd5Str = FileUtils.readFileToString(md5File, Charset.forName("utf-8"));
             DirVersionModel dirVersionModel = JsonUtils.readValue(historyMd5Str, DirVersionModel.class);
-            Map<String, String> historyMd5MapRead = dirVersionModel.getFilesMap(versionType);
+            Map<String, String> historyMd5MapRead = dirVersionModel.getFilesMap(checkParam.versionType());
             //取得文件夹的Md5
-            DirMd5Calculate.DirVersionCheckParam2 dirMd5Param = new DirMd5Calculate.DirVersionCheckParam2(checkDir, versionType,
-                    checkEmptyDir, noNeedCalMd5FileFilter);
-            Map<String, String> currentMd5Map = DirMd5Calculate.getDirMd5Map(dirMd5Param);
+            Map<String, String> currentMd5Map = DirMd5Calculate.getDirMd5Map(checkDir.getAbsolutePath(), checkParam);
 
             return compareTwoMap(stringBuilder, flyResult, count, trimPath(historyMd5MapRead), trimPath(currentMd5Map));
         } catch (Exception e) {
@@ -166,8 +154,5 @@ public class DirCompareServiceImpl implements DirCompareService {
         return flyResult.append(stringBuilder.toString());
     }
 
-    public void setCheckEmptyDir(boolean checkEmptyDir) {
-        this.checkEmptyDir = checkEmptyDir;
-    }
 
 }

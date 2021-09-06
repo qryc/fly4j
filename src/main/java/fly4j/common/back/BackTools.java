@@ -1,5 +1,6 @@
 package fly4j.common.back;
 
+import fly4j.common.back.param.DirVersionCheckParam;
 import fly4j.common.file.DirMd5Calculate;
 import fly4j.common.lang.MapUtil;
 import fly4j.common.lang.StringConst;
@@ -63,9 +64,9 @@ public class BackTools {
         }
 
 
-        //取得上次的md5
-        DirMd5Calculate.DirVersionCheckParam2 dirMd5Param = new DirMd5Calculate.DirVersionCheckParam2(new File(compareDir), VersionType.LEN, false, null);
-        LinkedHashMap<File, String> fileLengthMapAll = DirMd5Calculate.getDirMd5FileMap(dirMd5Param);
+        //取得文件长度
+        DirVersionCheckParam dirMd5Param = new DirVersionCheckParam(VersionType.LEN, false, null);
+        LinkedHashMap<File, String> fileLengthMapAll = DirMd5Calculate.getDirMd5FileMap(compareDir, dirMd5Param);
         //过滤Dir
         LinkedHashMap<File, String> fileLengthMap = MapUtil.filterLinkedHashMap(fileLengthMapAll, e -> !DirMd5Calculate.DIR_VALUE.equals(e.getValue()));
 
