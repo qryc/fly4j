@@ -1,6 +1,9 @@
 package fly4j.common.back;
 
+import fly4j.common.back.model.DirVersionModel;
 import fly4j.common.back.zip.Zip4jTool;
+import fly4j.common.file.DirMd5Calculate;
+import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.file.FileUtil;
 import fly4j.common.lang.FlyResult;
 import org.apache.commons.lang3.StringUtils;
@@ -18,14 +21,15 @@ public class DirZipService {
     static final Logger log = LoggerFactory.getLogger(DirZipService.class);
     private boolean afterTest = true;
     private DirCompareService dirCompare;
+    private FileAndDirFilter noNeedCalMd5FileFilter;
+    private boolean checkEmptyDir = false;
 
     public FlyResult zipDirWithVerify(ZipConfig zipConfig) {
         FlyResult backResult = new FlyResult().success();
         try {
             //生成MD5摘要文件
-            Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(), DirCompareService.getDefaultVersionFileName(zipConfig.getSourceDir().getAbsolutePath()));
-            dirCompare.genDirMd5VersionTag(zipConfig.getSourceDir(), md5StorePath, zipConfig.getVersionType());
-
+            Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(), DirVersionGen.getDefaultVersionFileName(zipConfig.getSourceDir().getAbsolutePath()));
+            DirVersionModel dirVersionModel = DirVersionGen.saveDirVersionModel2File(zipConfig.getSourceDir().toString(), noNeedCalMd5FileFilter, md5StorePath);
             //执行备份 backFile
             Zip4jTool.zipDir(zipConfig.getDestZipFile(), zipConfig.getSourceDir(), zipConfig.getPassword());
             backResult.append("executeBack success srcFile(" + zipConfig.getSourceDir()).append(") zipe to (")

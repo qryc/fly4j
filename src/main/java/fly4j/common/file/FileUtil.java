@@ -21,24 +21,11 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class FileUtil {
 
-    public static void deleteOneLittleImg(File file) {
-        if (file.isDirectory()) {
-            return;
-        }
-        if (file.length() > 5 * FileUtils.ONE_MB) {
-            return;
-        }
-        if (isImg(file)) {
-            try {
-                FileUtils.forceDelete(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
     public static void deleteOneRepeatFile(File delFile, File retainFile) {
+        if (delFile.getAbsolutePath().equals(retainFile.getAbsolutePath())) {
+            return;
+        }
         if (delFile.length() == retainFile.length() && getMD5(delFile).equals(getMD5(retainFile))) {
             try {
                 FileUtils.forceDelete(delFile);

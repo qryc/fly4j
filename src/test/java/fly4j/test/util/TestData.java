@@ -14,11 +14,13 @@ import java.nio.file.Path;
  * Created by qryc on 2020/3/15.
  */
 public class TestData {
+    //测试数据目录 userHome/flyDataTest
     public static Path testBasePath;
-    //压缩文件目标文件夹
-    public static Path backDirPath;
-    //源文件
+    //源文件 userHome/flyDataTest/sourcePath
     public static Path sourceDirPath;
+    //压缩文件目标文件夹 userHome/flyDataTest/back
+    public static Path backDirPath;
+
 
     static {
         if (OsUtil.isWindows()) {
@@ -32,6 +34,7 @@ public class TestData {
 
 
     public static void createTestFiles() throws Exception {
+        //删除并重新创建测试目录
         System.out.println("createTestFiles in:" + testBasePath);
         if (Files.exists(testBasePath))
             FileUtils.forceDelete(testBasePath.toFile());

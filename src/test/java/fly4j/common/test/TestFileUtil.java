@@ -2,6 +2,9 @@ package fly4j.common.test;
 
 import fly4j.common.crypto.AESUtil;
 import fly4j.common.file.FileUtil;
+import fly4j.common.pesistence.file.FileStrStore;
+import fly4j.test.util.TestData;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
@@ -20,10 +23,12 @@ import java.nio.file.Path;
 @RunWith(BlockJUnit4ClassRunner.class)
 public class TestFileUtil {
 
+
     @Before
     public void setup() throws Exception {
-
+        TestData.createTestFiles();
     }
+
 
     @Test
     public void testFile() throws Exception {
@@ -33,6 +38,7 @@ public class TestFileUtil {
 //        FileUtil.forceMkdir(FilenameUtils.concat(TestData.tTargetDir, "TestFileUtil/a/aa/aaa"));
 //        Assert.assertTrue(new File(FilenameUtils.concat(TestData.tTargetDir, "TestFileUtil/a/aa/aaa")).exists());
     }
+
     @Test
     public void testFileSub() throws Exception {
         //toRealPath 要求文件必须存在，toAbsolutePath不需要
@@ -44,6 +50,7 @@ public class TestFileUtil {
 //
 //        System.out.println(Path.of("/../a.txt").toRealPath());
     }
+
     /**
      * ***************************下边测试部分演示容易出错部分用法***************************
      */
@@ -69,31 +76,56 @@ public class TestFileUtil {
 
 
     }
+
     @Test
     public void getSubPathUnix() throws Exception {
-        var key=FileUtil.getSubPathUnix("/export/资料/文件/a.txt","/export/资料/");
+        var key = FileUtil.getSubPathUnix("/export/资料/文件/a.txt", "/export/资料/");
         Assert.assertEquals("文件/a.txt", key);
-        key=FileUtil.getSubPathUnix("/export/资料/文件/a.txt","/export/资料");
+        key = FileUtil.getSubPathUnix("/export/资料/文件/a.txt", "/export/资料");
         Assert.assertEquals("文件/a.txt", key);
-        key=FileUtil.getSubPathUnix("D:\\资料\\文件\\a.txt","D:\\资料");
+        key = FileUtil.getSubPathUnix("D:\\资料\\文件\\a.txt", "D:\\资料");
         Assert.assertEquals("文件/a.txt", key);
-        key=FileUtil.getSubPathUnix("D:\\文件\\a.txt","D:");
+        key = FileUtil.getSubPathUnix("D:\\文件\\a.txt", "D:");
         Assert.assertEquals("文件/a.txt", key);
-        key=FileUtil.getSubPathUnix("/export/资料/文件","/export/资料/文件");
+        key = FileUtil.getSubPathUnix("/export/资料/文件", "/export/资料/文件");
         Assert.assertEquals("", key);
-        key=FileUtil.getSubPathUnix("/export/资料/文件","/export/资料/文件/");
+        key = FileUtil.getSubPathUnix("/export/资料/文件", "/export/资料/文件/");
         Assert.assertEquals("", key);
-        key=FileUtil.getSubPathUnix("/export/资料/文件/","/export/资料/文件/");
+        key = FileUtil.getSubPathUnix("/export/资料/文件/", "/export/资料/文件/");
         Assert.assertEquals("", key);
-        key=FileUtil.getSubPathUnix("/export/资料/文件/a","/export/资料/文件/");
+        key = FileUtil.getSubPathUnix("/export/资料/文件/a", "/export/资料/文件/");
         Assert.assertEquals("a", key);
-        key=FileUtil.getSubPathUnix("/export/资料/文件/a","/export/资料/文件");
+        key = FileUtil.getSubPathUnix("/export/资料/文件/a", "/export/资料/文件");
         Assert.assertEquals("a", key);
-        key=FileUtil.getSubPathUnix("/export/资料/文件/a/","/export/资料/文件/");
+        key = FileUtil.getSubPathUnix("/export/资料/文件/a/", "/export/资料/文件/");
         Assert.assertEquals("a", key);
 
 
     }
+
+    @Test
+    public void deleteOneRepeatFile() throws Exception {
+        File fileA = Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile();
+        File fileACopy = Path.of(TestData.sourceDirPath.toString(), "aCopy.txt").toFile();
+        Assert.assertEquals(true,fileA.exists());
+
+        //删除相同同一个文件
+        FileUtil.deleteOneRepeatFile(fileA, fileA);
+        Assert.assertEquals(true,fileA.exists());
+
+        //删除不同文件
+        File fileB = Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile();
+        FileUtil.deleteOneRepeatFile(fileA, fileB);
+        Assert.assertEquals(true,fileA.exists());
+
+        //删除重复文件
+        Assert.assertEquals(false,fileACopy.exists());
+        FileUtils.copyFile(fileA,fileACopy);
+        Assert.assertEquals(true,fileACopy.exists());
+        FileUtil.deleteOneRepeatFile(fileA, fileACopy);
+        Assert.assertEquals(false,fileA.exists());
+    }
+
     private static void testFilePath() {
         //测试路径
         StringBuilder msg = new StringBuilder();
@@ -119,5 +151,7 @@ public class TestFileUtil {
 
     @After
     public void tearDown() throws Exception {
+        FileUtils.forceDelete(TestData.testBasePath.toFile());
     }
+
 }

@@ -4,14 +4,11 @@ import fly4j.common.back.model.DirVersionModel;
 import fly4j.common.file.DirMd5Calculate;
 import fly4j.common.lang.*;
 import fly4j.common.file.FileAndDirFilter;
-import fly4j.common.pesistence.file.FileJsonStrStore;
-import fly4j.common.track.TrackContext;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -24,90 +21,23 @@ public class DirCompareServiceImpl implements DirCompareService {
         this.noNeedCalMd5FileFilter = noNeedCalMd5FileFilter;
     }
 
-    public DirCompareResult compareMulDirBack(List<File> compDirs, VersionType versionType) {
-        DirCompareResult result = new DirCompareResult();
-        TrackContext.reset();
-        int same = 0;
-
-        //得到文件夹的Md5Map
-        Set<String> allKeys = new HashSet<>();
-        List<Map<String, String>> allMap = new ArrayList<>();
-        for (var compDir : compDirs) {
-            TrackContext.appendTrackInfo("comp dir:" + compDir);
-            Map<String, String> md5Map = this.getDirMd5Map(compDir, versionType);
-            allMap.add(md5Map);
-            allKeys.addAll(md5Map.keySet());
-        }
-        //如果是主从对比
-//        allKeys.addAll(fileMd5Cal.getDirMd5Map(compDirs.get(0)).keySet());
-
-        for (String key : allKeys) {
-            //每个文件夹对比
-            Map<Integer, String> diffDirMd5 = new HashMap<>();
-            Set<String> values = new HashSet<>();
-            //遍历要对比的文件夹
-            for (int dirIndex = 0; dirIndex < compDirs.size(); dirIndex++) {
-                //取得每个文件夹的文件md5
-                String md5Value = allMap.get(dirIndex).get(key);
-                if (md5Value == null) {
-                    result.addDelFile(compDirs.get(dirIndex) + key);
-                } else {
-                    diffDirMd5.put(dirIndex, md5Value);
-                    values.add(md5Value);
-                }
-            }
-
-            //对比
-            if (values.size() == 1) {
-                same++;
-            } else {
-                TrackContext.appendTrackInfo(key + " is Diff:" + values.size());
-            }
-
-        }
-        TrackContext.appendTrackInfo("total files:" + allKeys.size() + " same: " + same);
-        return result;
-    }
 
     @Override
-    public Map<String, String> getDirMd5Map(File checkDir, VersionType versionType) {
-        DirMd5Calculate.DirMd5Param dirMd5Param = new DirMd5Calculate.DirMd5Param();
-        dirMd5Param.setCheckBaseDir(checkDir);
-        dirMd5Param.setCheckDir(checkEmptyDir);
-        dirMd5Param.setGenType(versionType);
-        dirMd5Param.setNoNeedCalMd5FileFilter(noNeedCalMd5FileFilter);
-        return DirMd5Calculate.getDirMd5Map(dirMd5Param);
-    }
-
-
-    @Override
-    public String genDirMd5VersionTag(File beZipSourceDir, Path md5StorePath, VersionType versionType) {
-//        this.deleteMoreMd5Files(zipConfig.getBeZipSourceDir(), 3);
-        var md5Map = this.getDirMd5Map(beZipSourceDir, versionType);
-        FileJsonStrStore.saveObject(md5StorePath, md5Map);
-        System.out.println("save to file:" + md5StorePath);
-        return md5StorePath.toString();
-    }
-
-
-    @Override
-    public FlyResult compareMulDir(List<File> compDirs, VersionType versionType) {
+    public FlyResult compareMulDir(File histoyDir, File currentDir) {
         try {
             final StringBuilder stringBuilder = new StringBuilder();
-            if (compDirs.size() != 2) {
-                stringBuilder.append(" compDirs size not 2");
-                return new FlyResult(true, stringBuilder.toString());
-            }
-            File histoyDir = compDirs.get(0);
-            File currentDir = compDirs.get(1);
             FlyResult flyResult = new FlyResult().success();
             AtomicLong count = new AtomicLong(0);
 
             StringConst.appendLine(stringBuilder, "....current file " + currentDir.getAbsolutePath() + " compare to history:" + histoyDir.getAbsolutePath());
             //取得上次的md5
-            Map<String, String> historyMd5MapRead = this.getDirMd5Map(histoyDir, versionType);
+            DirMd5Calculate.DirVersionCheckParam2 dirMd5ParamHistory = new DirMd5Calculate.DirVersionCheckParam2(histoyDir, VersionType.LEN,
+                    checkEmptyDir, noNeedCalMd5FileFilter);
+            Map<String, String> historyMd5MapRead = DirMd5Calculate.getDirMd5Map(dirMd5ParamHistory);
             //取得文件夹的Md5
-            Map<String, String> currentMd5Map = this.getDirMd5Map(currentDir, versionType);
+            DirMd5Calculate.DirVersionCheckParam2 dirMd5ParamCurrent = new DirMd5Calculate.DirVersionCheckParam2(currentDir, VersionType.LEN,
+                    checkEmptyDir, noNeedCalMd5FileFilter);
+            Map<String, String> currentMd5Map = DirMd5Calculate.getDirMd5Map(dirMd5ParamCurrent);
 
             return compareTwoMap(stringBuilder, flyResult, count, trimPath(historyMd5MapRead), trimPath(currentMd5Map));
         } catch (Exception e) {
@@ -140,7 +70,9 @@ public class DirCompareServiceImpl implements DirCompareService {
             DirVersionModel dirVersionModel = JsonUtils.readValue(historyMd5Str, DirVersionModel.class);
             Map<String, String> historyMd5MapRead = dirVersionModel.getFilesMap(versionType);
             //取得文件夹的Md5
-            Map<String, String> currentMd5Map = this.getDirMd5Map(checkDir, versionType);
+            DirMd5Calculate.DirVersionCheckParam2 dirMd5Param = new DirMd5Calculate.DirVersionCheckParam2(checkDir, versionType,
+                    checkEmptyDir, noNeedCalMd5FileFilter);
+            Map<String, String> currentMd5Map = DirMd5Calculate.getDirMd5Map(dirMd5Param);
 
             return compareTwoMap(stringBuilder, flyResult, count, trimPath(historyMd5MapRead), trimPath(currentMd5Map));
         } catch (Exception e) {
@@ -237,4 +169,5 @@ public class DirCompareServiceImpl implements DirCompareService {
     public void setCheckEmptyDir(boolean checkEmptyDir) {
         this.checkEmptyDir = checkEmptyDir;
     }
+
 }

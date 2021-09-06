@@ -64,7 +64,8 @@ public class BackTools {
 
 
         //取得上次的md5
-        LinkedHashMap<File, String> fileLengthMapAll = DirMd5Calculate.getDirMd5FileMap(new File(compareDir), VersionType.LEN);
+        DirMd5Calculate.DirVersionCheckParam2 dirMd5Param = new DirMd5Calculate.DirVersionCheckParam2(new File(compareDir), VersionType.LEN, false, null);
+        LinkedHashMap<File, String> fileLengthMapAll = DirMd5Calculate.getDirMd5FileMap(dirMd5Param);
         //过滤Dir
         LinkedHashMap<File, String> fileLengthMap = MapUtil.filterLinkedHashMap(fileLengthMapAll, e -> !DirMd5Calculate.DIR_VALUE.equals(e.getValue()));
 
