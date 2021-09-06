@@ -1,5 +1,7 @@
 package fly4j.common.back;
 
+import fly4j.common.back.model.ZipConfig;
+
 import java.util.List;
 
 public interface DirZipConfig {

@@ -2,6 +2,7 @@ package fly4b.back.zip;
 
 
 import fly4j.common.back.*;
+import fly4j.common.back.model.VersionType;
 import fly4j.common.back.param.DirVersionCheckParam;
 import fly4j.common.file.DirMd5Calculate;
 import fly4j.common.file.FileAndDirFilter;
@@ -31,7 +32,7 @@ public class TestDirCompareService {
     public TestDirCompareService() {
         FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
 //        fileAndDirFilter.setFilterDirNames(Set.of(""));
-        DirCompareServiceImpl dirCompareServiceImpl = new DirCompareServiceImpl();
+        DirCompareService dirCompareServiceImpl = new DirCompareService();
         dirCompareService = dirCompareServiceImpl;
     }
 

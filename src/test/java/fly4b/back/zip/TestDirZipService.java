@@ -1,12 +1,9 @@
 package fly4b.back.zip;
 
 
-import fly4j.common.back.DirCompareServiceImpl;
+import fly4j.common.back.DirCompareService;
 import fly4j.common.back.DirZipService;
-import fly4j.common.back.ZipConfig;
 import fly4j.common.file.FileAndDirFilter;
-import fly4j.common.lang.DateUtil;
-import fly4j.common.os.OsUtil;
 import fly4j.test.util.TestData;
 import org.junit.After;
 import org.junit.Before;
@@ -15,12 +12,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.nio.file.Path;
-import java.util.Date;
-
-import static fly4j.test.util.TestData.backDirPath;
-import static fly4j.test.util.TestData.sourceDirPath;
 
 /**
  * @author qryc
@@ -33,7 +24,7 @@ public class TestDirZipService {
     public TestDirZipService() {
         FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
 //        fileAndDirFilter.setFilterDirNames(Set.of(""));
-        DirCompareServiceImpl dirCompareService = new DirCompareServiceImpl();
+        DirCompareService dirCompareService = new DirCompareService();
 //        dirCompareService.setNoNeedCalMd5FileFilter(fileAndDirFilter);
         dirZipService = new DirZipService();
         dirZipService.setDirCompare(dirCompareService);

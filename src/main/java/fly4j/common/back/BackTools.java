@@ -1,5 +1,6 @@
 package fly4j.common.back;
 
+import fly4j.common.back.model.VersionType;
 import fly4j.common.back.param.DirVersionCheckParam;
 import fly4j.common.file.DirMd5Calculate;
 import fly4j.common.lang.MapUtil;

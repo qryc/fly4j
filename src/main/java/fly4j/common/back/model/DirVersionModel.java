@@ -1,6 +1,5 @@
 package fly4j.common.back.model;
 
-import fly4j.common.back.VersionType;
 import fly4j.common.file.FileUtil;
 
 import java.util.LinkedHashMap;
