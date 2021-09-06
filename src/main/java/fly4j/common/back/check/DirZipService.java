@@ -21,7 +21,7 @@ import java.nio.file.Path;
 public class DirZipService {
     static final Logger log = LoggerFactory.getLogger(DirZipService.class);
 
-    public FlyResult zipDirWithVerify(ZipConfig zipConfig) {
+    public static FlyResult zipDirWithVerify(ZipConfig zipConfig) {
         FlyResult backResult = new FlyResult().success();
         //生成MD5摘要文件
         Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(),
@@ -42,7 +42,7 @@ public class DirZipService {
     }
 
 
-    private FlyResult checkZip(ZipConfig zipConfig) {
+    private static FlyResult checkZip(ZipConfig zipConfig) {
         File zipFile = zipConfig.destZipFile();
         var backResult = new FlyResult().success();
         var builder = new StringBuilder();

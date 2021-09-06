@@ -19,14 +19,12 @@ import org.slf4j.LoggerFactory;
 @RunWith(BlockJUnit4ClassRunner.class)
 public class TestDirZipService {
     static final Logger log = LoggerFactory.getLogger(TestDirZipService.class);
-    private DirZipService dirZipService;
 
     public TestDirZipService() {
         FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
 //        fileAndDirFilter.setFilterDirNames(Set.of(""));
         DirCompareService dirCompareService = new DirCompareService();
 //        dirCompareService.setNoNeedCalMd5FileFilter(fileAndDirFilter);
-        dirZipService = new DirZipService();
     }
 
     @Before
