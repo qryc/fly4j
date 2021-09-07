@@ -1,7 +1,7 @@
 package fly4j.common.back.doublefile;
 
-import fly4j.common.back.version.DirMd5Calculate;
-import fly4j.common.back.version.VersionType;
+import fly4j.common.back.version.DirDigestCalculate;
+import fly4j.common.back.version.DigestType;
 import fly4j.common.back.version.DirVersionCheckParam;
 import fly4j.common.lang.MapUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -22,10 +22,10 @@ public class DoubleFileInOneFile {
 
 
         //取得文件长度
-        DirVersionCheckParam dirMd5Param = new DirVersionCheckParam(VersionType.LEN, false, null);
-        LinkedHashMap<File, String> fileLengthMapAll = DirMd5Calculate.getDirMd5FileMap(compareDir, dirMd5Param);
+        DirVersionCheckParam dirMd5Param = new DirVersionCheckParam(DigestType.LEN, false, null);
+        LinkedHashMap<File, String> fileLengthMapAll = DirDigestCalculate.getDirMd5FileMap(compareDir, dirMd5Param);
         //过滤Dir
-        LinkedHashMap<File, String> fileLengthMap = MapUtil.filterLinkedHashMap(fileLengthMapAll, e -> !DirMd5Calculate.DIR_VALUE.equals(e.getValue()));
+        LinkedHashMap<File, String> fileLengthMap = MapUtil.filterLinkedHashMap(fileLengthMapAll, e -> !DirDigestCalculate.DIR_VALUE.equals(e.getValue()));
 
         //转换Map：Key:文件长度，value：长度相等的文件列表
         LinkedHashMap<String, List<File>> lengthGroupFileMap = MapUtil.convert2ValueMap(fileLengthMap);
@@ -53,7 +53,7 @@ public class DoubleFileInOneFile {
     private static LinkedHashMap<String, List<File>> getMd5RevertMap(List<File> filesParam) {
         LinkedHashMap<String, List<File>> valueMap = new LinkedHashMap<>();
         filesParam.forEach(file -> {
-            String md5 = DirMd5Calculate.getMd5(file, VersionType.MD5);
+            String md5 = DirDigestCalculate.getMd5(file, DigestType.MD5);
             List<File> files = valueMap.computeIfAbsent(md5, key -> new ArrayList<>());
             files.add(file);
         });

@@ -6,17 +6,17 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class DirMd5Calculate {
+public class DirDigestCalculate {
     public static boolean ignoreMacShadowFile = true;
     public static final String DIR_VALUE = "dir";
 
 
-    public static LinkedHashMap<String, String> getDirMd5Map(String checkBaseDirStr, DirVersionCheckParam checkParam) {
+    public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, DirVersionCheckParam checkParam) {
 
-        LinkedHashMap<File, String> md5FileMap = getDirMd5FileMap(checkBaseDirStr, checkParam);
+        LinkedHashMap<File, String> digestFileMap = getDirMd5FileMap(checkBaseDirStr, checkParam);
 
         LinkedHashMap<String, String> md5Map = new LinkedHashMap<>();
-        md5FileMap.forEach((file, str) -> {
+        digestFileMap.forEach((file, str) -> {
             var dirKey = FileUtil.getSubPathUnix(file.getAbsolutePath(), checkBaseDirStr);
             md5Map.put(dirKey, str);
         });
@@ -27,7 +27,7 @@ public class DirMd5Calculate {
         LinkedHashMap<File, String> md5FileMap = new LinkedHashMap<>();
         DirMd5OutputParam outPutParam = new DirMd5OutputParam(md5FileMap, new AtomicLong(0));
 
-        DirMd5Calculate.getDirMd5FileMapInner(new File(checkBaseDirStr), outPutParam, checkParam);
+        DirDigestCalculate.getDirMd5FileMapInner(new File(checkBaseDirStr), outPutParam, checkParam);
         return md5FileMap;
     }
 
@@ -53,10 +53,10 @@ public class DirMd5Calculate {
 
                     if (ignoreMacShadowFile) {
                         if (!cfile.getAbsolutePath().contains("._")) {
-                            outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.versionType()));
+                            outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.digestType()));
                         }
                     } else {
-                        outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.versionType()));
+                        outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.digestType()));
                     }
 
                 }
@@ -70,8 +70,8 @@ public class DirMd5Calculate {
 
     }
 
-    public static String getMd5(File file, VersionType versionType) {
-        if (VersionType.LEN.equals(versionType)) {
+    public static String getMd5(File file, DigestType versionType) {
+        if (DigestType.LEN.equals(versionType)) {
             return "" + file.length();
         } else {
             return FileUtil.getMD5(file);

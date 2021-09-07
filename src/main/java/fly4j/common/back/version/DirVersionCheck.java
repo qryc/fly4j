@@ -32,12 +32,12 @@ public class DirVersionCheck {
             AtomicLong count = new AtomicLong(0);
 
             StringConst.appendLine(stringBuilder, "....current file compare to history:" + DateUtil.getDateStr(new Date(md5File.lastModified())));
-            //取得上次的md5
-            String historyMd5Str = FileUtils.readFileToString(md5File, Charset.forName("utf-8"));
-            DirVersionModel dirVersionModel = JsonUtils.readValue(historyMd5Str, DirVersionModel.class);
-            Map<String, String> historyMd5MapRead = dirVersionModel.getFilesMap(checkParam.versionType());
-            //取得文件夹的Md5
-            Map<String, String> currentMd5Map = DirMd5Calculate.getDirMd5Map(checkDir.getAbsolutePath(), checkParam);
+            //取得上次的文件夹digest摘要信息
+            String historyJsonStr = FileUtils.readFileToString(md5File, Charset.forName("utf-8"));
+            DirDigestAllModel dirDigestAllModel = JsonUtils.readValue(historyJsonStr, DirDigestAllModel.class);
+            Map<String, String> historyMd5MapRead = dirDigestAllModel.getFilesDigestMap(checkParam.digestType());
+            //取得文件夹的当前的digest信息
+            Map<String, String> currentMd5Map = DirDigestCalculate.getDirDigestMap(checkDir.getAbsolutePath(), checkParam);
 
             return FileMapCompareUtil.compareTwoMap(stringBuilder, flyResult, count,
                     FileMapCompareUtil.trimPath(historyMd5MapRead),

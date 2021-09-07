@@ -1,14 +1,10 @@
 package fly4j.common.back.compare;
 
-import fly4j.common.back.version.DirMd5Calculate;
+import fly4j.common.back.version.DirDigestCalculate;
 import fly4j.common.back.version.DirVersionCheckParam;
-import fly4j.common.back.version.DirVersionModel;
 import fly4j.common.lang.*;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -24,9 +20,9 @@ public class DirCompareService {
 
             StringConst.appendLine(stringBuilder, "....current file " + currentDir.getAbsolutePath() + " compare to history:" + histoyDir.getAbsolutePath());
             //取得上次的md5
-            Map<String, String> historyMd5MapRead = DirMd5Calculate.getDirMd5Map(histoyDir.getAbsolutePath(), checkParam);
+            Map<String, String> historyMd5MapRead = DirDigestCalculate.getDirDigestMap(histoyDir.getAbsolutePath(), checkParam);
             //取得文件夹的Md5
-            Map<String, String> currentMd5Map = DirMd5Calculate.getDirMd5Map(currentDir.getAbsolutePath(), checkParam);
+            Map<String, String> currentMd5Map = DirDigestCalculate.getDirDigestMap(currentDir.getAbsolutePath(), checkParam);
 
             return FileMapCompareUtil.compareTwoMap(stringBuilder, flyResult, count,
                     FileMapCompareUtil.trimPath(historyMd5MapRead),
