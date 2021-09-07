@@ -3,6 +3,7 @@ package fly4j.common.back.doublefile;
 import fly4j.common.back.version.DirDigestCalculate;
 import fly4j.common.back.version.DigestType;
 import fly4j.common.back.version.DirVersionCheckParam;
+import fly4j.common.file.FileUtil;
 import fly4j.common.lang.map.MapUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,7 +52,7 @@ public class DoubleFileInOneFile {
     private static LinkedHashMap<String, List<File>> getMd5RevertMap(List<File> filesParam) {
         LinkedHashMap<String, List<File>> valueMap = new LinkedHashMap<>();
         filesParam.forEach(file -> {
-            String md5 = DirDigestCalculate.getMd5(file, DigestType.MD5);
+            String md5 = FileUtil.getMD5(file);
             List<File> files = valueMap.computeIfAbsent(md5, key -> new ArrayList<>());
             files.add(file);
         });
