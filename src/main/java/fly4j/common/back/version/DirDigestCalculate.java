@@ -11,10 +11,19 @@ public class DirDigestCalculate {
     public static boolean ignoreMacShadowFile = true;
     public static final String DIR_VALUE = "dir";
 
+    public static LinkedHashMap<String, List<File>> getFilesMd5DoubleMap(List<File> doubleFilesByLen) {
+        LinkedHashMap<String, List<File>> md5RevertMap_md5 = new LinkedHashMap<>();
+        doubleFilesByLen.forEach(file -> {
+            String md5 = FileUtil.getMD5(file);
+            List<File> files = md5RevertMap_md5.computeIfAbsent(md5, key -> new ArrayList<>());
+            files.add(file);
+        });
+        return md5RevertMap_md5;
+    }
 
     public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, DirVersionCheckParam checkParam) {
 
-        LinkedHashMap<File, String> digestFileMap = getDirMd5FileMap(checkBaseDirStr, checkParam);
+        LinkedHashMap<File, String> digestFileMap = getDirDigestFileMap(checkBaseDirStr, checkParam);
 
         LinkedHashMap<String, String> md5Map = new LinkedHashMap<>();
         digestFileMap.forEach((file, str) -> {
@@ -24,7 +33,7 @@ public class DirDigestCalculate {
         return md5Map;
     }
 
-    public static LinkedHashMap<File, String> getDirMd5FileMap(String checkBaseDirStr, DirVersionCheckParam checkParam) {
+    public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, DirVersionCheckParam checkParam) {
         LinkedHashMap<File, String> md5FileMap = new LinkedHashMap<>();
         DirMd5OutputParam outPutParam = new DirMd5OutputParam(md5FileMap, new AtomicLong(0));
 
