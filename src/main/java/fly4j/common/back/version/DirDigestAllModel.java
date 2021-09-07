@@ -1,6 +1,6 @@
 package fly4j.common.back.version;
 
-import fly4j.common.file.FileUtil;
+import fly4j.common.file.FilenameUtil;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,7 +18,7 @@ public record DirDigestAllModel(Map<String, String> environment,
     public Map<String, String> getFilesDigestMap(DigestType versionType) {
         Map<String, String> map = new LinkedHashMap<>();
         for (FileDigestModel fileDigestModel : fileDigestModels) {
-            var dirKey = FileUtil.getSubPathUnix(fileDigestModel.pathStr(), checkParam.checkBaseDirStr());
+            var dirKey = FilenameUtil.getSubPathUnix(fileDigestModel.pathStr(), checkParam.checkBaseDirStr());
             if (DigestType.LEN.equals(versionType)) {
                 map.put(dirKey, "" + fileDigestModel.length());
             } else {

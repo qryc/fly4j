@@ -1,5 +1,6 @@
 package fly4j.common.back.compare;
 
+import fly4j.common.file.FilenameUtil;
 import fly4j.common.lang.FlyResult;
 import fly4j.common.lang.StringConst;
 import org.apache.commons.io.FilenameUtils;
@@ -14,7 +15,10 @@ public class FileMapCompareUtil {
     /**
      * historyMd5MapRead 为基准
      */
-    public static FlyResult compareTwoMap(StringBuilder stringBuilder, FlyResult flyResult, AtomicLong count, Map<String, String> historyMd5MapRead, Map<String, String> currentMd5Map) {
+    public static FlyResult compareTwoMap(Map<String, String> historyMd5MapRead, Map<String, String> currentMd5Map) {
+        StringBuilder stringBuilder=new StringBuilder();
+        AtomicLong count = new AtomicLong(0);
+        FlyResult flyResult = new FlyResult().success();
         Set<String> deleteKeys = new HashSet<>();
         Set<String> addKeys = new HashSet<>();
         Map<String, String> moveKeys = new HashMap<>();
@@ -81,16 +85,5 @@ public class FileMapCompareUtil {
     }
 
 
-    public static Map<String, String> trimPath(Map<String, String> map) {
-//        return map.entrySet().stream().collect(Collectors.toMap(key -> key, value -> value));
-        Map<String, String> mapNew = new LinkedHashMap<>();
-        map.forEach((key, value) -> {
-            if (key.startsWith("/") || key.startsWith("\\")) {
-                key = key.substring(1);
-            }
-            mapNew.put(key, value);
-        });
-        return mapNew;
-    }
 
 }

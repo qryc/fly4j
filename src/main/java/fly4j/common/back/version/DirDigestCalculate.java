@@ -1,5 +1,6 @@
 package fly4j.common.back.version;
 
+import fly4j.common.file.FilenameUtil;
 import fly4j.common.file.FileUtil;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class DirDigestCalculate {
 
         LinkedHashMap<String, String> md5Map = new LinkedHashMap<>();
         digestFileMap.forEach((file, str) -> {
-            var dirKey = FileUtil.getSubPathUnix(file.getAbsolutePath(), checkBaseDirStr);
+            var dirKey = FilenameUtil.getSubPathUnix(file.getAbsolutePath(), checkBaseDirStr);
             md5Map.put(dirKey, str);
         });
         return md5Map;

@@ -6,6 +6,7 @@ import fly4j.common.lang.FlyResult;
 import fly4j.common.lang.JsonUtils;
 import fly4j.common.lang.StringConst;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -20,18 +21,16 @@ public class DirVersionCheck {
 
     public static FlyResult checkDirChange(File checkDir, File md5File, DirVersionCheckParam checkParam) {
         try {
-            final StringBuilder stringBuilder = new StringBuilder();
-            StringConst.appendLine(stringBuilder, "checkDir:" + checkDir);
-            if (null != md5File)
-                StringConst.appendLine(stringBuilder, "md5:" + md5File.getAbsolutePath());
-            if (null == md5File) {
-                stringBuilder.append(" not have history file");
-                return new FlyResult(true, stringBuilder.toString());
-            }
             FlyResult flyResult = new FlyResult().success();
-            AtomicLong count = new AtomicLong(0);
+            flyResult.appendLine("checkDir:" + checkDir);
+            if (null != md5File)
+                flyResult.appendLine("md5:" + md5File.getAbsolutePath());
+            if (null == md5File) {
+                flyResult.append(" not have history file");
+                return flyResult.fail();
+            }
 
-            StringConst.appendLine(stringBuilder, "....current file compare to history:" + DateUtil.getDateStr(new Date(md5File.lastModified())));
+            flyResult.appendLine("....current file compare to history:" + DateUtil.getDateStr(new Date(md5File.lastModified())));
             //取得上次的文件夹digest摘要信息
             String historyJsonStr = FileUtils.readFileToString(md5File, Charset.forName("utf-8"));
             DirDigestAllModel dirDigestAllModel = JsonUtils.readValue(historyJsonStr, DirDigestAllModel.class);
@@ -39,15 +38,10 @@ public class DirVersionCheck {
             //取得文件夹的当前的digest信息
             Map<String, String> currentMd5Map = DirDigestCalculate.getDirDigestMap(checkDir.getAbsolutePath(), checkParam);
 
-            return FileMapCompareUtil.compareTwoMap(stringBuilder, flyResult, count,
-                    FileMapCompareUtil.trimPath(historyMd5MapRead),
-                    FileMapCompareUtil.trimPath(currentMd5Map));
+            return flyResult.merge(FileMapCompareUtil.compareTwoMap(historyMd5MapRead, currentMd5Map));
         } catch (Exception e) {
             e.printStackTrace();
-            FlyResult flyResult = new FlyResult().success();
-            final StringBuilder stringBuilder = new StringBuilder();
-            StringConst.appendLine(stringBuilder, "Exception:" + e.getMessage());
-            return flyResult.append(stringBuilder.toString());
+            return new FlyResult().fail("Exception:" + e.getMessage());
         }
 
     }
