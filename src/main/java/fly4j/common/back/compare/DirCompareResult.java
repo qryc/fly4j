@@ -1,4 +1,4 @@
-package fly4j.common.back.model;
+package fly4j.common.back.compare;
 
 import java.util.List;
 

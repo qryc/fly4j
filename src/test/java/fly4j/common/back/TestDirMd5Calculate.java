@@ -1,9 +1,9 @@
 package fly4j.common.back;
 
 
-import fly4j.common.back.check.DirMd5Calculate;
-import fly4j.common.back.model.VersionType;
-import fly4j.common.back.model.DirVersionCheckParam;
+import fly4j.common.back.version.DirMd5Calculate;
+import fly4j.common.back.version.VersionType;
+import fly4j.common.back.version.DirVersionCheckParam;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.lang.JsonUtils;
 import fly4j.common.os.OsUtil;

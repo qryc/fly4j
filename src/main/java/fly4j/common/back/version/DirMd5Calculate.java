@@ -1,7 +1,5 @@
-package fly4j.common.back.check;
+package fly4j.common.back.version;
 
-import fly4j.common.back.model.DirVersionCheckParam;
-import fly4j.common.back.model.VersionType;
 import fly4j.common.file.FileUtil;
 
 import java.io.File;

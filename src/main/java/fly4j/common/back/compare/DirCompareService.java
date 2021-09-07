@@ -1,7 +1,8 @@
-package fly4j.common.back.check;
+package fly4j.common.back.compare;
 
-import fly4j.common.back.model.DirVersionCheckParam;
-import fly4j.common.back.model.DirVersionModel;
+import fly4j.common.back.version.DirMd5Calculate;
+import fly4j.common.back.version.DirVersionCheckParam;
+import fly4j.common.back.version.DirVersionModel;
 import fly4j.common.lang.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;

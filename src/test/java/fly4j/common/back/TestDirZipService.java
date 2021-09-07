@@ -1,8 +1,7 @@
 package fly4j.common.back;
 
 
-import fly4j.common.back.check.DirCompareService;
-import fly4j.common.back.check.DirZipService;
+import fly4j.common.back.compare.DirCompareService;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.test.util.TestData;
 import org.junit.After;

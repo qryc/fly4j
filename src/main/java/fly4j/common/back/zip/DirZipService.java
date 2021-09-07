@@ -1,10 +1,8 @@
-package fly4j.common.back.check;
+package fly4j.common.back.zip;
 
-import fly4j.common.back.model.DirVersionCheckParam;
-import fly4j.common.back.model.DirVersionModel;
-import fly4j.common.back.model.ZipConfig;
-import fly4j.common.back.zip.Zip4jTool;
-import fly4j.common.file.FileAndDirFilter;
+import fly4j.common.back.version.DirVersionGen;
+import fly4j.common.back.compare.DirCompareService;
+import fly4j.common.back.version.DirVersionCheckParam;
 import fly4j.common.file.FileUtil;
 import fly4j.common.lang.FlyResult;
 import org.apache.commons.lang3.StringUtils;

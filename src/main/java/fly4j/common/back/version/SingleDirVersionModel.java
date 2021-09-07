@@ -1,4 +1,4 @@
-package fly4j.common.back.model;
+package fly4j.common.back.version;
 
 /**
  * Created by qryc on 2021/9/3

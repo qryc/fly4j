@@ -1,4 +1,4 @@
-package fly4j.common.back.model;
+package fly4j.common.back.version;
 
 import fly4j.common.file.FileUtil;
 
