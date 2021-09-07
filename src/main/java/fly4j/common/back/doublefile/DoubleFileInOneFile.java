@@ -24,11 +24,9 @@ public class DoubleFileInOneFile {
         //取得文件长度
         DirVersionCheckParam dirMd5Param = new DirVersionCheckParam(DigestType.LEN, false, null);
         LinkedHashMap<File, String> fileLengthMapAll = DirDigestCalculate.getDirMd5FileMap(compareDir, dirMd5Param);
-        //过滤Dir
-        LinkedHashMap<File, String> fileLengthMap = MapUtil.filterLinkedHashMap(fileLengthMapAll, e -> !DirDigestCalculate.DIR_VALUE.equals(e.getValue()));
 
         //转换Map：Key:文件长度，value：长度相等的文件列表
-        LinkedHashMap<String, List<File>> lengthGroupFileMap = MapUtil.convert2ValueMap(fileLengthMap);
+        LinkedHashMap<String, List<File>> lengthGroupFileMap = MapUtil.convert2ValueMap(fileLengthMapAll);
 
         //从ValueMap中查找重复文件
         LinkedHashMap<String, List<File>> doubleFileMapFromLen = MapUtil.filterLinkedHashMap(lengthGroupFileMap, e -> e.getValue().size() > 1);
