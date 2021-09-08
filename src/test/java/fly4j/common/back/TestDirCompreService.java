@@ -50,7 +50,12 @@ public class TestDirCompreService {
         Assert.assertEquals(Path.of(targetPath.toString(), "childDir/aa.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/aa.txt").toFile()));
         Assert.assertEquals(Path.of(targetPath.toString(), "childDir/bb.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/bb.txt").toFile()));
         DirCompareService.deleteNotNeedBack(deleteFiles);
+        Assert.assertEquals(true,Path.of(targetPath.toString(), "a.txt").toFile().exists());
+        Assert.assertEquals(true,Path.of(targetPath.toString(), "b.txt").toFile().exists());
+        Assert.assertEquals(true,Path.of(targetPath.toString(), "c.txt").toFile().exists());
         Assert.assertEquals(false,Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile().exists());
+        Assert.assertEquals(false,Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile().exists());
+        Assert.assertEquals(false,Path.of(TestData.sourceDirPath.toString(), "c.txt").toFile().exists());
     }
 
 
