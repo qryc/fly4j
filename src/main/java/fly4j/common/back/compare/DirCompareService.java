@@ -40,9 +40,8 @@ public class DirCompareService {
      * @param newDir
      * @return
      */
-    public static FlyResult deleteNotNeedBack(File readyDir, File newDir, FileAndDirFilter noNeedCalMd5FileFilter) {
+    public static FlyResult deleteNotNeedBack(Map<File, File> deleteFileMaps) {
 
-        Map<File, File> deleteFileMaps = getDeleteDoubleFileMap(readyDir, newDir, noNeedCalMd5FileFilter);
         FlyResult flyResult = new FlyResult().success();
         deleteFileMaps.forEach((deleteFile, repeatFile) -> {
             FileUtil.deleteOneRepeatFile(deleteFile, repeatFile);

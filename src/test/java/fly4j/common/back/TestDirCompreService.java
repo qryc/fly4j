@@ -45,8 +45,12 @@ public class TestDirCompreService {
          deleteFiles = DirCompareService.getDeleteDoubleFileMap(TestData.backDirPath.toFile(), TestData.sourceDirPath.toFile(), null);
         Assert.assertEquals(5, deleteFiles.size());
         Assert.assertEquals(Path.of(targetPath.toString(), "a.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile()));
-        System.out.println(deleteFiles);
-
+        Assert.assertEquals(Path.of(targetPath.toString(), "b.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile()));
+        Assert.assertEquals(Path.of(targetPath.toString(), "c.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "c.txt").toFile()));
+        Assert.assertEquals(Path.of(targetPath.toString(), "childDir/aa.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/aa.txt").toFile()));
+        Assert.assertEquals(Path.of(targetPath.toString(), "childDir/bb.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/bb.txt").toFile()));
+        DirCompareService.deleteNotNeedBack(deleteFiles);
+        Assert.assertEquals(false,Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile().exists());
     }
 
 
