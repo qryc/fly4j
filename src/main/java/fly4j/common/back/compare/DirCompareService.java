@@ -41,7 +41,17 @@ public class DirCompareService {
      * @return
      */
     public static FlyResult deleteNotNeedBack(File readyDir, File newDir, FileAndDirFilter noNeedCalMd5FileFilter) {
+
+        Map<File, File> deleteFileMaps = getDeleteDoubleFileMap(readyDir, newDir, noNeedCalMd5FileFilter);
         FlyResult flyResult = new FlyResult().success();
+        deleteFileMaps.forEach((deleteFile, repeatFile) -> {
+            FileUtil.deleteOneRepeatFile(deleteFile, repeatFile);
+        });
+        return flyResult;
+
+    }
+
+    public static Map<File, File> getDeleteDoubleFileMap(File readyDir, File newDir, FileAndDirFilter noNeedCalMd5FileFilter) {
         DirVersionCheckParam checkParam = new DirVersionCheckParam(DigestType.LEN, false, noNeedCalMd5FileFilter);
         //Ready的md5
         Map<File, String> readyLenMap_file = DirDigestCalculate.getDirDigestFileMap(readyDir.getAbsolutePath(), checkParam);
@@ -76,12 +86,7 @@ public class DirCompareService {
                 });
             }
         });
-
-        deleteFileMaps.forEach((deleteFile, repeatFile) -> {
-            FileUtil.deleteOneRepeatFile(deleteFile, repeatFile);
-        });
-        return flyResult;
-
+        return deleteFileMaps;
     }
 
 }
