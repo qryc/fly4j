@@ -2,8 +2,11 @@ package fly4j.common.back.version;
 
 import fly4j.common.file.FileUtil;
 import fly4j.common.file.FilenameUtil;
+import fly4j.common.lang.map.LinkedHashMapUtil;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,15 +27,8 @@ public class DirDigestCalculate {
     }
 
     public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, BackModel.DirVersionCheckParam checkParam) {
-
         LinkedHashMap<File, String> digestFileMap = getDirDigestFileMap(checkBaseDirStr, checkParam);
-
-        LinkedHashMap<String, String> md5Map = new LinkedHashMap<>();
-        digestFileMap.forEach((file, str) -> {
-            var dirKey = FilenameUtil.getSubPathUnix(file.getAbsolutePath(), checkBaseDirStr);
-            md5Map.put(dirKey, str);
-        });
-        return md5Map;
+        return LinkedHashMapUtil.alterKey(digestFileMap, file -> FilenameUtil.getSubPathUnix(file.getAbsolutePath(), checkBaseDirStr));
     }
 
     public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, BackModel.DirVersionCheckParam checkParam) {
@@ -41,58 +37,41 @@ public class DirDigestCalculate {
 
     public static LinkedHashMap<File, String> getDirDigestFileMap(File checkBaseDir, BackModel.DirVersionCheckParam checkParam) {
         LinkedHashMap<File, String> md5FileMap = new LinkedHashMap<>();
-        DirMd5OutputParam outPutParam = new DirMd5OutputParam(md5FileMap, new AtomicLong(0));
-        DirDigestCalculate.getDirMd5FileMapInner(checkBaseDir, outPutParam, checkParam);
+        AtomicLong count = new AtomicLong(0);
+        try {
+            Files.walk(checkBaseDir.toPath()).forEach(path -> {
+                File file = path.toFile();
+                if (null != checkParam.noNeedCalMd5FileFilter() && checkParam.noNeedCalMd5FileFilter().accept(file)) {
+                    return;
+                }
+                //如果不是空文件夹，把父亲文件夹加入
+                if (file.isDirectory()) {
+                    if (checkParam.checkDirFlag()) {
+                        md5FileMap.put(file, DIR_VALUE);
+                    }
+                } else {
+                    //生成md5
+                    count.incrementAndGet();
+                    System.out.println("check file " + count + " :" + file.getAbsolutePath());
+
+                    if (ignoreMacShadowFile) {
+                        if (!file.getAbsolutePath().contains("._")) {
+                            md5FileMap.put(file, getMd5(file, checkParam.digestType()));
+                        }
+                    } else {
+                        md5FileMap.put(file, getMd5(file, checkParam.digestType()));
+                    }
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return md5FileMap;
     }
 
-    private static void getDirMd5FileMapInner(File dirFile, DirMd5OutputParam outputParam, BackModel.DirVersionCheckParam dirMd5Param) {
-        try {
-            File[] files = dirFile.listFiles();
-            //如果不是空文件夹，把父亲文件夹加入
-            if (dirMd5Param.checkDirFlag()) {
-                outputParam.md5Map.put(dirFile, DIR_VALUE);
-            }
-            for (File cfile : files) {
-                if (null != dirMd5Param.noNeedCalMd5FileFilter() && dirMd5Param.noNeedCalMd5FileFilter().accept(cfile)) {
-                    continue;
-                }
-                if (cfile.isDirectory()) {
-                    //递归
-                    getDirMd5FileMapInner(cfile, outputParam, dirMd5Param);
-                } else {
-                    //生成md5
-                    Long count = outputParam.count.incrementAndGet();
-                    System.out.println("check file " + count + " :" + cfile.getAbsolutePath());
-
-                    if (ignoreMacShadowFile) {
-                        if (!cfile.getAbsolutePath().contains("._")) {
-                            outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.digestType()));
-                        }
-                    } else {
-                        outputParam.md5Map.put(cfile, getMd5(cfile, dirMd5Param.digestType()));
-                    }
-
-                }
-
-            }
-        } catch (Exception e) {
-            System.out.println("dirFile:" + dirFile);
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-
-    }
 
     public static String getMd5(File file, BackModel.DigestType versionType) {
-        if (BackModel.DigestType.LEN.equals(versionType)) {
-            return "" + file.length();
-        } else {
-            return FileUtil.getMD5(file);
-        }
-    }
-
-    private static record DirMd5OutputParam(LinkedHashMap<File, String> md5Map, AtomicLong count) {
+        return BackModel.DigestType.LEN.equals(versionType) ? "" + file.length() : FileUtil.getMD5(file);
     }
 
 

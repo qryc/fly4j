@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class MapUtil {
@@ -28,6 +29,8 @@ public class MapUtil {
         });
         return valueMap;
     }
+
+
 
     /**
      * historyMd5MapRead 为基准
