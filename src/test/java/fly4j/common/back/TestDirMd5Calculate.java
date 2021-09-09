@@ -1,9 +1,8 @@
 package fly4j.common.back;
 
 
+import fly4j.common.back.version.BackModel;
 import fly4j.common.back.version.DirDigestCalculate;
-import fly4j.common.back.version.DigestType;
-import fly4j.common.back.version.DirVersionCheckParam;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.lang.JsonUtils;
 import fly4j.common.os.OsUtil;
@@ -45,7 +44,7 @@ public class TestDirMd5Calculate {
         }
         String md5 = """
                 {"":"dir","childDir":"dir","childDir/aa.txt":"8","childDir/bb.txt":"8","c.txt":"7","b.txt":"7","a.txt":"7"}""";
-        DirVersionCheckParam dirMd5Param = new DirVersionCheckParam(DigestType.LEN, true, null);
+        BackModel.DirVersionCheckParam dirMd5Param = new BackModel.DirVersionCheckParam(BackModel.DigestType.LEN, true, null);
         String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(sourceDirPath.toString(), dirMd5Param));
         Assert.assertEquals(md5, md5FileStr);
     }
@@ -57,7 +56,7 @@ public class TestDirMd5Calculate {
         }
         String md5 = """
                 {"":"dir","childDir":"dir","childDir/aa.txt":"ce4f75647b15fc7fa4f01ad9f856d307","childDir/bb.txt":"35cb9fa3d1b1d570a7a64c7d27b4ac27","c.txt":"29fbb78de8005a02cc22a2550c383745","b.txt":"f0a408d9c5b8e4b888385a6c630beba4","a.txt":"c173b145b212ca55558eba13aac59aa3"}""";
-        DirVersionCheckParam dirMd5Param = new DirVersionCheckParam( DigestType.MD5, true, null);
+        BackModel.DirVersionCheckParam dirMd5Param = new BackModel.DirVersionCheckParam( BackModel.DigestType.MD5, true, null);
         String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(sourceDirPath.toString(),dirMd5Param));
         Assert.assertEquals(md5, md5FileStr);
     }

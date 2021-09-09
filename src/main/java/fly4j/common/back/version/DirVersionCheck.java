@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class DirVersionCheck {
 
-    public static FlyResult checkDirChange(File checkDir, File md5File, DirVersionCheckParam checkParam) {
+    public static FlyResult checkDirChange(File checkDir, File md5File, BackModel.DirVersionCheckParam checkParam) {
         try {
             FlyResult flyResult = new FlyResult().success();
             flyResult.appendLine("checkDir:" + checkDir);
@@ -32,7 +32,7 @@ public class DirVersionCheck {
             flyResult.appendLine("....current file compare to history:" + DateUtil.getDateStr(new Date(md5File.lastModified())));
             //取得上次的文件夹digest摘要信息
             String historyJsonStr = FileUtils.readFileToString(md5File, Charset.forName("utf-8"));
-            DirDigestAllModel dirDigestAllModel = JsonUtils.readValue(historyJsonStr, DirDigestAllModel.class);
+            BackModel.DirDigestAllModel dirDigestAllModel = JsonUtils.readValue(historyJsonStr, BackModel.DirDigestAllModel.class);
             Map<String, String> historyMd5MapRead = dirDigestAllModel.getFilesDigestMap(checkParam.digestType());
             //取得文件夹的当前的digest信息
             Map<String, String> currentMd5Map = DirDigestCalculate.getDirDigestMap(checkDir.getAbsolutePath(), checkParam);

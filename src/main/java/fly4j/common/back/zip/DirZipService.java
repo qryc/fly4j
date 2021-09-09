@@ -1,9 +1,8 @@
 package fly4j.common.back.zip;
 
+import fly4j.common.back.version.BackModel;
 import fly4j.common.back.version.DirVersionCheck;
 import fly4j.common.back.version.DirVersionGen;
-import fly4j.common.back.compare.DirCompareService;
-import fly4j.common.back.version.DirVersionCheckParam;
 import fly4j.common.file.FileUtil;
 import fly4j.common.lang.FlyResult;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +56,7 @@ public class DirZipService {
                 .append(StringUtils.LF);
         var checkPath = Path.of(unzipDestDirPath.toString(), zipConfig.sourceDir().getName());
         var md5Path = Path.of(unzipDestDirPath.toFile().getAbsolutePath(), zipConfig.sourceDir().getName(), ZipConfig.DEFAULT_VERSIONDATA_PATH);
-        DirVersionCheckParam checkParam = new DirVersionCheckParam(zipConfig.versionType(), false, zipConfig.noNeedCalMd5FileFilter());
+        BackModel.DirVersionCheckParam checkParam = new BackModel.DirVersionCheckParam(zipConfig.versionType(), false, zipConfig.noNeedCalMd5FileFilter());
         FlyResult result = DirVersionCheck.checkDirChange(checkPath.toFile(),
                 FileUtil.getDirLastModifyFile(md5Path.toFile(), ".md5"),
                 checkParam);

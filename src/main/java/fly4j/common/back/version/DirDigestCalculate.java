@@ -23,7 +23,7 @@ public class DirDigestCalculate {
         return md5RevertMap_md5;
     }
 
-    public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, DirVersionCheckParam checkParam) {
+    public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, BackModel.DirVersionCheckParam checkParam) {
 
         LinkedHashMap<File, String> digestFileMap = getDirDigestFileMap(checkBaseDirStr, checkParam);
 
@@ -35,19 +35,18 @@ public class DirDigestCalculate {
         return md5Map;
     }
 
-    public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, DirVersionCheckParam checkParam) {
+    public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, BackModel.DirVersionCheckParam checkParam) {
         return getDirDigestFileMap(new File(checkBaseDirStr), checkParam);
     }
 
-    public static LinkedHashMap<File, String> getDirDigestFileMap(File checkBaseDir, DirVersionCheckParam checkParam) {
+    public static LinkedHashMap<File, String> getDirDigestFileMap(File checkBaseDir, BackModel.DirVersionCheckParam checkParam) {
         LinkedHashMap<File, String> md5FileMap = new LinkedHashMap<>();
         DirMd5OutputParam outPutParam = new DirMd5OutputParam(md5FileMap, new AtomicLong(0));
-
         DirDigestCalculate.getDirMd5FileMapInner(checkBaseDir, outPutParam, checkParam);
         return md5FileMap;
     }
 
-    private static void getDirMd5FileMapInner(File dirFile, DirMd5OutputParam outputParam, DirVersionCheckParam dirMd5Param) {
+    private static void getDirMd5FileMapInner(File dirFile, DirMd5OutputParam outputParam, BackModel.DirVersionCheckParam dirMd5Param) {
         try {
             File[] files = dirFile.listFiles();
             //如果不是空文件夹，把父亲文件夹加入
@@ -85,8 +84,8 @@ public class DirDigestCalculate {
 
     }
 
-    public static String getMd5(File file, DigestType versionType) {
-        if (DigestType.LEN.equals(versionType)) {
+    public static String getMd5(File file, BackModel.DigestType versionType) {
+        if (BackModel.DigestType.LEN.equals(versionType)) {
             return "" + file.length();
         } else {
             return FileUtil.getMD5(file);

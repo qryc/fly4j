@@ -1,10 +1,8 @@
 package fly4j.common.back.compare;
 
-import fly4j.common.back.version.DigestType;
+import fly4j.common.back.version.BackModel;
 import fly4j.common.back.version.DirDigestCalculate;
-import fly4j.common.back.version.DirVersionCheckParam;
 import fly4j.common.file.FileAndDirFilter;
-import fly4j.common.file.FileUtil;
 import fly4j.common.lang.FlyResult;
 import fly4j.common.lang.map.MapCompareResult;
 import fly4j.common.lang.map.MapUtil;
@@ -17,7 +15,7 @@ import java.util.Map;
 
 public class DirCompareService {
     //md5 or size
-    public static FlyResult compareTwoDir(File histoyDir, File currentDir, DirVersionCheckParam checkParam) {
+    public static FlyResult compareTwoDir(File histoyDir, File currentDir, BackModel.DirVersionCheckParam checkParam) {
         try {
 
             FlyResult flyResult = new FlyResult().success();
@@ -45,7 +43,7 @@ public class DirCompareService {
      * @return
      */
     public static Map<File, File> getDeleteDoubleFileMap(File standardDir, File doubleKillDir, FileAndDirFilter noNeedCalMd5FileFilter) {
-        DirVersionCheckParam checkParam = new DirVersionCheckParam(DigestType.LEN, false, noNeedCalMd5FileFilter);
+        BackModel.DirVersionCheckParam checkParam = new BackModel.DirVersionCheckParam(BackModel.DigestType.LEN, false, noNeedCalMd5FileFilter);
         //Ready的md5
         Map<File, String> readyLenMap_file = DirDigestCalculate.getDirDigestFileMap(standardDir, checkParam);
         //取得新文件夹的Md5

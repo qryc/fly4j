@@ -1,6 +1,6 @@
 package fly4j.common.back.zip;
 
-import fly4j.common.back.version.DigestType;
+import fly4j.common.back.version.BackModel;
 import fly4j.common.file.FileAndDirFilter;
 
 import java.io.File;
@@ -11,7 +11,7 @@ import java.nio.file.Path;
  * dir:文件夹
  * pathStr：文件路径
  */
-public record ZipConfig(File sourceDir, File destZipFile, String password, boolean delZip, DigestType versionType,
+public record ZipConfig(File sourceDir, File destZipFile, String password, boolean delZip, BackModel.DigestType versionType,
                         FileAndDirFilter noNeedCalMd5FileFilter) {
 
     public static final String DEFAULT_VERSIONDATA_PATH = "versionData";
