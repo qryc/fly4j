@@ -1,7 +1,7 @@
 package fly4j.common.back;
 
 import fly4j.common.back.compare.DirCompareService;
-import fly4j.common.back.doublefile.DoubleFileInOneFile;
+import fly4j.common.file.FileUtil;
 import fly4j.test.util.TestData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -13,8 +13,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,7 +47,7 @@ public class TestDirCompreService {
         Assert.assertEquals(Path.of(targetPath.toString(), "c.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "c.txt").toFile()));
         Assert.assertEquals(Path.of(targetPath.toString(), "childDir/aa.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/aa.txt").toFile()));
         Assert.assertEquals(Path.of(targetPath.toString(), "childDir/bb.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/bb.txt").toFile()));
-        DirCompareService.deleteNotNeedBack(deleteFiles);
+        FileUtil.deleteRepeatFiles(deleteFiles);
         Assert.assertEquals(true,Path.of(targetPath.toString(), "a.txt").toFile().exists());
         Assert.assertEquals(true,Path.of(targetPath.toString(), "b.txt").toFile().exists());
         Assert.assertEquals(true,Path.of(targetPath.toString(), "c.txt").toFile().exists());

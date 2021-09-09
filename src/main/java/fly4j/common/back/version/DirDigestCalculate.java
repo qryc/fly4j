@@ -1,10 +1,12 @@
 package fly4j.common.back.version;
 
-import fly4j.common.file.FilenameUtil;
 import fly4j.common.file.FileUtil;
+import fly4j.common.file.FilenameUtil;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DirDigestCalculate {
@@ -34,13 +36,16 @@ public class DirDigestCalculate {
     }
 
     public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, DirVersionCheckParam checkParam) {
+        return getDirDigestFileMap(new File(checkBaseDirStr), checkParam);
+    }
+
+    public static LinkedHashMap<File, String> getDirDigestFileMap(File checkBaseDir, DirVersionCheckParam checkParam) {
         LinkedHashMap<File, String> md5FileMap = new LinkedHashMap<>();
         DirMd5OutputParam outPutParam = new DirMd5OutputParam(md5FileMap, new AtomicLong(0));
 
-        DirDigestCalculate.getDirMd5FileMapInner(new File(checkBaseDirStr), outPutParam, checkParam);
+        DirDigestCalculate.getDirMd5FileMapInner(checkBaseDir, outPutParam, checkParam);
         return md5FileMap;
     }
-
 
     private static void getDirMd5FileMapInner(File dirFile, DirMd5OutputParam outputParam, DirVersionCheckParam dirMd5Param) {
         try {

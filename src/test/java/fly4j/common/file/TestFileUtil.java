@@ -107,19 +107,19 @@ public class TestFileUtil {
         Assert.assertEquals(true,fileA.exists());
 
         //删除相同同一个文件
-        FileUtil.deleteOneRepeatFile(fileA, fileA);
+        FileUtil.deleteRepeatFile(fileA, fileA);
         Assert.assertEquals(true,fileA.exists());
 
         //删除不同文件
         File fileB = Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile();
-        FileUtil.deleteOneRepeatFile(fileA, fileB);
+        FileUtil.deleteRepeatFile(fileA, fileB);
         Assert.assertEquals(true,fileA.exists());
 
         //删除重复文件
         Assert.assertEquals(false,fileACopy.exists());
         FileUtils.copyFile(fileA,fileACopy);
         Assert.assertEquals(true,fileACopy.exists());
-        FileUtil.deleteOneRepeatFile(fileA, fileACopy);
+        FileUtil.deleteRepeatFile(fileA, fileACopy);
         Assert.assertEquals(false,fileA.exists());
     }
 

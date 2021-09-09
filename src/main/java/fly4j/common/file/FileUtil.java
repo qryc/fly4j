@@ -9,10 +9,8 @@ import org.apache.commons.io.IOUtils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 统一封装文件访问
@@ -21,8 +19,12 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class FileUtil {
 
-
-    public static void deleteOneRepeatFile(File delFile, File retainFile) {
+    public static void deleteRepeatFiles(Map<File, File> deleteFileMaps) {
+        deleteFileMaps.forEach((deleteFile, repeatFile) -> {
+            deleteRepeatFile(deleteFile, repeatFile);
+        });
+    }
+    public static void deleteRepeatFile(File delFile, File retainFile) {
         if (delFile.getAbsolutePath().equals(retainFile.getAbsolutePath())) {
             return;
         }
@@ -156,4 +158,6 @@ public class FileUtil {
             }
         }
     }
+
+
 }

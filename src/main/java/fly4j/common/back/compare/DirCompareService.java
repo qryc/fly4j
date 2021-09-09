@@ -5,12 +5,15 @@ import fly4j.common.back.version.DirDigestCalculate;
 import fly4j.common.back.version.DirVersionCheckParam;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.file.FileUtil;
-import fly4j.common.lang.*;
+import fly4j.common.lang.FlyResult;
 import fly4j.common.lang.map.MapCompareResult;
 import fly4j.common.lang.map.MapUtil;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DirCompareService {
     //md5 or size
@@ -32,30 +35,21 @@ public class DirCompareService {
 
     }
 
+
     /**
      * 技术化术语太难看懂了，使用备份场景化命名
      * 查找新文件夹中和老文件夹重复的文件，并删除
      *
-     * @param readyDir
-     * @param newDir
+     * @param standardDir   对比标准文件件
+     * @param doubleKillDir
      * @return
      */
-    public static FlyResult deleteNotNeedBack(Map<File, File> deleteFileMaps) {
-
-        FlyResult flyResult = new FlyResult().success();
-        deleteFileMaps.forEach((deleteFile, repeatFile) -> {
-            FileUtil.deleteOneRepeatFile(deleteFile, repeatFile);
-        });
-        return flyResult;
-
-    }
-
-    public static Map<File, File> getDeleteDoubleFileMap(File readyDir, File newDir, FileAndDirFilter noNeedCalMd5FileFilter) {
+    public static Map<File, File> getDeleteDoubleFileMap(File standardDir, File doubleKillDir, FileAndDirFilter noNeedCalMd5FileFilter) {
         DirVersionCheckParam checkParam = new DirVersionCheckParam(DigestType.LEN, false, noNeedCalMd5FileFilter);
         //Ready的md5
-        Map<File, String> readyLenMap_file = DirDigestCalculate.getDirDigestFileMap(readyDir.getAbsolutePath(), checkParam);
+        Map<File, String> readyLenMap_file = DirDigestCalculate.getDirDigestFileMap(standardDir, checkParam);
         //取得新文件夹的Md5
-        Map<File, String> newLenMap_file = DirDigestCalculate.getDirDigestFileMap(newDir.getAbsolutePath(), checkParam);
+        Map<File, String> newLenMap_file = DirDigestCalculate.getDirDigestFileMap(doubleKillDir, checkParam);
 
         //查找新文件夹中和老的文件夹长度一致的文件
         List<File> readyDoubleFile = new ArrayList<>();
