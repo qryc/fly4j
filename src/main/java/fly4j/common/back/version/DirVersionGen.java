@@ -8,6 +8,8 @@ import fly4j.common.os.OsUtil;
 import fly4j.common.pesistence.file.FileJsonStrStore;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,10 +38,43 @@ public class DirVersionGen {
 
     public static BackModel.DirDigestAllModel genDirVersionModel(BackModel.DirVersionGenParam checkParam) {
         //文件版本信息
+        AtomicLong count = new AtomicLong(0);
         List<BackModel.FileDigestModel> fileList = new ArrayList<>();
         List<BackModel.DirDigestModel> dirList = new ArrayList<>();
-        DirVersionGen.DirMd5OutputParam2 outputParam2 = new DirVersionGen.DirMd5OutputParam2(fileList, dirList, new AtomicLong(0));
-        DirVersionGen.genDirVersionModelInner(new File(checkParam.checkBaseDirStr()), outputParam2, checkParam);
+        File dirFile = new File(checkParam.checkBaseDirStr());
+        try {
+            Files.walk(Path.of(checkParam.checkBaseDirStr())).forEach(path -> {
+                File file = path.toFile();
+                if (null != checkParam.noNeedCalMd5FileFilter() && checkParam.noNeedCalMd5FileFilter().accept(file)) {
+                    return;
+                }
+                //如果不是空文件夹，把父亲文件夹加入
+                if (file.isDirectory()) {
+                    //如果不是空文件夹，把父亲文件夹加入
+                    dirList.add(new BackModel.DirDigestModel(dirFile.getAbsolutePath(),
+                            Long.valueOf(file.listFiles().length)));
+                } else {
+                    //生成md5
+                    count.incrementAndGet();
+                    //生成md5
+                    System.out.println("check file " + count + " :" + file.getAbsolutePath());
+                    if (ignoreMacShadowFile) {
+                        if (!file.getAbsolutePath().contains("._")) {
+                            fileList.add(new BackModel.FileDigestModel(file.getAbsolutePath()
+                                    , file.length()
+                                    , FileUtil.getMD5(file)));
+                        }
+                    } else {
+                        fileList.add(new BackModel.FileDigestModel(file.getAbsolutePath()
+                                , file.length()
+                                , FileUtil.getMD5(file)));
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
 
         //环境信息
         Map<String, String> environment = new HashMap<>();
@@ -51,49 +86,5 @@ public class DirVersionGen {
         return new BackModel.DirDigestAllModel(environment, checkParam, fileList, dirList);
     }
 
-    private static void genDirVersionModelInner(File dirFile, DirVersionGen.DirMd5OutputParam2 outputParam, BackModel.DirVersionGenParam checkParam) {
-        try {
-            File[] files = dirFile.listFiles();
-            //如果不是空文件夹，把父亲文件夹加入
-            outputParam.dirVersionModelList.add(new BackModel.DirDigestModel(dirFile.getAbsolutePath(),
-                    Long.valueOf(files.length)));
 
-            for (File cfile : files) {
-                if (null != checkParam.noNeedCalMd5FileFilter() && checkParam.noNeedCalMd5FileFilter().accept(cfile)) {
-                    continue;
-                }
-                if (cfile.isDirectory()) {
-                    //递归
-                    genDirVersionModelInner(cfile, outputParam, checkParam);
-                } else {
-                    //生成md5
-                    Long count = outputParam.count.incrementAndGet();
-                    System.out.println("check file " + count + " :" + cfile.getAbsolutePath());
-                    if (ignoreMacShadowFile) {
-                        if (!cfile.getAbsolutePath().contains("._")) {
-                            outputParam.modelList.add(new BackModel.FileDigestModel(cfile.getAbsolutePath()
-                                    , cfile.length()
-                                    , FileUtil.getMD5(cfile)));
-                        }
-                    } else {
-                        outputParam.modelList.add(new BackModel.FileDigestModel(cfile.getAbsolutePath()
-                                , cfile.length()
-                                , FileUtil.getMD5(cfile)));
-                    }
-
-                }
-
-            }
-        } catch (Exception e) {
-            System.out.println("dirFile:" + dirFile);
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    private static record DirMd5OutputParam2(List<BackModel.FileDigestModel> modelList,
-                                             List<BackModel.DirDigestModel> dirVersionModelList, AtomicLong count) {
-
-    }
 }

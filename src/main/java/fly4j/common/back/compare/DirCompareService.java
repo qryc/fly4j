@@ -43,6 +43,7 @@ public class DirCompareService {
      * @return
      */
     public static Map<File, File> getDeleteDoubleFileMap(File standardDir, File doubleKillDir, FileAndDirFilter noNeedCalMd5FileFilter) {
+        /**第一步：通过长度进行第一轮筛选长度一致的可疑文件**/
         BackModel.DirVersionCheckParam checkParam = new BackModel.DirVersionCheckParam(BackModel.DigestType.LEN, false, noNeedCalMd5FileFilter);
         //Ready的md5
         Map<File, String> readyLenMap_file = DirDigestCalculate.getDirDigestFileMap(standardDir, checkParam);
@@ -50,30 +51,29 @@ public class DirCompareService {
         Map<File, String> newLenMap_file = DirDigestCalculate.getDirDigestFileMap(doubleKillDir, checkParam);
 
         //查找新文件夹中和老的文件夹长度一致的文件
-        List<File> readyDoubleFile = new ArrayList<>();
-        List<File> newDoubleFile = new ArrayList<>();
+        List<File> standardDoubleFilesFromLen = new ArrayList<>();
+        List<File> doubleKillDoubleFileFromLen = new ArrayList<>();
         LinkedHashMap<String, List<File>> readyLengthGroupFileMap_len = MapUtil.convert2ValueMap(readyLenMap_file);
         newLenMap_file.forEach((file, lenStr) -> {
             if (readyLengthGroupFileMap_len.containsKey(lenStr)) {
                 //长度相等的嫌疑统统加入
-                readyDoubleFile.addAll(readyLengthGroupFileMap_len.get(lenStr));
-                newDoubleFile.add(file);
+                standardDoubleFilesFromLen.addAll(readyLengthGroupFileMap_len.get(lenStr));
+                doubleKillDoubleFileFromLen.add(file);
             }
         });
 
         //进一步删选MD5一致的文件
         //先生成新的反向
-        LinkedHashMap<String, List<File>> readyMd5RevertMap_md5 = DirDigestCalculate.getFilesMd5DoubleMap(readyDoubleFile);
-        LinkedHashMap<String, List<File>> newMd5RevertMap_md5 = DirDigestCalculate.getFilesMd5DoubleMap(newDoubleFile);
+        LinkedHashMap<String, List<File>> standardMd5RevertMap_md5 = DirDigestCalculate.getFilesMd5DoubleMap(standardDoubleFilesFromLen);
+        LinkedHashMap<String, List<File>> doubleKillMd5RevertMap_md5 = DirDigestCalculate.getFilesMd5DoubleMap(doubleKillDoubleFileFromLen);
         //遍历老的，如果新的有存在重复，则删除
         //key 要删除的，value，重复文件
         Map<File, File> deleteFileMaps = new LinkedHashMap<>();
-        readyMd5RevertMap_md5.forEach((md5Str, files) -> {
-            if (newMd5RevertMap_md5.containsKey(md5Str)) {
+        standardMd5RevertMap_md5.forEach((md5Str, stardardFiles) -> {
+            if (doubleKillMd5RevertMap_md5.containsKey(md5Str)) {
                 //要删除的
-                List<File> deleteFiles = newMd5RevertMap_md5.get(md5Str);
-                deleteFiles.forEach(delFile -> {
-                    deleteFileMaps.put(delFile, files.get(0));
+                doubleKillMd5RevertMap_md5.get(md5Str).forEach(doubleKillFile -> {
+                    deleteFileMaps.put(doubleKillFile, stardardFiles.get(0));
                 });
             }
         });

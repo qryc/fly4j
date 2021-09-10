@@ -30,9 +30,6 @@ public class TestDirCompreService {
 
     @Test
     public void deleteOneRepeatFile() throws Exception {
-        File fileA = Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile();
-        File fileB = new File(Path.of(TestData.sourceDirPath.toString(), "a.txt").toString());
-        Assert.assertEquals(fileA, fileB);
         File sourceWithLeft = new File(TestData.sourceDirPath.toString() + "/");
         Path targetPath = Path.of(TestData.backDirPath.toString(), "sourcePath");
 
@@ -40,7 +37,7 @@ public class TestDirCompreService {
         Assert.assertEquals(0, deleteFiles.size());
         FileUtils.copyDirectoryToDirectory(sourceWithLeft, TestData.backDirPath.toFile());
         //backDirPath 作为已经备份好的，sourceDirPath作为要删除的。
-         deleteFiles = DirCompareService.getDeleteDoubleFileMap(TestData.backDirPath.toFile(), TestData.sourceDirPath.toFile(), null);
+        deleteFiles = DirCompareService.getDeleteDoubleFileMap(TestData.backDirPath.toFile(), TestData.sourceDirPath.toFile(), null);
         Assert.assertEquals(5, deleteFiles.size());
         Assert.assertEquals(Path.of(targetPath.toString(), "a.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile()));
         Assert.assertEquals(Path.of(targetPath.toString(), "b.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile()));
@@ -48,12 +45,12 @@ public class TestDirCompreService {
         Assert.assertEquals(Path.of(targetPath.toString(), "childDir/aa.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/aa.txt").toFile()));
         Assert.assertEquals(Path.of(targetPath.toString(), "childDir/bb.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/bb.txt").toFile()));
         FileUtil.deleteRepeatFiles(deleteFiles);
-        Assert.assertEquals(true,Path.of(targetPath.toString(), "a.txt").toFile().exists());
-        Assert.assertEquals(true,Path.of(targetPath.toString(), "b.txt").toFile().exists());
-        Assert.assertEquals(true,Path.of(targetPath.toString(), "c.txt").toFile().exists());
-        Assert.assertEquals(false,Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile().exists());
-        Assert.assertEquals(false,Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile().exists());
-        Assert.assertEquals(false,Path.of(TestData.sourceDirPath.toString(), "c.txt").toFile().exists());
+        Assert.assertEquals(true, Path.of(targetPath.toString(), "a.txt").toFile().exists());
+        Assert.assertEquals(true, Path.of(targetPath.toString(), "b.txt").toFile().exists());
+        Assert.assertEquals(true, Path.of(targetPath.toString(), "c.txt").toFile().exists());
+        Assert.assertEquals(false, Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile().exists());
+        Assert.assertEquals(false, Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile().exists());
+        Assert.assertEquals(false, Path.of(TestData.sourceDirPath.toString(), "c.txt").toFile().exists());
     }
 
 
