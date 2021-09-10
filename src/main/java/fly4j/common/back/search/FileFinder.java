@@ -1,15 +1,18 @@
 package fly4j.common.back.search;
 
+import fly4j.common.lang.ExceptionUtil;
 import fly4j.common.lang.StringConst;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 用于查找大文件
@@ -17,31 +20,28 @@ import java.util.Set;
  */
 public class FileFinder {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String checkDirStr = "";
         String findName = "target,classes";
         var result = findFile(checkDirStr, findName);
         System.out.println(result);
     }
 
-    public static String findFile(String checkDirStr, String findName) {
+
+
+    public static String findFile(String checkDirStr, String findName) throws IOException {
         StringBuilder info = new StringBuilder("文件查找结果：").append(StringUtils.LF);
-        Set<String> fileNameSet = new HashSet<>();
-        Arrays.stream(findName.split(",")).forEach(name -> fileNameSet.add(name));
+        Set<String> fileNameSet = Arrays.stream(findName.split(",")).collect(Collectors.toSet());
         info.append(" findName:").append(fileNameSet).append(StringUtils.LF);
 
         info.append(checkDirStr).append(" check:").append(StringUtils.LF);
 
-        var files = FileUtils.listFilesAndDirs(new File(checkDirStr), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
-        files.stream().filter(file -> {
-            for (String name : fileNameSet) {
-                if (file.getName().equals(name)) {
-                    return true;
+        Files.walk(Path.of(checkDirStr)).forEach(path -> {
+            fileNameSet.forEach(name -> {
+                if (path.getFileName().toString().equals(name)) {
+                    ExceptionUtil.exceptionWrapper(() -> StringConst.appendLine(info, path.toFile().getAbsolutePath() + " " + FileUtils.byteCountToDisplaySize(Files.size(path))));
                 }
-            }
-            return false;
-        }).forEach(file -> {
-            StringConst.appendLine(info, file.getAbsolutePath() + " " + FileUtils.byteCountToDisplaySize(file.length()));
+            });
         });
         return info.toString();
     }

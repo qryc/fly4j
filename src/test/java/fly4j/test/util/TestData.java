@@ -30,6 +30,8 @@ public class TestData {
         }
         backDirPath = Path.of(testBasePath.toString(), "back");
         sourceDirPath = Path.of(testBasePath.toString(), "sourcePath");
+        System.out.println("backDirPath:"+backDirPath);
+        System.out.println("sourceDirPath:"+sourceDirPath);
     }
 
 
