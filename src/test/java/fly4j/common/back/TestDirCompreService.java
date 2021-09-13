@@ -32,12 +32,12 @@ public class TestDirCompreService {
     @Test
     public void deleteOneRepeatFile() throws Exception {
         /**模拟新资料在历史版本上做了修改**/
-        File testDataDir = new File(TData.sourceDirPath.toString());
+        File testDataDir = new File(TData.tDataDirPath.toString());
         File historyDataDir = Path.of(TData.tPath.toString(), "历史资料").toFile();
 
         //新资料加入新文件
         FileUtils.copyDirectoryToDirectory(testDataDir, historyDataDir);
-        FileStrStore.setValue(Path.of(TData.sourceDirPath.toString(), "李白/夜宿山寺.txt"), "危楼高百尺");
+        FileStrStore.setValue(Path.of(TData.tDataDirPath.toString(), "李白/夜宿山寺.txt"), "危楼高百尺");
 
         //backDirPath 作为已经备份好的，sourceDirPath作为要删除的。
         Map<File, File> deleteFiles = DirCompareService.getDeleteDoubleFileMap(historyDataDir, testDataDir, null);

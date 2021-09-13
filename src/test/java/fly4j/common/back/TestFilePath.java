@@ -24,13 +24,13 @@ public class TestFilePath {
 
     @Test
     public void deleteOneRepeatFile() throws Exception {
-        File fileA = Path.of(TData.sourceDirPath.toString(), "a.txt").toFile();
-        File fileB = new File(Path.of(TData.sourceDirPath.toString(), "a.txt").toString());
+        File fileA = Path.of(TData.tDataDirPath.toString(), "a.txt").toFile();
+        File fileB = new File(Path.of(TData.tDataDirPath.toString(), "a.txt").toString());
         Assert.assertEquals(fileA, fileB);
-        Path pathA = Path.of(TData.sourceDirPath.toString(), "/a.txt");
-        Path pathB = Path.of(TData.sourceDirPath.toString(), "a.txt");
+        Path pathA = Path.of(TData.tDataDirPath.toString(), "/a.txt");
+        Path pathB = Path.of(TData.tDataDirPath.toString(), "a.txt");
         Assert.assertEquals(pathA, pathB);
-        Path pathC = Path.of(TData.sourceDirPath.toString(), "a.txt");
+        Path pathC = Path.of(TData.tDataDirPath.toString(), "a.txt");
         System.out.println(pathC);
         System.out.println(pathC.getFileName().toFile().getAbsolutePath());
     }

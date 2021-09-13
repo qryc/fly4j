@@ -102,8 +102,8 @@ public class TestFileUtil {
 
     @Test
     public void deleteOneRepeatFile() throws Exception {
-        File fileA = Path.of(TData.sourceDirPath.toString(), "a.txt").toFile();
-        File fileACopy = Path.of(TData.sourceDirPath.toString(), "aCopy.txt").toFile();
+        File fileA = Path.of(TData.tDataDirPath.toString(), "readme.md").toFile();
+        File fileACopy = Path.of(TData.tDataDirPath.toString(), "readmeCopy.md").toFile();
         Assert.assertEquals(true,fileA.exists());
 
         //删除相同同一个文件
@@ -111,7 +111,7 @@ public class TestFileUtil {
         Assert.assertEquals(true,fileA.exists());
 
         //删除不同文件
-        File fileB = Path.of(TData.sourceDirPath.toString(), "b.txt").toFile();
+        File fileB = Path.of(TData.tDataDirPath.toString(), "b.txt").toFile();
         FileUtil.deleteRepeatFile(fileA, fileB);
         Assert.assertEquals(true,fileA.exists());
 

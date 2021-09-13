@@ -18,7 +18,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static fly4j.test.util.TData.sourceDirPath;
+import static fly4j.test.util.TData.tDataDirPath;
 import static fly4j.test.util.TData.tPath;
 
 /**
@@ -43,7 +43,7 @@ public class TestZip4jTool {
         Assert.assertFalse(zipFile.exists());
         Assert.assertFalse(unZipDir.exists());
 
-        Zip4jTool.zipDir(zipFile, sourceDirPath.toFile(), "123");
+        Zip4jTool.zipDir(zipFile, tDataDirPath.toFile(), "123");
         Zip4jTool.unZip(zipFile, unZipDir, "123");
 
         Assert.assertEquals("个人资料保存目录", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/readme.md")));
@@ -57,7 +57,7 @@ public class TestZip4jTool {
     public void testZipUnzip2() throws Exception {
         File zipFile = Path.of(tPath.toString(), "zip", "test.zip").toFile();
         File unZipDir = Path.of(tPath.toString(), "unzip").toFile();
-        File sourceDir = new File(sourceDirPath.toString() + "/");
+        File sourceDir = new File(tDataDirPath.toString() + "/");
         Zip4jTool.zipDir(zipFile, sourceDir, "123");
         Zip4jTool.unZip(zipFile, unZipDir, "123");
 

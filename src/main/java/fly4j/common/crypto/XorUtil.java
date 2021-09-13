@@ -1,6 +1,7 @@
 package fly4j.common.crypto;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -9,12 +10,15 @@ import java.nio.file.Path;
  */
 public class XorUtil {
 
-    public static void xorFile2File(Path sourceFileUrl, Path targetFileUrl, int pass) {
+    public static void xorFile2File(Path sourceFileUrl, Path targetFileUrl, int pass) throws IOException {
+        if (!Files.exists(targetFileUrl)) {
+            Files.createFile(targetFileUrl);
+        }
         try (FileInputStream in = new FileInputStream(sourceFileUrl.toFile());
              FileOutputStream out = new FileOutputStream(targetFileUrl.toFile())) {
             xorEncrypt(in, out, pass);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 

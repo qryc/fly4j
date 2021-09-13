@@ -30,11 +30,11 @@ public class TestDoubleFileInOneFile {
 
     @Test
     public void deleteOneRepeatFile() throws Exception {
-        File fileA = Path.of(TData.sourceDirPath.toString(), "a.txt").toFile();
-        File fileACopy = Path.of(TData.sourceDirPath.toString(), "aCopy.txt").toFile();
+        File fileA = Path.of(TData.tDataDirPath.toString(), "readme.md").toFile();
+        File fileACopy = Path.of(TData.tDataDirPath.toString(), "readmeCopy.md").toFile();
         FileUtils.copyFile(fileA,fileACopy);
 
-        LinkedHashMap<String, List<File>> resultMap= DoubleFileInOneFile.doubleFileCheck(TData.sourceDirPath.toString());
+        LinkedHashMap<String, List<File>> resultMap= DoubleFileInOneFile.doubleFileCheck(TData.tDataDirPath.toString());
         Assert.assertEquals(1,resultMap.size());
         List<File> files=resultMap.values().iterator().next();
         Assert.assertEquals(2,files.size());

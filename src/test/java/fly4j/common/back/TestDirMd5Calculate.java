@@ -17,7 +17,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static fly4j.test.util.TData.sourceDirPath;
+import static fly4j.test.util.TData.tDataDirPath;
 
 /**
  * @author qryc
@@ -33,7 +33,6 @@ public class TestDirMd5Calculate {
 
     @Before
     public void setup() throws Exception {
-        FileUtils.deleteQuietly(TData.tPath.toFile());
         TData.createTestFiles();
     }
 
@@ -43,9 +42,9 @@ public class TestDirMd5Calculate {
             return;
         }
         String md5 = """
-                {"":"dir","childDir":"dir","childDir/aa.txt":"8","childDir/bb.txt":"8","c.txt":"7","b.txt":"7","a.txt":"7"}""";
+                {"":"dir","Java":"dir","Java/java语法.txt":"25","Java/Spring框架.txt":"33","todo":"dir","readme.md":"24","李白":"dir","李白/静夜思.txt":"15"}""";
         BackModel.DirVersionCheckParam dirMd5Param = new BackModel.DirVersionCheckParam(BackModel.DigestType.LEN, true, null);
-        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(sourceDirPath.toString(), dirMd5Param));
+        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(tDataDirPath.toString(), dirMd5Param));
         Assert.assertEquals(md5, md5FileStr);
     }
 
@@ -55,15 +54,15 @@ public class TestDirMd5Calculate {
             return;
         }
         String md5 = """
-                {"":"dir","childDir":"dir","childDir/aa.txt":"ce4f75647b15fc7fa4f01ad9f856d307","childDir/bb.txt":"35cb9fa3d1b1d570a7a64c7d27b4ac27","c.txt":"29fbb78de8005a02cc22a2550c383745","b.txt":"f0a408d9c5b8e4b888385a6c630beba4","a.txt":"c173b145b212ca55558eba13aac59aa3"}""";
-        BackModel.DirVersionCheckParam dirMd5Param = new BackModel.DirVersionCheckParam( BackModel.DigestType.MD5, true, null);
-        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(sourceDirPath.toString(),dirMd5Param));
+                {"":"dir","Java":"dir","Java/java语法.txt":"f29a628831fe901bbdd3132bbdc2313e","Java/Spring框架.txt":"5fb14d685c15f75c92d243da709cc28b","todo":"dir","readme.md":"a723b646fe33ab2f0c8e8ed4c4583f0b","李白":"dir","李白/静夜思.txt":"7bae0c4e8ec3f7dededc3450137efa04"}""";
+        BackModel.DirVersionCheckParam dirMd5Param = new BackModel.DirVersionCheckParam(BackModel.DigestType.MD5, true, null);
+        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(tDataDirPath.toString(), dirMd5Param));
         Assert.assertEquals(md5, md5FileStr);
     }
 
     @After
     public void tearDown() throws Exception {
-//        FileUtils.forceDeleteOnExit(TestData.testPath.toFile());
+        FileUtils.forceDeleteOnExit(TData.tPath.toFile());
     }
 
 
