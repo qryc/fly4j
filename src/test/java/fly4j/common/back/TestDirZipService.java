@@ -3,7 +3,7 @@ package fly4j.common.back;
 
 import fly4j.common.back.compare.DirCompareService;
 import fly4j.common.file.FileAndDirFilter;
-import fly4j.test.util.TestData;
+import fly4j.test.util.TData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class TestDirZipService {
 
     @Before
     public void setup() throws Exception {
-        TestData.createTestFiles();
+        TData.createTestFiles();
     }
 
     @Test

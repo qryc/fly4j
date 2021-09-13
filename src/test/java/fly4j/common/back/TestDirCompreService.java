@@ -2,7 +2,8 @@ package fly4j.common.back;
 
 import fly4j.common.back.compare.DirCompareService;
 import fly4j.common.file.FileUtil;
-import fly4j.test.util.TestData;
+import fly4j.common.pesistence.file.FileStrStore;
+import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -12,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -24,39 +26,53 @@ public class TestDirCompreService {
 
     @Before
     public void setup() throws Exception {
-        TestData.createTestFiles();
+        TData.createTestFiles();
     }
-
 
     @Test
     public void deleteOneRepeatFile() throws Exception {
-        File sourceWithLeft = new File(TestData.sourceDirPath.toString() + "/");
-        Path targetPath = Path.of(TestData.backDirPath.toString(), "sourcePath");
+        /**模拟新资料在历史版本上做了修改**/
+        File testDataDir = new File(TData.sourceDirPath.toString());
+        File historyDataDir = Path.of(TData.tPath.toString(), "历史资料").toFile();
 
-        Map<File, File> deleteFiles = DirCompareService.getDeleteDoubleFileMap(TestData.backDirPath.toFile(), TestData.sourceDirPath.toFile(), null);
-        Assert.assertEquals(0, deleteFiles.size());
-        FileUtils.copyDirectoryToDirectory(sourceWithLeft, TestData.backDirPath.toFile());
+        //新资料加入新文件
+        FileUtils.copyDirectoryToDirectory(testDataDir, historyDataDir);
+        FileStrStore.setValue(Path.of(TData.sourceDirPath.toString(), "李白/夜宿山寺.txt"), "危楼高百尺");
+
         //backDirPath 作为已经备份好的，sourceDirPath作为要删除的。
-        deleteFiles = DirCompareService.getDeleteDoubleFileMap(TestData.backDirPath.toFile(), TestData.sourceDirPath.toFile(), null);
-        Assert.assertEquals(5, deleteFiles.size());
-        Assert.assertEquals(Path.of(targetPath.toString(), "a.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile()));
-        Assert.assertEquals(Path.of(targetPath.toString(), "b.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile()));
-        Assert.assertEquals(Path.of(targetPath.toString(), "c.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "c.txt").toFile()));
-        Assert.assertEquals(Path.of(targetPath.toString(), "childDir/aa.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/aa.txt").toFile()));
-        Assert.assertEquals(Path.of(targetPath.toString(), "childDir/bb.txt").toFile(), deleteFiles.get(Path.of(TestData.sourceDirPath.toString(), "childDir/bb.txt").toFile()));
+        Map<File, File> deleteFiles = DirCompareService.getDeleteDoubleFileMap(historyDataDir, testDataDir, null);
+        Assert.assertEquals(4, deleteFiles.size());
+
         FileUtil.deleteRepeatFiles(deleteFiles);
-        Assert.assertEquals(true, Path.of(targetPath.toString(), "a.txt").toFile().exists());
-        Assert.assertEquals(true, Path.of(targetPath.toString(), "b.txt").toFile().exists());
-        Assert.assertEquals(true, Path.of(targetPath.toString(), "c.txt").toFile().exists());
-        Assert.assertEquals(false, Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile().exists());
-        Assert.assertEquals(false, Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile().exists());
-        Assert.assertEquals(false, Path.of(TestData.sourceDirPath.toString(), "c.txt").toFile().exists());
+        //源文件新增未动
+        Assert.assertTrue(Files.exists(Path.of(testDataDir.getAbsolutePath(), "李白/夜宿山寺.txt")));
+        //源文件已经删除
+        Assert.assertFalse(Files.exists(Path.of(testDataDir.getAbsolutePath(), "readme.md")));
+        Assert.assertFalse(Files.exists(Path.of(testDataDir.getAbsolutePath(), "Java/java语法.txt")));
+        Assert.assertFalse(Files.exists(Path.of(testDataDir.getAbsolutePath(), "Java/Spring框架.txt")));
+        Assert.assertFalse(Files.exists(Path.of(testDataDir.getAbsolutePath(), "李白/静夜思.txt")));
+        //源文件夹还在
+        Assert.assertTrue(Files.exists(Path.of(testDataDir.getAbsolutePath(), "Java")));
+        Assert.assertTrue(Files.exists(Path.of(testDataDir.getAbsolutePath(), "李白")));
+        //历史没动
+        Assert.assertTrue(Files.exists(Path.of(historyDataDir.getAbsolutePath(), "资料/readme.md")));
+        Assert.assertTrue(Files.exists(Path.of(historyDataDir.getAbsolutePath(), "资料/Java/java语法.txt")));
+        Assert.assertTrue(Files.exists(Path.of(historyDataDir.getAbsolutePath(), "资料/Java/Spring框架.txt")));
+        Assert.assertTrue(Files.exists(Path.of(historyDataDir.getAbsolutePath(), "资料/李白/静夜思.txt")));
+
+        //删除空文件夹
+        FileUtil.deleteEmptyDirs(testDataDir.toPath());
+        //源文件新增未动
+        Assert.assertTrue(Files.exists(Path.of(testDataDir.getAbsolutePath(), "李白/夜宿山寺.txt")));
+        //空文件夹已经删除
+        Assert.assertFalse(Files.exists(Path.of(testDataDir.getAbsolutePath(), "Java")));
+
     }
 
 
     @After
     public void tearDown() throws Exception {
-        FileUtils.forceDelete(TestData.testBasePath.toFile());
+        FileUtils.forceDelete(TData.tPath.toFile());
     }
 
 }

@@ -2,9 +2,11 @@ package fly4j.common.back;
 
 
 import fly4j.common.back.zip.Zip4jTool;
-import fly4j.test.util.TestData;
+import fly4j.common.pesistence.file.FileStrStore;
+import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static fly4j.test.util.TestData.backDirPath;
-import static fly4j.test.util.TestData.sourceDirPath;
+import static fly4j.test.util.TData.sourceDirPath;
+import static fly4j.test.util.TData.tPath;
 
 /**
  * @author qryc
@@ -25,31 +28,46 @@ import static fly4j.test.util.TestData.sourceDirPath;
 public class TestZip4jTool {
     static final Logger log = LoggerFactory.getLogger(TestZip4jTool.class);
     //压缩文件
-    File zipFile = Path.of(backDirPath.toString(), "test.zip").toFile();
-    //源文件夹
-    File sourceDir = sourceDirPath.toFile();
-    //压缩目录
-    File backDir = backDirPath.toFile();
+
 
     @Before
     public void setup() throws Exception {
-        TestData.createTestFiles();
+        TData.createTestFiles();
     }
 
     @Test
-    public void testZip1() throws Exception {
+    public void testZipUnzip() throws Exception {
+
+        File zipFile = Path.of(tPath.toString(), "zip", "test.zip").toFile();
+        File unZipDir = Path.of(tPath.toString(), "unzip").toFile();
+        Assert.assertFalse(zipFile.exists());
+        Assert.assertFalse(unZipDir.exists());
+
+        Zip4jTool.zipDir(zipFile, sourceDirPath.toFile(), "123");
+        Zip4jTool.unZip(zipFile, unZipDir, "123");
+
+        Assert.assertEquals("个人资料保存目录", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/readme.md")));
+        Assert.assertEquals("java是面向对象语言", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/Java/java语法.txt")));
+        Assert.assertEquals("Spring框架IOC，AOP，支持MVC", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/Java/Spring框架.txt")));
+        Assert.assertEquals("窗前明月光", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/李白/静夜思.txt")));
+        Assert.assertTrue(Files.exists(Path.of(unZipDir.getAbsolutePath(), "资料/todo")));
+    }
+
+    @Test
+    public void testZipUnzip2() throws Exception {
+        File zipFile = Path.of(tPath.toString(), "zip", "test.zip").toFile();
+        File unZipDir = Path.of(tPath.toString(), "unzip").toFile();
+        File sourceDir = new File(sourceDirPath.toString() + "/");
         Zip4jTool.zipDir(zipFile, sourceDir, "123");
-        Zip4jTool.unZip(zipFile, backDir, "123");
-        TestData.assertAllFiles(backDir);
+        Zip4jTool.unZip(zipFile, unZipDir, "123");
+
+        Assert.assertEquals("个人资料保存目录", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/readme.md")));
+        Assert.assertEquals("java是面向对象语言", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/Java/java语法.txt")));
+        Assert.assertEquals("Spring框架IOC，AOP，支持MVC", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/Java/Spring框架.txt")));
+        Assert.assertEquals("窗前明月光", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/李白/静夜思.txt")));
+        Assert.assertTrue(Files.exists(Path.of(unZipDir.getAbsolutePath(), "资料/todo")));
     }
 
-    @Test
-    public void testZip2() throws Exception {
-        //测试/结尾压缩
-        Zip4jTool.zipDir(zipFile, new File(TestData.testBasePath.toString(), "sourcePath/"), "123");
-        Zip4jTool.unZip(zipFile, backDir, "123");
-        TestData.assertAllFiles(backDir);
-    }
 
     @Test
     public void testZip3() throws Exception {
@@ -69,7 +87,7 @@ public class TestZip4jTool {
 
     @After
     public void tearDown() throws Exception {
-        FileUtils.forceDelete(TestData.testBasePath.toFile());
+        FileUtils.forceDelete(tPath.toFile());
     }
 
 

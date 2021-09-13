@@ -9,8 +9,11 @@ import org.apache.commons.io.IOUtils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 统一封装文件访问
@@ -24,6 +27,19 @@ public class FileUtil {
             deleteRepeatFile(deleteFile, repeatFile);
         });
     }
+
+    public static int deleteEmptyDirs(Path checkPath) throws IOException {
+        AtomicInteger count = new AtomicInteger();
+        Files.walk(checkPath).forEach(path -> {
+            File file = path.toFile();
+            if (file.exists() && file.isDirectory() && file.listFiles().length == 0) {
+                file.delete();
+                count.addAndGet(1);
+            }
+        });
+        return count.get();
+    }
+
     public static void deleteRepeatFile(File delFile, File retainFile) {
         if (delFile.getAbsolutePath().equals(retainFile.getAbsolutePath())) {
             return;

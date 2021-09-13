@@ -1,6 +1,6 @@
 package fly4j.common.back;
 
-import fly4j.test.util.TestData;
+import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -19,23 +19,23 @@ import java.nio.file.Path;
 public class TestFilePath {
     @Before
     public void setup() throws Exception {
-        TestData.createTestFiles();
+        TData.createTestFiles();
     }
 
     @Test
     public void deleteOneRepeatFile() throws Exception {
-        File fileA = Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile();
-        File fileB = new File(Path.of(TestData.sourceDirPath.toString(), "a.txt").toString());
+        File fileA = Path.of(TData.sourceDirPath.toString(), "a.txt").toFile();
+        File fileB = new File(Path.of(TData.sourceDirPath.toString(), "a.txt").toString());
         Assert.assertEquals(fileA, fileB);
-        Path pathA = Path.of(TestData.sourceDirPath.toString(), "/a.txt");
-        Path pathB = Path.of(TestData.sourceDirPath.toString(), "a.txt");
+        Path pathA = Path.of(TData.sourceDirPath.toString(), "/a.txt");
+        Path pathB = Path.of(TData.sourceDirPath.toString(), "a.txt");
         Assert.assertEquals(pathA, pathB);
-        Path pathC = Path.of(TestData.sourceDirPath.toString(), "a.txt");
+        Path pathC = Path.of(TData.sourceDirPath.toString(), "a.txt");
         System.out.println(pathC);
         System.out.println(pathC.getFileName().toFile().getAbsolutePath());
     }
     @After
     public void tearDown() throws Exception {
-        FileUtils.forceDelete(TestData.testBasePath.toFile());
+        FileUtils.forceDelete(TData.tPath.toFile());
     }
 }

@@ -1,6 +1,6 @@
 package fly4j.common.file;
 
-import fly4j.test.util.TestData;
+import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +23,7 @@ public class TestFileUtil {
 
     @Before
     public void setup() throws Exception {
-        TestData.createTestFiles();
+        TData.createTestFiles();
     }
 
 
@@ -102,8 +102,8 @@ public class TestFileUtil {
 
     @Test
     public void deleteOneRepeatFile() throws Exception {
-        File fileA = Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile();
-        File fileACopy = Path.of(TestData.sourceDirPath.toString(), "aCopy.txt").toFile();
+        File fileA = Path.of(TData.sourceDirPath.toString(), "a.txt").toFile();
+        File fileACopy = Path.of(TData.sourceDirPath.toString(), "aCopy.txt").toFile();
         Assert.assertEquals(true,fileA.exists());
 
         //删除相同同一个文件
@@ -111,7 +111,7 @@ public class TestFileUtil {
         Assert.assertEquals(true,fileA.exists());
 
         //删除不同文件
-        File fileB = Path.of(TestData.sourceDirPath.toString(), "b.txt").toFile();
+        File fileB = Path.of(TData.sourceDirPath.toString(), "b.txt").toFile();
         FileUtil.deleteRepeatFile(fileA, fileB);
         Assert.assertEquals(true,fileA.exists());
 
@@ -148,7 +148,7 @@ public class TestFileUtil {
 
     @After
     public void tearDown() throws Exception {
-        FileUtils.forceDelete(TestData.testBasePath.toFile());
+        FileUtils.forceDelete(TData.tPath.toFile());
     }
 
 }

@@ -1,7 +1,7 @@
 package fly4j.common.back;
 
 import fly4j.common.back.doublefile.DoubleFileInOneFile;
-import fly4j.test.util.TestData;
+import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -24,17 +24,17 @@ public class TestDoubleFileInOneFile {
 
     @Before
     public void setup() throws Exception {
-        TestData.createTestFiles();
+        TData.createTestFiles();
     }
 
 
     @Test
     public void deleteOneRepeatFile() throws Exception {
-        File fileA = Path.of(TestData.sourceDirPath.toString(), "a.txt").toFile();
-        File fileACopy = Path.of(TestData.sourceDirPath.toString(), "aCopy.txt").toFile();
+        File fileA = Path.of(TData.sourceDirPath.toString(), "a.txt").toFile();
+        File fileACopy = Path.of(TData.sourceDirPath.toString(), "aCopy.txt").toFile();
         FileUtils.copyFile(fileA,fileACopy);
 
-        LinkedHashMap<String, List<File>> resultMap= DoubleFileInOneFile.doubleFileCheck(TestData.sourceDirPath.toString());
+        LinkedHashMap<String, List<File>> resultMap= DoubleFileInOneFile.doubleFileCheck(TData.sourceDirPath.toString());
         Assert.assertEquals(1,resultMap.size());
         List<File> files=resultMap.values().iterator().next();
         Assert.assertEquals(2,files.size());
@@ -50,7 +50,7 @@ public class TestDoubleFileInOneFile {
 
     @After
     public void tearDown() throws Exception {
-        FileUtils.forceDelete(TestData.testBasePath.toFile());
+        FileUtils.forceDelete(TData.tPath.toFile());
     }
 
 }

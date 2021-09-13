@@ -6,7 +6,7 @@ import fly4j.common.back.version.DirDigestCalculate;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.lang.JsonUtils;
 import fly4j.common.os.OsUtil;
-import fly4j.test.util.TestData;
+import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -17,7 +17,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static fly4j.test.util.TestData.sourceDirPath;
+import static fly4j.test.util.TData.sourceDirPath;
 
 /**
  * @author qryc
@@ -33,8 +33,8 @@ public class TestDirMd5Calculate {
 
     @Before
     public void setup() throws Exception {
-        FileUtils.deleteQuietly(TestData.testBasePath.toFile());
-        TestData.createTestFiles();
+        FileUtils.deleteQuietly(TData.tPath.toFile());
+        TData.createTestFiles();
     }
 
     @Test
