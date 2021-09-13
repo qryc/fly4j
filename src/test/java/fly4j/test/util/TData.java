@@ -35,13 +35,15 @@ public class TData {
         if (Files.exists(tPath))
             FileUtils.forceDelete(tPath.toFile());
 
+        Assert.assertFalse(Files.exists(tDataDirPath));
 
         //创建测试文件
-        Assert.assertFalse(Files.exists(tDataDirPath));
-        FileStrStore.setValue(Path.of(tDataDirPath.toString(), "readme.md"), "个人资料保存目录");
-        FileStrStore.setValue(Path.of(tDataDirPath.toString(), "Java/java语法.txt"), "java是面向对象语言");
-        FileStrStore.setValue(Path.of(tDataDirPath.toString(), "Java/Spring框架.txt"), "Spring框架IOC，AOP，支持MVC");
-        FileStrStore.setValue(Path.of(tDataDirPath.toString(), "李白/静夜思.txt"), "窗前明月光");
+        Files.createDirectories(Path.of(tDataDirPath.toString(),"Java"));
+        Files.createDirectories(Path.of(tDataDirPath.toString(),"李白"));
+        Files.writeString(Path.of(tDataDirPath.toString(), "readme.md"), "个人资料保存目录");
+        Files.writeString(Path.of(tDataDirPath.toString(), "Java/java语法.txt"), "java是面向对象语言");
+        Files.writeString(Path.of(tDataDirPath.toString(), "Java/Spring框架.txt"), "Spring框架IOC，AOP，支持MVC");
+        Files.writeString(Path.of(tDataDirPath.toString(), "李白/静夜思.txt"), "窗前明月光");
         Files.createDirectories(Path.of(tDataDirPath.toString(), "todo"));
 
     }

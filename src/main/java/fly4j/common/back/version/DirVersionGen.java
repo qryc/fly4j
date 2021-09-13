@@ -27,7 +27,7 @@ public class DirVersionGen {
         return FlyString.getPlanText(beZipSourceDir) + DateUtil.getHourStr4Name(new Date()) + ".md5";
     }
 
-    public static BackModel.DirDigestAllModel saveDirVersionModel2File(String checkDirStr, FileAndDirFilter noNeedCalMd5FileFilter, Path md5StorePath) {
+    public static BackModel.DirDigestAllModel saveDirVersionModel2File(String checkDirStr, FileAndDirFilter noNeedCalMd5FileFilter, Path md5StorePath) throws IOException {
         BackModel.DirVersionGenParam checkParam = new BackModel.DirVersionGenParam(checkDirStr,
                 noNeedCalMd5FileFilter,
                 DateUtil.getDateStr(new Date()));

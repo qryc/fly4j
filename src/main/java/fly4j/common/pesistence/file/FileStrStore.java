@@ -22,38 +22,7 @@ public class FileStrStore {
     private static Charset fileCharset = Charset.forName("utf-8");
 
 
-    public static void setValue(Path storePath, String value) {
-        try {
-            if (Files.notExists(storePath.getParent())) {
-                Files.createDirectories(storePath.getParent());
-            }
-            Files.writeString(storePath, value);
-//            FileUtils.writeStringToFile(storePath.toFile(), value, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static String getValue(Path storePath) {
-        return readFileToStr(storePath);
-    }
-
-
-    public static void delete(String storePath) {
-        File file = new File(storePath);
-
-        if (file.isFile() && file.exists())
-            file.delete();
-    }
-
-    public static void delete(Path storePath) {
-        File file = storePath.toFile();
-
-        if (file.isFile() && file.exists())
-            file.delete();
-    }
-
-    public static List<String> getValues(Path parentPath, String keyPre) {
+    public static List<String> getValues(Path parentPath, String keyPre) throws IOException {
         List<String> values = new ArrayList<>();
         Collection<File> files = listDirFiles(parentPath);
         for (File file : files) {
@@ -62,24 +31,13 @@ public class FileStrStore {
             }
             if (file.getName().startsWith(keyPre)) {
 
-                String json = readFileToStr(file);
+                String json = Files.readString(file.toPath());
                 values.add(json);
             }
         }
         return values;
     }
 
-    protected static String readFileToStr(File file) {
-        if (!file.exists()) {
-            return null;
-        }
-        try {
-//            return FileUtils.readFileToString(file, fileCharset);
-            return Files.readString(file.toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static List<String> getChildFileNames(Path storePath, String keyPre) {
         List<String> values = new ArrayList<>();
@@ -103,10 +61,6 @@ public class FileStrStore {
 
         Collection<File> files = FileUtils.listFiles(file, null, false);
         return files;
-    }
-
-    protected static String readFileToStr(Path filePath) {
-        return readFileToStr(filePath.toFile());
     }
 
 

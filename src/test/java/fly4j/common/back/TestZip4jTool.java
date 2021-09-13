@@ -46,10 +46,10 @@ public class TestZip4jTool {
         Zip4jTool.zipDir(zipFile, tDataDirPath.toFile(), "123");
         Zip4jTool.unZip(zipFile, unZipDir, "123");
 
-        Assert.assertEquals("个人资料保存目录", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/readme.md")));
-        Assert.assertEquals("java是面向对象语言", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/Java/java语法.txt")));
-        Assert.assertEquals("Spring框架IOC，AOP，支持MVC", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/Java/Spring框架.txt")));
-        Assert.assertEquals("窗前明月光", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/李白/静夜思.txt")));
+        Assert.assertEquals("个人资料保存目录", Files.readString(Path.of(unZipDir.getAbsolutePath(), "资料/readme.md")));
+        Assert.assertEquals("java是面向对象语言", Files.readString(Path.of(unZipDir.getAbsolutePath(), "资料/Java/java语法.txt")));
+        Assert.assertEquals("Spring框架IOC，AOP，支持MVC", Files.readString(Path.of(unZipDir.getAbsolutePath(), "资料/Java/Spring框架.txt")));
+        Assert.assertEquals("窗前明月光", Files.readString(Path.of(unZipDir.getAbsolutePath(), "资料/李白/静夜思.txt")));
         Assert.assertTrue(Files.exists(Path.of(unZipDir.getAbsolutePath(), "资料/todo")));
     }
 
@@ -61,10 +61,10 @@ public class TestZip4jTool {
         Zip4jTool.zipDir(zipFile, sourceDir, "123");
         Zip4jTool.unZip(zipFile, unZipDir, "123");
 
-        Assert.assertEquals("个人资料保存目录", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/readme.md")));
-        Assert.assertEquals("java是面向对象语言", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/Java/java语法.txt")));
-        Assert.assertEquals("Spring框架IOC，AOP，支持MVC", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/Java/Spring框架.txt")));
-        Assert.assertEquals("窗前明月光", FileStrStore.getValue(Path.of(unZipDir.getAbsolutePath(), "资料/李白/静夜思.txt")));
+        Assert.assertEquals("个人资料保存目录", Files.readString(Path.of(unZipDir.getAbsolutePath(), "资料/readme.md")));
+        Assert.assertEquals("java是面向对象语言", Files.readString(Path.of(unZipDir.getAbsolutePath(), "资料/Java/java语法.txt")));
+        Assert.assertEquals("Spring框架IOC，AOP，支持MVC", Files.readString(Path.of(unZipDir.getAbsolutePath(), "资料/Java/Spring框架.txt")));
+        Assert.assertEquals("窗前明月光", Files.readString(Path.of(unZipDir.getAbsolutePath(), "资料/李白/静夜思.txt")));
         Assert.assertTrue(Files.exists(Path.of(unZipDir.getAbsolutePath(), "资料/todo")));
     }
 

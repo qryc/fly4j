@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 /**
@@ -19,7 +20,7 @@ import java.nio.file.Path;
 public class DirZipService {
     static final Logger log = LoggerFactory.getLogger(DirZipService.class);
 
-    public static FlyResult zipDirWithVerify(ZipConfig zipConfig) {
+    public static FlyResult zipDirWithVerify(ZipConfig zipConfig) throws IOException {
         FlyResult backResult = new FlyResult().success();
         //生成MD5摘要文件
         Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(),

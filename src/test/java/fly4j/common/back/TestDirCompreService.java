@@ -37,7 +37,7 @@ public class TestDirCompreService {
 
         //新资料加入新文件
         FileUtils.copyDirectoryToDirectory(testDataDir, historyDataDir);
-        FileStrStore.setValue(Path.of(TData.tDataDirPath.toString(), "李白/夜宿山寺.txt"), "危楼高百尺");
+        Files.writeString(Path.of(TData.tDataDirPath.toString(), "李白/夜宿山寺.txt"), "危楼高百尺");
 
         //backDirPath 作为已经备份好的，sourceDirPath作为要删除的。
         Map<File, File> deleteFiles = DirCompareService.getDeleteDoubleFileMap(historyDataDir, testDataDir, null);

@@ -45,11 +45,11 @@ public class TestDirZipService {
 //        Zip4jTool.zipDir(Path.of(backPath.toString(), "test.zip").toFile(), sourcePath.toFile(), "123");
 //
 //        Zip4jTool.unZip(Path.of(backPath.toString(), "test.zip").toFile(), backPath.toFile(), "123");
-//        Assert.assertEquals("a中国", FileStrStore.getValue(Path.of(backPath.toString(), "sourcePath/a.txt")));
-//        Assert.assertEquals("b中国", FileStrStore.getValue(Path.of(backPath.toString(), "sourcePath/b.txt")));
-//        Assert.assertEquals("c中国", FileStrStore.getValue(Path.of(backPath.toString(), "sourcePath/c.txt")));
-//        Assert.assertEquals("aa中国", FileStrStore.getValue(Path.of(backPath.toString(), "sourcePath/childDir/aa.txt")));
-//        Assert.assertEquals("bb中国", FileStrStore.getValue(Path.of(backPath.toString(), "sourcePath/childDir/bb.txt")));
+//        Assert.assertEquals("a中国", Files.readString(Path.of(backPath.toString(), "sourcePath/a.txt")));
+//        Assert.assertEquals("b中国", Files.readString(Path.of(backPath.toString(), "sourcePath/b.txt")));
+//        Assert.assertEquals("c中国", Files.readString(Path.of(backPath.toString(), "sourcePath/c.txt")));
+//        Assert.assertEquals("aa中国", Files.readString(Path.of(backPath.toString(), "sourcePath/childDir/aa.txt")));
+//        Assert.assertEquals("bb中国", Files.readString(Path.of(backPath.toString(), "sourcePath/childDir/bb.txt")));
     }
 
     @After
