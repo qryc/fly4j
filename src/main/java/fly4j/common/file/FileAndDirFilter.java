@@ -14,28 +14,27 @@ public class FileAndDirFilter implements FileFilter {
     private Set<String> filterDirNames = new HashSet<>();
     //过滤文件名
     private Set<String> filterSuffixNames = new HashSet<>();
-    private Set<String> alwaysNotAcceptNames = new HashSet<>();
-    private boolean includeFile = true;
-    private boolean isIncludeDir = true;
+//    private Set<String> alwaysNotAcceptNames = new HashSet<>();
+//    private boolean includeFile = true;
+//    private boolean isIncludeDir = true;
 
     @Override
     public boolean accept(File file) {
-        if (null != alwaysNotAcceptNames) {
-            for (String filterDir : alwaysNotAcceptNames) {
-                if (file.getAbsolutePath().contains(filterDir)) {
-                    return false;
-                }
-            }
-        }
+//        if (null != alwaysNotAcceptNames) {
+//            for (String filterDir : alwaysNotAcceptNames) {
+//                if (file.getAbsolutePath().contains(filterDir)) {
+//                    return false;
+//                }
+//            }
+//        }
         if (null != filterDirNames) {
             for (String filterDir : this.getFilterDirNames()) {
-                if (file.getAbsolutePath().contains(filterDir)) {
+                if (file.getName().equals(filterDir)) {
                     return true;
                 }
             }
         }
         if (this.getFilterSuffixNames() != null) {
-
             String suffix = FilenameUtils.getExtension(file.getName());
             return this.getFilterSuffixNames().contains(suffix);
         }
@@ -58,27 +57,27 @@ public class FileAndDirFilter implements FileFilter {
         this.filterSuffixNames = filterSuffixNames;
     }
 
-    public Set<String> getAlwaysNotAcceptNames() {
-        return alwaysNotAcceptNames;
-    }
+//    public Set<String> getAlwaysNotAcceptNames() {
+//        return alwaysNotAcceptNames;
+//    }
+//
+//    public void setAlwaysNotAcceptNames(Set<String> alwaysNotAcceptNames) {
+//        this.alwaysNotAcceptNames = alwaysNotAcceptNames;
+//    }
 
-    public void setAlwaysNotAcceptNames(Set<String> alwaysNotAcceptNames) {
-        this.alwaysNotAcceptNames = alwaysNotAcceptNames;
-    }
-
-    public boolean isIncludeFile() {
-        return includeFile;
-    }
-
-    public void setIncludeFile(boolean includeFile) {
-        this.includeFile = includeFile;
-    }
-
-    public boolean isIncludeDir() {
-        return isIncludeDir;
-    }
-
-    public void setIncludeDir(boolean includeDir) {
-        isIncludeDir = includeDir;
-    }
+//    public boolean isIncludeFile() {
+//        return includeFile;
+//    }
+//
+//    public void setIncludeFile(boolean includeFile) {
+//        this.includeFile = includeFile;
+//    }
+//
+//    public boolean isIncludeDir() {
+//        return isIncludeDir;
+//    }
+//
+//    public void setIncludeDir(boolean includeDir) {
+//        isIncludeDir = includeDir;
+//    }
 }
