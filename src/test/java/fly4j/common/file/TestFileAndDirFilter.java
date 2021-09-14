@@ -30,10 +30,8 @@ public class TestFileAndDirFilter {
 
     @Test
     public void testFileSub() throws Exception {
-        FileAndDirFilter fileAndDirFilter;
-        fileAndDirFilter = new FileAndDirFilter();
-        fileAndDirFilter.setFilterDirNames(Set.of(".idea", "target", ".DS_Store", ".git"));
-        fileAndDirFilter.setFilterSuffixNames(Set.of("iml", "md5"));
+        FileAndDirFilter fileAndDirFilter = new FileAndDirFilter(Set.of(".idea", "target", ".DS_Store", ".git"),
+                Set.of("iml", "md5"));
         Assert.assertTrue(fileAndDirFilter.accept(new File("/export/.idea")));
         Assert.assertTrue(fileAndDirFilter.accept(new File("/export/.idea/")));
         Assert.assertFalse(fileAndDirFilter.accept(new File("/export/.ideaA")));

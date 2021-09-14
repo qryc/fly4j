@@ -27,7 +27,7 @@ public class TestDirMd5Calculate {
     static final Logger log = LoggerFactory.getLogger(TestDirMd5Calculate.class);
 
     public TestDirMd5Calculate() {
-        FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
+//        FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
 //        fileAndDirFilter.setFilterDirNames(Set.of(""));
     }
 

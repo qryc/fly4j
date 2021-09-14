@@ -20,7 +20,7 @@ public class TestDirZipService {
     static final Logger log = LoggerFactory.getLogger(TestDirZipService.class);
 
     public TestDirZipService() {
-        FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
+//        FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
 //        fileAndDirFilter.setFilterDirNames(Set.of(""));
         DirCompareService dirCompareService = new DirCompareService();
 //        dirCompareService.setNoNeedCalMd5FileFilter(fileAndDirFilter);
