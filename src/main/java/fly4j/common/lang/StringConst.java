@@ -21,11 +21,8 @@ public class StringConst {
     //br textarea
     public static String BR_TEXTAREA_HTML = "&#xd;";
     public static String N_BR = "<br/>";
+    public static final String LF = "\n";
 
-
-    public static void appendLine(StringBuilder stringBuilder, String line) {
-        stringBuilder.append(line).append(CharUtils.LF);
-    }
 
     public static String getConsoleTitle(String title) {
         return "*******************************************" + title + "*******************************************";

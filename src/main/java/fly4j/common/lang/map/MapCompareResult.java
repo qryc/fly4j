@@ -29,16 +29,16 @@ public class MapCompareResult {
         }
         //寻找move
         diffKeys.forEach(key -> {
-            StringConst.appendLine(stringBuilder, "........diff:" + key);
+            stringBuilder.append("........diff:" + key).append(StringConst.LF);
         });
         deleteKeys.forEach(key -> {
-            StringConst.appendLine(stringBuilder, "........delete:" + key);
+            stringBuilder.append("........delete:" + key).append(StringConst.LF);
         });
         addKeys.forEach(addKey -> {
-            StringConst.appendLine(stringBuilder, "........add:" + addKey);
+            stringBuilder.append("........add:" + addKey).append(StringConst.LF);
         });
 
-        StringConst.appendLine(stringBuilder, "end checkCount:" + count.get());
+        stringBuilder.append("end checkCount:" + count.get()).append(StringConst.LF);
         return flyResult.append(stringBuilder.toString());
     }
 
