@@ -31,7 +31,7 @@ public class FileFinder {
         Files.walk(Path.of(checkDirStr)).forEach(path -> {
             fileNameSet.forEach(name -> {
                 if (path.getFileName().toString().equals(name)) {
-                    ExceptionUtil.exceptionWrapper(() -> info.append(path.toFile().getAbsolutePath() + " " + FileUtils.byteCountToDisplaySize(Files.size(path))).append(StringConst.LF));
+                    ExceptionUtil.wrapperRuntime(() -> info.append(path.toFile().getAbsolutePath() + " " + FileUtils.byteCountToDisplaySize(Files.size(path))).append(StringConst.LF));
                 }
             });
         });
@@ -66,7 +66,7 @@ public class FileFinder {
         Files.walk(checkDirPath).forEach(path -> {
             if (path.getFileName().toString().startsWith("._")) {
                 if (delete) {
-                    ExceptionUtil.exceptionWrapper(() -> Files.delete(path));
+                    ExceptionUtil.wrapperRuntime(() -> Files.delete(path));
                     info.append("deleted:").append(path).append(StringUtils.LF);
                 } else {
                     info.append("delete:").append(path).append(StringUtils.LF);
