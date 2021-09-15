@@ -58,17 +58,17 @@ public class DirZipService {
         var checkPath = Path.of(unzipDestDirPath.toString(), zipConfig.sourceDir().getName());
         var md5Path = Path.of(unzipDestDirPath.toFile().getAbsolutePath(), zipConfig.sourceDir().getName(), ZipConfig.DEFAULT_VERSIONDATA_PATH);
         BackModel.DirVersionCheckParam checkParam = new BackModel.DirVersionCheckParam(zipConfig.versionType(), false, zipConfig.noNeedCalMd5FileFilter());
-        FlyResult result = DirVersionCheck.checkDirChange(checkPath.toFile(),
-                FileUtil.getDirLastModifyFile(md5Path.toFile(), ".md5"),
-                checkParam);
-        builder.append("executeCheckVersion:" + checkPath.toFile().getAbsolutePath()).append(StringUtils.LF);
-        if (result.isSuccess()) {
-            builder.append("*******check ok").append(StringUtils.LF);
-        } else {
-            builder.append("******check fail!!!!!!!!!!!!").append(StringUtils.LF);
-            backResult.fail();
-        }
-        builder.append(result.getMsg()).append(StringUtils.LF);
+//        FlyResult result = DirVersionCheck.checkDirChange(checkPath.toFile(),
+//                FileUtil.getDirLastModifyFile(md5Path.toFile(), ".md5"),
+//                checkParam);
+//        builder.append("executeCheckVersion:" + checkPath.toFile().getAbsolutePath()).append(StringUtils.LF);
+//        if (result.isSuccess()) {
+//            builder.append("*******check ok").append(StringUtils.LF);
+//        } else {
+//            builder.append("******check fail!!!!!!!!!!!!").append(StringUtils.LF);
+//            backResult.fail();
+//        }
+//        builder.append(result.getMsg()).append(StringUtils.LF);
 
         return backResult.append(builder.toString());
     }

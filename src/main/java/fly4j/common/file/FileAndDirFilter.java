@@ -14,7 +14,6 @@ public class FileAndDirFilter implements FileFilter {
     //过滤文件类型集合
     private Set<String> filterSuffixNames;
 
-
     public FileAndDirFilter(Set<String> filterDirNames, Set<String> filterSuffixNames) {
         this.filterDirNames = filterDirNames;
         this.filterSuffixNames = filterSuffixNames;

@@ -77,13 +77,14 @@ public class DirVersionGen {
         }
 
         //环境信息
-        Map<String, String> environment = new HashMap<>();
+        Map<String, String> environment = new LinkedHashMap<>();
         environment.put("os.name", OsUtil.getOsName());
         //结果信息
         environment.put("files.size", "" + fileList.size());
         environment.put("dir.size", "" + dirList.size());
-
-        return new BackModel.DirDigestAllModel(environment, checkParam, fileList, dirList);
+        environment.put("checkParam.checkDate", "" + checkParam.checkDate());
+        environment.put("checkParam.noNeedCalMd5FileFilter", "" + checkParam.noNeedCalMd5FileFilter());
+        return new BackModel.DirDigestAllModel(environment, checkParam.checkBaseDirStr(), fileList, dirList);
     }
 
 

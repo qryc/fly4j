@@ -3,6 +3,7 @@ package fly4j.common.back.version;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.file.FilenameUtil;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ public class BackModel {
     public enum DigestType {
         MD5, LEN
     }
+
     public static record DirVersionCheckParam(DigestType digestType, boolean checkDirFlag,
                                               FileAndDirFilter noNeedCalMd5FileFilter) {
     }
@@ -37,14 +39,14 @@ public class BackModel {
      * Created by qryc on 2021/9/3
      */
     public static record DirDigestAllModel(Map<String, String> environment,
-                                           DirVersionGenParam checkParam,
+                                           String checkBaseDirStr,
                                            List<FileDigestModel> fileDigestModels,
                                            List<DirDigestModel> dirDigestModels) {
 
         public Map<String, String> getFilesDigestMap(DigestType versionType) {
             Map<String, String> map = new LinkedHashMap<>();
             for (FileDigestModel fileDigestModel : fileDigestModels) {
-                var dirKey = FilenameUtil.getSubPathUnix(fileDigestModel.pathStr(), checkParam.checkBaseDirStr());
+                var dirKey = FilenameUtil.getSubPathUnix(fileDigestModel.pathStr(), checkBaseDirStr);
                 if (DigestType.LEN.equals(versionType)) {
                     map.put(dirKey, "" + fileDigestModel.length());
                 } else {
