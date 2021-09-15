@@ -23,7 +23,7 @@ public class FileAndDirFilter implements FileFilter {
     public boolean accept(File file) {
         if (null != filterDirNames) {
             for (String filterDir : this.filterDirNames) {
-                if (file.getName().equals(filterDir)) {
+                if (file.getAbsolutePath().contains(filterDir)) {
                     return true;
                 }
             }

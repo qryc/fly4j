@@ -34,8 +34,8 @@ public class TestFileAndDirFilter {
                 Set.of("iml", "md5"));
         Assert.assertTrue(fileAndDirFilter.accept(new File("/export/.idea")));
         Assert.assertTrue(fileAndDirFilter.accept(new File("/export/.idea/")));
-        Assert.assertFalse(fileAndDirFilter.accept(new File("/export/.ideaA")));
-        Assert.assertFalse(fileAndDirFilter.accept(new File("/export/.idea/a.txt")));
+        Assert.assertTrue(fileAndDirFilter.accept(new File("/export/.ideaA")));
+        Assert.assertTrue(fileAndDirFilter.accept(new File("/export/.idea/a.txt")));
     }
 
     @After
