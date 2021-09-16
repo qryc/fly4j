@@ -3,10 +3,7 @@ package fly4j.common.back.version;
 import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.file.FilenameUtil;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by qryc on 2021/9/3
@@ -56,5 +53,10 @@ public class BackModel {
             }
             return map;
         }
+    }
+
+    public static record DirCompareResult(Set<String> deleteFileStrSet, Set<String> editFileStrSet,
+                                          Set<String> addFileStrSet) {
+
     }
 }
