@@ -42,9 +42,8 @@ public class TestDirMd5Calculate {
             return;
         }
         String md5 = """
-                {"":"dir","Java":"dir","Java/java语法.txt":"25","Java/Spring框架.txt":"33","todo":"dir","readme.md":"24","李白":"dir","李白/静夜思.txt":"15"}""";
-        BackModel.DirVersionCheckParam dirMd5Param = new BackModel.DirVersionCheckParam(BackModel.DigestType.LEN, true, null);
-        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(tDataDirPath.toString(), dirMd5Param));
+                {"Java/java语法.txt":"25","Java/Spring框架.txt":"33","readme.md":"24","李白/静夜思.txt":"15"}""";
+        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(tDataDirPath.toString(), BackModel.DigestType.LEN, null));
         Assert.assertEquals(md5, md5FileStr);
     }
 
@@ -54,9 +53,8 @@ public class TestDirMd5Calculate {
             return;
         }
         String md5 = """
-                {"":"dir","Java":"dir","Java/java语法.txt":"f29a628831fe901bbdd3132bbdc2313e","Java/Spring框架.txt":"5fb14d685c15f75c92d243da709cc28b","todo":"dir","readme.md":"a723b646fe33ab2f0c8e8ed4c4583f0b","李白":"dir","李白/静夜思.txt":"7bae0c4e8ec3f7dededc3450137efa04"}""";
-        BackModel.DirVersionCheckParam dirMd5Param = new BackModel.DirVersionCheckParam(BackModel.DigestType.MD5, true, null);
-        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(tDataDirPath.toString(), dirMd5Param));
+                {"Java/java语法.txt":"f29a628831fe901bbdd3132bbdc2313e","Java/Spring框架.txt":"5fb14d685c15f75c92d243da709cc28b","readme.md":"a723b646fe33ab2f0c8e8ed4c4583f0b","李白/静夜思.txt":"7bae0c4e8ec3f7dededc3450137efa04"}""";
+        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(tDataDirPath.toString(), BackModel.DigestType.MD5, null));
         Assert.assertEquals(md5, md5FileStr);
     }
 

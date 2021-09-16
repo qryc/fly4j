@@ -57,7 +57,7 @@ public class DirZipService {
                 .append(StringUtils.LF);
         var checkPath = Path.of(unzipDestDirPath.toString(), zipConfig.sourceDir().getName());
         var md5Path = Path.of(unzipDestDirPath.toFile().getAbsolutePath(), zipConfig.sourceDir().getName(), ZipConfig.DEFAULT_VERSIONDATA_PATH);
-        BackModel.DirVersionCheckParam checkParam = new BackModel.DirVersionCheckParam(zipConfig.versionType(), false, zipConfig.noNeedCalMd5FileFilter());
+//        BackModel.DirVersionCheckParam checkParam = new BackModel.DirVersionCheckParam(zipConfig.versionType(), false, zipConfig.noNeedCalMd5FileFilter());
 //        FlyResult result = DirVersionCheck.checkDirChange(checkPath.toFile(),
 //                FileUtil.getDirLastModifyFile(md5Path.toFile(), ".md5"),
 //                checkParam);

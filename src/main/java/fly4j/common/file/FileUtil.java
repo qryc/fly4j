@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * 统一封装文件访问
@@ -21,6 +22,30 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author qryc
  */
 public class FileUtil {
+
+    public static void walkAllFile(File walkDir, FileAndDirFilter noNeedFileFilter, Consumer<File> consumer) {
+        File[] files = walkDir.listFiles();
+
+        for (File cfile : files) {
+            if (null != noNeedFileFilter && noNeedFileFilter.accept(cfile)) {
+                continue;
+            }
+            if (cfile.isDirectory()) {
+                //递归
+                walkAllFile(cfile, noNeedFileFilter, consumer);
+            } else {
+                consumer.accept(cfile);
+            }
+        }
+    }
+
+    public static void walkAllFileIgnoreMacShadowFile(File walkDir, FileAndDirFilter noNeedFileFilter, Consumer<File> consumer) {
+        walkAllFile(walkDir, noNeedFileFilter, file -> {
+            if (!file.getAbsolutePath().contains("._")) {
+                consumer.accept(file);
+            }
+        });
+    }
 
     public static void deleteRepeatFiles(Map<File, File> deleteFileMaps) {
         deleteFileMaps.forEach((deleteFile, repeatFile) -> {

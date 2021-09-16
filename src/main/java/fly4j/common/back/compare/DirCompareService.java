@@ -15,15 +15,15 @@ import java.util.Map;
 
 public class DirCompareService {
     //md5 or size
-    public static FlyResult compareTwoDir(File histoyDir, File currentDir, BackModel.DirVersionCheckParam checkParam) {
+    public static FlyResult compareTwoDir(File histoyDir, File currentDir, BackModel.DigestType digestType, FileAndDirFilter noNeedCalMd5FileFilter) {
         try {
 
             FlyResult flyResult = new FlyResult().success();
             flyResult.appendLine("....current file " + currentDir.getAbsolutePath() + " compare to history:" + histoyDir.getAbsolutePath());
             //取得上次的md5
-            Map<String, String> historyMd5MapRead = DirDigestCalculate.getDirDigestMap(histoyDir.getAbsolutePath(), checkParam);
+            Map<String, String> historyMd5MapRead = DirDigestCalculate.getDirDigestMap(histoyDir.getAbsolutePath(), digestType, noNeedCalMd5FileFilter);
             //取得文件夹的Md5
-            Map<String, String> currentMd5Map = DirDigestCalculate.getDirDigestMap(currentDir.getAbsolutePath(), checkParam);
+            Map<String, String> currentMd5Map = DirDigestCalculate.getDirDigestMap(currentDir.getAbsolutePath(), digestType, noNeedCalMd5FileFilter);
             MapCompareResult mapCompareResult = MapUtil.compareTwoMap(historyMd5MapRead, currentMd5Map);
             return flyResult.merge(mapCompareResult.toFlyResult());
         } catch (Exception e) {
@@ -44,11 +44,10 @@ public class DirCompareService {
      */
     public static Map<File, File> getDeleteDoubleFileMap(File standardDir, File doubleKillDir, FileAndDirFilter noNeedCalMd5FileFilter) {
         /**第一步：通过长度进行第一轮筛选长度一致的可疑文件**/
-        BackModel.DirVersionCheckParam checkParam = new BackModel.DirVersionCheckParam(BackModel.DigestType.LEN, false, noNeedCalMd5FileFilter);
         //Ready的md5
-        Map<File, String> readyLenMap_file = DirDigestCalculate.getDirDigestFileMap(standardDir, checkParam);
+        Map<File, String> readyLenMap_file = DirDigestCalculate.getDirDigestFileMap(standardDir, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);
         //取得新文件夹的Md5
-        Map<File, String> newLenMap_file = DirDigestCalculate.getDirDigestFileMap(doubleKillDir, checkParam);
+        Map<File, String> newLenMap_file = DirDigestCalculate.getDirDigestFileMap(doubleKillDir, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);
 
         //查找新文件夹中和老的文件夹长度一致的文件
         List<File> standardDoubleFilesFromLen = new ArrayList<>();

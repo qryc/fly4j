@@ -13,9 +13,6 @@ public class BackModel {
         MD5, LEN
     }
 
-    public static record DirVersionCheckParam(DigestType digestType, boolean checkDirFlag,
-                                              FileAndDirFilter noNeedCalMd5FileFilter) {
-    }
 
     public static record DirVersionGenParam(String checkBaseDirStr, FileAndDirFilter noNeedCalMd5FileFilter,
                                             String checkDate) {
@@ -25,11 +22,6 @@ public class BackModel {
     public static record FileDigestModel(String pathStr, Long length, String md5) {
     }
 
-    /**
-     * Created by qryc on 2021/9/3
-     */
-    public static record DirDigestModel(String path, Long length) {
-    }
 
     /**
      * 整个文件夹信息摘要，包含里面的文件与文件夹
@@ -37,8 +29,7 @@ public class BackModel {
      */
     public static record DirDigestAllModel(Map<String, String> environment,
                                            String checkBaseDirStr,
-                                           List<FileDigestModel> fileDigestModels,
-                                           List<DirDigestModel> dirDigestModels) {
+                                           List<FileDigestModel> fileDigestModels) {
 
         public Map<String, String> getFilesDigestMap(DigestType versionType) {
             Map<String, String> map = new LinkedHashMap<>();

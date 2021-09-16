@@ -2,6 +2,7 @@ package fly4j.common.back.doublefile;
 
 import fly4j.common.back.version.BackModel;
 import fly4j.common.back.version.DirDigestCalculate;
+import fly4j.common.file.FileAndDirFilter;
 import fly4j.common.lang.map.MapUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,15 +17,14 @@ import java.util.stream.Collectors;
 public class DoubleFileInOneFile {
 
 
-    public static LinkedHashMap<String, List<File>> doubleFileCheck(String compareDir) {
+    public static LinkedHashMap<String, List<File>> doubleFileCheck(String compareDir, FileAndDirFilter noNeedCalMd5FileFilter) {
         if (StringUtils.isBlank(compareDir)) {
             return new LinkedHashMap<>();
         }
 
         /**第一步，使用Length初筛**/
         //取得文件长度的Map
-        BackModel.DirVersionCheckParam dirMd5Param = new BackModel.DirVersionCheckParam(BackModel.DigestType.LEN, false, null);
-        LinkedHashMap<File, String> fileLengthMapAll = DirDigestCalculate.getDirDigestFileMap(compareDir, dirMd5Param);
+        LinkedHashMap<File, String> fileLengthMapAll = DirDigestCalculate.getDirDigestFileMap(compareDir, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);
         //转换Map：Key:文件长度，value：长度相等的文件列表
         LinkedHashMap<String, List<File>> lengthGroupFileMap_len = MapUtil.convert2ValueMap(fileLengthMapAll);
         //从ValueMap中查找重复文件

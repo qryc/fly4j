@@ -19,8 +19,6 @@ public class DirVersionCheck {
 
     public static BackModel.DirCompareResult checkDirChange(File checkDir, File md5File, FileAndDirFilter noNeedCalMd5FileFilter) throws IOException {
 
-        if (null != md5File)
-            throw new RuntimeException("md5:" + md5File.getAbsolutePath());
 
         if (null == md5File) {
             throw new RuntimeException(" not have history file");
@@ -31,7 +29,7 @@ public class DirVersionCheck {
         BackModel.DirDigestAllModel dirDigestAllModel = JsonUtils.readValue(historyJsonStr, BackModel.DirDigestAllModel.class);
         Map<String, String> historyMd5MapRead = dirDigestAllModel.getFilesDigestMap(BackModel.DigestType.MD5);
         //取得文件夹的当前的digest信息
-        Map<String, String> currentMd5Map = DirDigestCalculate.getDirDigestMap(checkDir.getAbsolutePath(), new BackModel.DirVersionCheckParam(BackModel.DigestType.MD5, false, noNeedCalMd5FileFilter));
+        Map<String, String> currentMd5Map = DirDigestCalculate.getDirDigestMap(checkDir.getAbsolutePath(), BackModel.DigestType.MD5, noNeedCalMd5FileFilter);
 
         //进一步删选MD5一致的文件
         //先生成新的反向
