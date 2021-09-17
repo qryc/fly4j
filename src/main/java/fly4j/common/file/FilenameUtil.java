@@ -12,11 +12,13 @@ public class FilenameUtil {
      * baseDirFile：/export/资料/
      * file :      /export/资料/文件/a.txt
      * 输出：文件/a.txt
+     * path.relativize 替代
      *
      * @param filePathStr
      * @param baseDirPathStr
      * @return
      */
+    @Deprecated
     public static String getSubPathUnix(String filePathStr, String baseDirPathStr) {
         filePathStr = FilenameUtils.separatorsToUnix(filePathStr.toString());
         baseDirPathStr = FilenameUtils.separatorsToUnix(baseDirPathStr.toString());
