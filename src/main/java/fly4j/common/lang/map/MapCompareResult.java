@@ -21,12 +21,13 @@ public class MapCompareResult {
      * historyMd5MapRead 为基准
      */
     public FlyResult toFlyResult() {
+
+        if (deleteKeys.size() > 0 || addKeys.size() > 0 || diffKeys.size() > 0) {
+            FlyResult.of(false);
+        }
         StringBuilder stringBuilder = new StringBuilder();
         AtomicLong count = new AtomicLong(0);
-        FlyResult flyResult = new FlyResult().success();
-        if (deleteKeys.size() > 0 || addKeys.size() > 0 || diffKeys.size() > 0) {
-            flyResult.fail();
-        }
+        FlyResult flyResult = FlyResult.of(true);
         //寻找move
         diffKeys.forEach(key -> {
             stringBuilder.append("........diff:" + key).append(StringConst.LF);

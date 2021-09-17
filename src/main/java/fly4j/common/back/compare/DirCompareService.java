@@ -18,7 +18,7 @@ public class DirCompareService {
     public static FlyResult compareTwoDir(File histoyDir, File currentDir, BackModel.DigestType digestType, FileAndDirFilter noNeedCalMd5FileFilter) {
         try {
 
-            FlyResult flyResult = new FlyResult().success();
+            FlyResult flyResult = FlyResult.of(true);
             flyResult.appendLine("....current file " + currentDir.getAbsolutePath() + " compare to history:" + histoyDir.getAbsolutePath());
             //取得上次的md5
             Map<String, String> historyMd5MapRead = DirDigestCalculate.getDirDigestMap(histoyDir.getAbsolutePath(), digestType, noNeedCalMd5FileFilter);
@@ -28,7 +28,7 @@ public class DirCompareService {
             return flyResult.merge(mapCompareResult.toFlyResult());
         } catch (Exception e) {
             e.printStackTrace();
-            return new FlyResult().fail("Exception:" + e.getMessage());
+            return FlyResult.of(false, "Exception:" + e.getMessage());
         }
 
     }

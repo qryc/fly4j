@@ -21,7 +21,7 @@ public class DirZipService {
     static final Logger log = LoggerFactory.getLogger(DirZipService.class);
 
     public static FlyResult zipDirWithVerify(ZipConfig zipConfig) throws IOException {
-        FlyResult backResult = new FlyResult().success();
+        FlyResult backResult = FlyResult.of(true);
         //生成MD5摘要文件
         Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(),
                 DirVersionGen.getDefaultVersionFileName(zipConfig.sourceDir().getAbsolutePath()));
@@ -43,7 +43,7 @@ public class DirZipService {
 
     private static FlyResult checkZip(ZipConfig zipConfig) {
         File zipFile = zipConfig.destZipFile();
-        var backResult = new FlyResult().success();
+        var backResult = FlyResult.of(true);
         var builder = new StringBuilder();
         var unzipDirName = "unzipT4"
                 + zipFile.getName().replaceAll("\\.", "_");
