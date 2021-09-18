@@ -10,27 +10,27 @@ import java.util.Set;
 
 public class FileAndDirFilter implements FileFilter {
     //过滤的文件名称集合
-    private Set<String> filterDirNames;
+    private Set<String> acceptDirOrFileNames;
     //过滤文件类型集合
-    private Set<String> filterSuffixNames;
+    private Set<String> acceptExtensions;
 
-    public FileAndDirFilter(Set<String> filterDirNames, Set<String> filterSuffixNames) {
-        this.filterDirNames = filterDirNames;
-        this.filterSuffixNames = filterSuffixNames;
+    public FileAndDirFilter(Set<String> acceptDirOrFileNames, Set<String> acceptExtensions) {
+        this.acceptDirOrFileNames = acceptDirOrFileNames;
+        this.acceptExtensions = acceptExtensions;
     }
 
     @Override
     public boolean accept(File file) {
-        if (null != filterDirNames) {
-            for (String filterDir : this.filterDirNames) {
+        if (null != acceptDirOrFileNames) {
+            for (String filterDir : this.acceptDirOrFileNames) {
                 if (file.isDirectory() && file.getName().contains(filterDir)) {
                     return true;
                 }
             }
         }
-        if (this.filterSuffixNames != null) {
-            String suffix = FilenameUtils.getExtension(file.getName());
-            return this.filterSuffixNames.contains(suffix);
+        if (this.acceptExtensions != null) {
+            String extension = FilenameUtils.getExtension(file.getName());
+            return this.acceptExtensions.contains(extension);
         }
         return false;
     }
