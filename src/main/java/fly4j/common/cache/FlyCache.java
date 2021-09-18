@@ -1,9 +1,10 @@
 package fly4j.common.cache;
 
 import java.util.Map;
+import java.util.Optional;
 
-public interface FlyCache {
-    Object get(final String key);
+public interface FlyCache<T> {
+    <T> Optional<T> get(final String key);
 
     void put(final String key, final Object obj, long cacheLife);
 

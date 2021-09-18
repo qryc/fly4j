@@ -3,6 +3,7 @@ package fly4j.common.cache.impl;
 import fly4j.common.cache.FlyCache;
 import fly4j.common.cache.LimitRate;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LimitRateImpl implements LimitRate {
@@ -25,32 +26,19 @@ public class LimitRateImpl implements LimitRate {
     //限流
     @Override
     public boolean isHotLimit(String id) {
-        try {
-            String key = "limit" + String.valueOf(id);
-            AtomicInteger count = (AtomicInteger) flyCache.get(key);
-            if (null == count) {
-                flyCache.put(key, new AtomicInteger(1), time);
-                return false;
-            }
-            int countNum = count.incrementAndGet();
-            if (countNum <= 5) {
-//                         + "_" + count);
-            } else if (countNum <= 10) {
-//                         + "_countMore6");
-            } else if (countNum <= 15) {
-//                         + "_countMore11");
-            } else if (countNum <= 20) {
-//                         + "_countMore16");
-            } else {
-//                         + "_countMore21");
-            }
-            if (isLimit && countNum > limitNum) {
-//                     + "_hit");
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        String key = "limit" + id;
+        Optional<AtomicInteger> count = flyCache.get(key);
+        count.ifPresentOrElse(num -> {
+                    int countNum = num.incrementAndGet();
+                    if (countNum <= 5) {  //可监控
+                    } else if (countNum <= 10) {  //可监控
+                    } else if (countNum <= 15) {  //可监控
+                    } else if (countNum <= 20) {  //可监控
+                    } else {//可监控
+                    }
+                },
+                () -> flyCache.put(key, new AtomicInteger(1), time));
+
+        return count.map(num -> isLimit && num.get() > limitNum).get();
     }
 }

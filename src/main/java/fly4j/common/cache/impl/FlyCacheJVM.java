@@ -6,13 +6,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class FlyCacheJVM implements FlyCache {
+public class FlyCacheJVM<T> implements FlyCache<T> {
     static final Logger log = LoggerFactory.getLogger(FlyCacheJVM.class);
-    private Map<String, CacheInfo> cacheInfoMap = new ConcurrentHashMap<String, CacheInfo>();
-    private ConcurrentLinkedQueue<String> keyQueue = new ConcurrentLinkedQueue<String>();
+    private Map<String, CacheInfo<T>> cacheInfoMap = new ConcurrentHashMap<>();
+    private ConcurrentLinkedQueue<String> keyQueue = new ConcurrentLinkedQueue<>();
     private int QUEUESIZE = 1000;
 
     public FlyCacheJVM() {
@@ -23,21 +24,16 @@ public class FlyCacheJVM implements FlyCache {
     }
 
     @Override
-    public Object get(final String key) {
-        try {
-            if (cacheInfoMap.containsKey(key)) {
-                CacheInfo cache = cacheInfoMap.get(key);
-                // 保证三项数都有才是正常数据，队列，超时时间，存储数据
-                if (cache != null && keyQueue.contains(key)
-                        && cache.isLive()) {
-                    return cache.value;
-                }
+    public Optional<T> get(final String key) {
+        if (cacheInfoMap.containsKey(key)) {
+            CacheInfo<T> cache = cacheInfoMap.get(key);
+            // 保证三项数都有才是正常数据，队列，超时时间，存储数据
+            if (cache != null && keyQueue.contains(key)
+                    && cache.isLive()) {
+                return Optional.of(cache.value);
             }
-        } catch (Exception e) {
-            log.error("get获取本地缓存用户信息错误", e);
         }
-
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -59,7 +55,7 @@ public class FlyCacheJVM implements FlyCache {
 
     @Override
     public void invalidateAll() {
-        cacheInfoMap = new ConcurrentHashMap<String, CacheInfo>();
+        cacheInfoMap = new ConcurrentHashMap<String, CacheInfo<T>>();
         keyQueue = new ConcurrentLinkedQueue<String>();
     }
 
@@ -109,8 +105,8 @@ public class FlyCacheJVM implements FlyCache {
         }
     }
 
-    private static class CacheInfo {
-        public CacheInfo(Object value, long life) {
+    private static class CacheInfo<T> {
+        public CacheInfo(T value, long life) {
             this.value = value;
             this.createTime = System.currentTimeMillis();
             this.life = life;
@@ -131,7 +127,7 @@ public class FlyCacheJVM implements FlyCache {
         }
 
 
-        private Object value;
+        private T value;
         private long createTime;
         private long life;
     }
