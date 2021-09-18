@@ -24,16 +24,16 @@ public class FlyCacheJVM<T> implements FlyCache<T> {
     }
 
     @Override
-    public Optional<T> get(final String key) {
+    public T get(final String key) {
         if (cacheInfoMap.containsKey(key)) {
             CacheInfo<T> cache = cacheInfoMap.get(key);
             // 保证三项数都有才是正常数据，队列，超时时间，存储数据
             if (cache != null && keyQueue.contains(key)
                     && cache.isLive()) {
-                return Optional.of(cache.value);
+                return cache.value;
             }
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class FlyCacheJVM<T> implements FlyCache<T> {
     public Map<String, T> asMap() {
         Map<String, T> map = new HashMap<>();
         cacheInfoMap.forEach((key, value) -> {
-            get(key).ifPresent(v -> map.put(key, v));
+            Optional.ofNullable(get(key)).ifPresent(v -> map.put(key, v));
         });
         return map;
     }

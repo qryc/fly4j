@@ -12,10 +12,10 @@ public class TestFlyCache {
     public void testCache() throws Exception {
         FlyCache flyCache = new FlyCacheJVM(1000);
         flyCache.put("akey", "avalue", 2);
-        Assert.assertEquals("avalue", flyCache.get("akey").get());
+        Assert.assertEquals("avalue", flyCache.get("akey"));
         Assert.assertTrue(flyCache.ttl("akey") > 0);
         Thread.sleep(3);
-        Assert.assertTrue(flyCache.get("akey").isEmpty());
+        Assert.assertNull(flyCache.get("akey"));
         Assert.assertTrue(flyCache.ttl("akey") < 0);
     }
 

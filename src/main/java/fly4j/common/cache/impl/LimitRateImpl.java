@@ -27,7 +27,7 @@ public class LimitRateImpl implements LimitRate {
     @Override
     public boolean isHotLimit(String id) {
         final String key = "limit" + id;
-        flyCache.get(key).ifPresentOrElse(num -> {
+        Optional.ofNullable(flyCache.get(key)).ifPresentOrElse(num -> {
                     int countNum = num.incrementAndGet();
                     if (countNum <= 5) {  //可监控
                     } else if (countNum <= 10) {  //可监控
@@ -37,6 +37,6 @@ public class LimitRateImpl implements LimitRate {
                     }
                 },
                 () -> flyCache.put(key, new AtomicInteger(1), time));
-        return flyCache.get(key).map(num -> isLimit && num.get() > limitNum).get();
+        return isLimit && flyCache.get(key).get() > limitNum;
     }
 }
