@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface FlyCache<T> {
-    <T> Optional<T> get(final String key);
+    Optional<T> get(final String key);
 
     void put(final String key, final Object obj, long cacheLife);
 
@@ -14,5 +14,5 @@ public interface FlyCache<T> {
 
     void invalidate(String key);
 
-    Map<String, Object> asMap();
+    Map<String, T> asMap();
 }

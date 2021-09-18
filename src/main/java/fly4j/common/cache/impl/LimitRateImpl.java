@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LimitRateImpl implements LimitRate {
-    private FlyCache flyCache;
+    private FlyCache<AtomicInteger> flyCache;
     private boolean isLimit = true;
     private int time = 20;
     private int limitNum = 2;
@@ -17,7 +17,7 @@ public class LimitRateImpl implements LimitRate {
         this.limitNum = limitNum;
     }
 
-    public LimitRateImpl(FlyCache flyCache, int time, int limitNum) {
+    public LimitRateImpl(FlyCache<AtomicInteger> flyCache, int time, int limitNum) {
         this.flyCache = flyCache;
         this.time = time;
         this.limitNum = limitNum;
@@ -26,9 +26,8 @@ public class LimitRateImpl implements LimitRate {
     //限流
     @Override
     public boolean isHotLimit(String id) {
-        String key = "limit" + id;
-        Optional<AtomicInteger> count = flyCache.get(key);
-        count.ifPresentOrElse(num -> {
+        final String key = "limit" + id;
+        flyCache.get(key).ifPresentOrElse(num -> {
                     int countNum = num.incrementAndGet();
                     if (countNum <= 5) {  //可监控
                     } else if (countNum <= 10) {  //可监控
@@ -38,7 +37,6 @@ public class LimitRateImpl implements LimitRate {
                     }
                 },
                 () -> flyCache.put(key, new AtomicInteger(1), time));
-
-        return count.map(num -> isLimit && num.get() > limitNum).get();
+        return flyCache.get(key).map(num -> isLimit && num.get() > limitNum).get();
     }
 }

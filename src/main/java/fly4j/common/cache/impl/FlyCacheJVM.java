@@ -66,12 +66,10 @@ public class FlyCacheJVM<T> implements FlyCache<T> {
     }
 
     @Override
-    public Map<String, Object> asMap() {
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, T> asMap() {
+        Map<String, T> map = new HashMap<>();
         cacheInfoMap.forEach((key, value) -> {
-            if (get(key) != null) {
-                map.put(key, get(key));
-            }
+            get(key).ifPresent(v -> map.put(key, v));
         });
         return map;
     }
