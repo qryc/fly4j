@@ -16,7 +16,7 @@ public class BackModel {
     }
 
 
-    public static record DirVersionGenParam(String checkBaseDirStr, Predicate<File> noNeedCalMd5FileFilter,
+    public static record DirVersionGenParam(String checkBaseDirStr, Predicate<File> refusePredicate,
                                             String checkDate) {
     }
 

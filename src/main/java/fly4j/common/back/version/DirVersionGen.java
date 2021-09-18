@@ -1,6 +1,5 @@
 package fly4j.common.back.version;
 
-import fly4j.common.file.FileAndDirPredicate;
 import fly4j.common.file.FileUtil;
 import fly4j.common.lang.DateUtil;
 import fly4j.common.lang.FlyString;
@@ -40,7 +39,7 @@ public class DirVersionGen {
         AtomicLong count = new AtomicLong(0);
         List<BackModel.FileDigestModel> fileList = new ArrayList<>();
         File dirFile = new File(checkParam.checkBaseDirStr());
-        FileUtil.walkAllFileIgnoreMacShadowFile(dirFile, checkParam.noNeedCalMd5FileFilter(), file -> {
+        FileUtil.walkAllFileIgnoreMacShadowFile(dirFile, checkParam.refusePredicate(), file -> {
             //生成md5
             count.incrementAndGet();
             //生成md5
@@ -57,7 +56,7 @@ public class DirVersionGen {
         //结果信息
         environment.put("files.size", "" + fileList.size());
         environment.put("checkParam.checkDate", "" + checkParam.checkDate());
-        environment.put("checkParam.refusePredicate", "" + checkParam.noNeedCalMd5FileFilter());
+        environment.put("checkParam.refusePredicate", "" + checkParam.refusePredicate());
         return new BackModel.DirDigestAllModel(environment, checkParam.checkBaseDirStr(), fileList);
     }
 
