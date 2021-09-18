@@ -23,23 +23,23 @@ import java.util.function.Consumer;
  */
 public class FileUtil {
 
-    public static void walkAllFile(File walkDir, FileAndDirFilter noNeedFileFilter, Consumer<File> consumer) {
+    public static void walkAllFile(File walkDir, FileAndDirPredicate fileAndDirPredicate, Consumer<File> consumer) {
         File[] files = walkDir.listFiles();
 
         for (File cfile : files) {
-            if (null != noNeedFileFilter && noNeedFileFilter.accept(cfile)) {
+            if (null != fileAndDirPredicate && fileAndDirPredicate.test(cfile)) {
                 continue;
             }
             if (cfile.isDirectory()) {
                 //递归
-                walkAllFile(cfile, noNeedFileFilter, consumer);
+                walkAllFile(cfile, fileAndDirPredicate, consumer);
             } else {
                 consumer.accept(cfile);
             }
         }
     }
 
-    public static void walkAllFileIgnoreMacShadowFile(File walkDir, FileAndDirFilter noNeedFileFilter, Consumer<File> consumer) {
+    public static void walkAllFileIgnoreMacShadowFile(File walkDir, FileAndDirPredicate noNeedFileFilter, Consumer<File> consumer) {
         walkAllFile(walkDir, noNeedFileFilter, file -> {
             if (!file.getAbsolutePath().contains("._")) {
                 consumer.accept(file);

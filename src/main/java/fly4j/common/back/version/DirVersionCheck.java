@@ -1,8 +1,6 @@
 package fly4j.common.back.version;
 
-import fly4j.common.file.FileAndDirFilter;
-import fly4j.common.lang.DateUtil;
-import fly4j.common.lang.FlyResult;
+import fly4j.common.file.FileAndDirPredicate;
 import fly4j.common.lang.JsonUtils;
 import fly4j.common.lang.map.MapUtil;
 import org.apache.commons.io.FileUtils;
@@ -17,7 +15,7 @@ import java.util.*;
  */
 public class DirVersionCheck {
 
-    public static BackModel.DirCompareResult checkDirChange(File checkDir, File md5File, FileAndDirFilter noNeedCalMd5FileFilter) throws IOException {
+    public static BackModel.DirCompareResult checkDirChange(File checkDir, File md5File, FileAndDirPredicate noNeedCalMd5FileFilter) throws IOException {
 
 
         if (null == md5File) {

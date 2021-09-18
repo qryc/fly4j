@@ -1,6 +1,6 @@
 package fly4j.common.back.version;
 
-import fly4j.common.file.FileAndDirFilter;
+import fly4j.common.file.FileAndDirPredicate;
 import fly4j.common.file.FilenameUtil;
 
 import java.util.*;
@@ -14,7 +14,7 @@ public class BackModel {
     }
 
 
-    public static record DirVersionGenParam(String checkBaseDirStr, FileAndDirFilter noNeedCalMd5FileFilter,
+    public static record DirVersionGenParam(String checkBaseDirStr, FileAndDirPredicate noNeedCalMd5FileFilter,
                                             String checkDate) {
     }
 

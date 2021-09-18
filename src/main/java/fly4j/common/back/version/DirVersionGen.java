@@ -1,16 +1,14 @@
 package fly4j.common.back.version;
 
-import fly4j.common.file.FileAndDirFilter;
+import fly4j.common.file.FileAndDirPredicate;
 import fly4j.common.file.FileUtil;
 import fly4j.common.lang.DateUtil;
 import fly4j.common.lang.FlyString;
 import fly4j.common.os.OsUtil;
 import fly4j.common.pesistence.file.FileJsonStrStore;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,7 +25,7 @@ public class DirVersionGen {
         return FlyString.getPlanText(beZipSourceDir) + DateUtil.getHourStr4Name(new Date()) + ".md5";
     }
 
-    public static BackModel.DirDigestAllModel saveDirVersionModel2File(String checkDirStr, FileAndDirFilter noNeedCalMd5FileFilter, Path md5StorePath) throws IOException {
+    public static BackModel.DirDigestAllModel saveDirVersionModel2File(String checkDirStr, FileAndDirPredicate noNeedCalMd5FileFilter, Path md5StorePath) throws IOException {
         BackModel.DirVersionGenParam checkParam = new BackModel.DirVersionGenParam(checkDirStr,
                 noNeedCalMd5FileFilter,
                 DateUtil.getDateStr(new Date()));

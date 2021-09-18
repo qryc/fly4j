@@ -2,7 +2,7 @@ package fly4j.common.back.doublefile;
 
 import fly4j.common.back.version.BackModel;
 import fly4j.common.back.version.DirDigestCalculate;
-import fly4j.common.file.FileAndDirFilter;
+import fly4j.common.file.FileAndDirPredicate;
 import fly4j.common.lang.map.MapUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class DoubleFileInOneFile {
 
 
-    public static LinkedHashMap<String, List<File>> doubleFileCheck(String compareDir, FileAndDirFilter noNeedCalMd5FileFilter) {
+    public static LinkedHashMap<String, List<File>> doubleFileCheck(String compareDir, FileAndDirPredicate noNeedCalMd5FileFilter) {
         if (StringUtils.isBlank(compareDir)) {
             return new LinkedHashMap<>();
         }

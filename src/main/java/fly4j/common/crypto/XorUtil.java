@@ -41,13 +41,10 @@ public class XorUtil {
         }
     }
 
-    public static byte[] xorByte2Byte(byte[] bytes, int pass) {
+    public static byte[] xorByte2Byte(byte[] bytes, int pass) throws IOException {
         try (InputStream in = new ByteArrayInputStream(bytes); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             xorEncrypt(in, out, pass);
             return out.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 }
