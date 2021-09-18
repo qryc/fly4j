@@ -12,10 +12,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class DirCompareService {
     //md5 or size
-    public static FlyResult compareTwoDir(File histoyDir, File currentDir, BackModel.DigestType digestType, FileAndDirPredicate noNeedCalMd5FileFilter) {
+    public static FlyResult compareTwoDir(File histoyDir, File currentDir, BackModel.DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
         try {
 
             FlyResult flyResult = FlyResult.of(true);
@@ -42,7 +43,7 @@ public class DirCompareService {
      * @param doubleKillDir
      * @return
      */
-    public static Map<File, File> getDeleteDoubleFileMap(File standardDir, File doubleKillDir, FileAndDirPredicate noNeedCalMd5FileFilter) {
+    public static Map<File, File> getDeleteDoubleFileMap(File standardDir, File doubleKillDir, Predicate<File> noNeedCalMd5FileFilter) {
         /**第一步：通过长度进行第一轮筛选长度一致的可疑文件**/
         //Ready的md5
         Map<File, String> readyLenMap_file = DirDigestCalculate.getDirDigestFileMap(standardDir, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);

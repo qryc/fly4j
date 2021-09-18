@@ -9,13 +9,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Created by qryc on 2021/9/7
  */
 public class DirVersionCheck {
 
-    public static BackModel.DirCompareResult checkDirChange(File checkDir, File md5File, FileAndDirPredicate noNeedCalMd5FileFilter) throws IOException {
+    public static BackModel.DirCompareResult checkDirChange(File checkDir, File md5File, Predicate<File> noNeedCalMd5FileFilter) throws IOException {
 
 
         if (null == md5File) {

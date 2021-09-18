@@ -15,6 +15,7 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * 统一封装文件访问
@@ -23,24 +24,24 @@ import java.util.function.Consumer;
  */
 public class FileUtil {
 
-    public static void walkAllFile(File walkDir, FileAndDirPredicate fileAndDirPredicate, Consumer<File> consumer) {
+    public static void walkAllFile(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
         File[] files = walkDir.listFiles();
 
         for (File cfile : files) {
-            if (null != fileAndDirPredicate && fileAndDirPredicate.test(cfile)) {
+            if (null != refusePredicate && refusePredicate.test(cfile)) {
                 continue;
             }
             if (cfile.isDirectory()) {
                 //递归
-                walkAllFile(cfile, fileAndDirPredicate, consumer);
+                walkAllFile(cfile, refusePredicate, consumer);
             } else {
                 consumer.accept(cfile);
             }
         }
     }
 
-    public static void walkAllFileIgnoreMacShadowFile(File walkDir, FileAndDirPredicate noNeedFileFilter, Consumer<File> consumer) {
-        walkAllFile(walkDir, noNeedFileFilter, file -> {
+    public static void walkAllFileIgnoreMacShadowFile(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
+        walkAllFile(walkDir, refusePredicate, file -> {
             if (!file.getAbsolutePath().contains("._")) {
                 consumer.accept(file);
             }

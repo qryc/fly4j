@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 
 public class DirDigestCalculate {
 
@@ -23,16 +24,16 @@ public class DirDigestCalculate {
         return md5RevertMap_md5;
     }
 
-    public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, BackModel.DigestType digestType, FileAndDirPredicate noNeedCalMd5FileFilter) {
+    public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, BackModel.DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
         LinkedHashMap<File, String> digestFileMap = getDirDigestFileMap(checkBaseDirStr, digestType, noNeedCalMd5FileFilter);
         return LinkedHashMapUtil.alterKey(digestFileMap, file -> FilenameUtil.getSubPathUnix(file.getAbsolutePath(), checkBaseDirStr));
     }
 
-    public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, BackModel.DigestType digestType, FileAndDirPredicate noNeedCalMd5FileFilter) {
+    public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, BackModel.DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
         return getDirDigestFileMap(new File(checkBaseDirStr), digestType, noNeedCalMd5FileFilter);
     }
 
-    public static LinkedHashMap<File, String> getDirDigestFileMap(File checkBaseDir, BackModel.DigestType digestType, FileAndDirPredicate noNeedCalMd5FileFilter) {
+    public static LinkedHashMap<File, String> getDirDigestFileMap(File checkBaseDir, BackModel.DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
         LinkedHashMap<File, String> md5FileMap = new LinkedHashMap<>();
         AtomicLong count = new AtomicLong(0);
         FileUtil.walkAllFileIgnoreMacShadowFile(checkBaseDir.toPath().toFile(), noNeedCalMd5FileFilter, file -> {

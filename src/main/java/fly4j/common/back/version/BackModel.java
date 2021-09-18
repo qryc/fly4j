@@ -3,7 +3,9 @@ package fly4j.common.back.version;
 import fly4j.common.file.FileAndDirPredicate;
 import fly4j.common.file.FilenameUtil;
 
+import java.io.File;
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Created by qryc on 2021/9/3
@@ -14,7 +16,7 @@ public class BackModel {
     }
 
 
-    public static record DirVersionGenParam(String checkBaseDirStr, FileAndDirPredicate noNeedCalMd5FileFilter,
+    public static record DirVersionGenParam(String checkBaseDirStr, Predicate<File> noNeedCalMd5FileFilter,
                                             String checkDate) {
     }
 

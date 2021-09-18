@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 
 /**
  * Created by qryc on 2021/9/6
@@ -25,7 +26,7 @@ public class DirVersionGen {
         return FlyString.getPlanText(beZipSourceDir) + DateUtil.getHourStr4Name(new Date()) + ".md5";
     }
 
-    public static BackModel.DirDigestAllModel saveDirVersionModel2File(String checkDirStr, FileAndDirPredicate noNeedCalMd5FileFilter, Path md5StorePath) throws IOException {
+    public static BackModel.DirDigestAllModel saveDirVersionModel2File(String checkDirStr, Predicate<File> noNeedCalMd5FileFilter, Path md5StorePath) throws IOException {
         BackModel.DirVersionGenParam checkParam = new BackModel.DirVersionGenParam(checkDirStr,
                 noNeedCalMd5FileFilter,
                 DateUtil.getDateStr(new Date()));
