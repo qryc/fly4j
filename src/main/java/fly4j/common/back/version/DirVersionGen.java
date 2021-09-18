@@ -57,7 +57,7 @@ public class DirVersionGen {
         //结果信息
         environment.put("files.size", "" + fileList.size());
         environment.put("checkParam.checkDate", "" + checkParam.checkDate());
-        environment.put("checkParam.noNeedCalMd5FileFilter", "" + checkParam.noNeedCalMd5FileFilter());
+        environment.put("checkParam.refusePredicate", "" + checkParam.noNeedCalMd5FileFilter());
         return new BackModel.DirDigestAllModel(environment, checkParam.checkBaseDirStr(), fileList);
     }
 

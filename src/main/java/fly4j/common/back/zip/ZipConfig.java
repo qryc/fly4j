@@ -5,6 +5,7 @@ import fly4j.common.file.FileAndDirPredicate;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.function.Predicate;
 
 /**
  * eg: /export/mecode/* --> /export/back/**.zip
@@ -12,7 +13,7 @@ import java.nio.file.Path;
  * pathStr：文件路径
  */
 public record ZipConfig(File sourceDir, File destZipFile, String password, boolean delZip, BackModel.DigestType versionType,
-                        FileAndDirPredicate noNeedCalMd5FileFilter) {
+                        Predicate<File> refusePredicate) {
 
     public static final String DEFAULT_VERSIONDATA_PATH = "versionData";
 
