@@ -15,25 +15,25 @@ public class FlyResult {
         return new FlyResult(success).append(msg);
     }
 
+    public static FlyResult success(String msg) {
+        return new FlyResult(true).append(msg);
+    }
+
+    public static FlyResult fail(String msg) {
+        return new FlyResult(false).append(msg);
+    }
+
     public static FlyResult of(boolean success) {
         return new FlyResult(success);
     }
 
-    public FlyResult fail() {
-        this.success = false;
-        return this;
-    }
 
-    public FlyResult fail(String msg) {
+    public FlyResult appendFail(String msg) {
         this.success = false;
         this.msg.append(msg);
         return this;
     }
 
-    public FlyResult success() {
-        this.success = true;
-        return this;
-    }
 
     public FlyResult append(String msg) {
         this.msg.append(msg);
@@ -47,9 +47,10 @@ public class FlyResult {
 
     public FlyResult merge(FlyResult flyResult) {
         if (flyResult.isFail()) {
-            this.fail();
+            this.appendFail(flyResult.getMsg());
+        } else {
+            this.msg.append(flyResult.getMsg());
         }
-        this.msg.append(flyResult.getMsg());
         return this;
     }
 
