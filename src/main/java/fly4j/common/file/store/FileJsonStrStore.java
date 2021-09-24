@@ -1,4 +1,4 @@
-package fly4j.common.pesistence.file;
+package fly4j.common.file.store;
 
 import fly4j.common.lang.JsonUtils;
 

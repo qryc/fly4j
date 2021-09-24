@@ -1,6 +1,5 @@
 package fly4j.common.crypto;
 
-import fly4j.common.pesistence.file.FileStrStore;
 import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;

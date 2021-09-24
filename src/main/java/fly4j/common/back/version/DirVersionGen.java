@@ -4,7 +4,7 @@ import fly4j.common.file.FileUtil;
 import fly4j.common.lang.DateUtil;
 import fly4j.common.lang.FlyString;
 import fly4j.common.os.OsUtil;
-import fly4j.common.pesistence.file.FileJsonStrStore;
+import fly4j.common.file.store.FileJsonStrStore;
 
 import java.io.File;
 import java.io.IOException;
