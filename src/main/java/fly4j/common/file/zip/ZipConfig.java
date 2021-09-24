@@ -1,6 +1,6 @@
 package fly4j.common.file.zip;
 
-import fly4j.common.file.back.version.BackModel;
+import fly4j.common.file.version.BackModel;
 
 import java.io.File;
 import java.nio.file.Path;

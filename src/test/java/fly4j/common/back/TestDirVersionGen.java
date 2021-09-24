@@ -1,6 +1,6 @@
 package fly4j.common.back;
 
-import fly4j.common.file.back.version.DirVersionGen;
+import fly4j.common.file.version.DirVersionGen;
 import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;

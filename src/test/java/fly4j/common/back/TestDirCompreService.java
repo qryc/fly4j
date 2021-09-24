@@ -1,6 +1,6 @@
 package fly4j.common.back;
 
-import fly4j.common.file.back.DirCompareService;
+import fly4j.common.file.compare.DirCompareService;
 import fly4j.common.file.FileUtil;
 import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;

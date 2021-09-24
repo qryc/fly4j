@@ -1,7 +1,7 @@
-package fly4j.common.file.back;
+package fly4j.common.file.compare;
 
-import fly4j.common.file.back.version.BackModel;
-import fly4j.common.file.back.version.DirDigestCalculate;
+import fly4j.common.file.version.BackModel;
+import fly4j.common.file.version.DirDigestCalculate;
 import fly4j.common.lang.FlyResult;
 import fly4j.common.lang.map.MapCompareResult;
 import fly4j.common.lang.map.MapUtil;
