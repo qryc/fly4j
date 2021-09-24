@@ -1,4 +1,4 @@
-package fly4j.common.lang;
+package fly4j.common.util;
 
 import org.junit.After;
 import org.junit.Before;

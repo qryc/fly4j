@@ -2,9 +2,9 @@ package fly4j.common.file.compare;
 
 import fly4j.common.file.version.BackModel;
 import fly4j.common.file.version.DirDigestCalculate;
-import fly4j.common.lang.FlyResult;
-import fly4j.common.lang.map.MapCompareResult;
-import fly4j.common.lang.map.MapUtil;
+import fly4j.common.domain.FlyResult;
+import fly4j.common.util.map.MapCompareResult;
+import fly4j.common.util.map.MapUtil;
 
 import java.io.File;
 import java.util.ArrayList;

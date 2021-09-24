@@ -1,9 +1,7 @@
-package fly4j.common.lang;
+package fly4j.common.util;
 
 
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Objects;
 
 public class FlyPreconditions {
     public static <T> T requireNotEmpty(T obj, String message) {

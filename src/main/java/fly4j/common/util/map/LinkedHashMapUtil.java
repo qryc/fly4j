@@ -1,4 +1,4 @@
-package fly4j.common.lang.map;
+package fly4j.common.util.map;
 
 import java.util.LinkedHashMap;
 import java.util.function.Function;

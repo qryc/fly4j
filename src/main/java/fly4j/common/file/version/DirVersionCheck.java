@@ -1,7 +1,7 @@
 package fly4j.common.file.version;
 
-import fly4j.common.lang.JsonUtils;
-import fly4j.common.lang.map.MapUtil;
+import fly4j.common.util.JsonUtils;
+import fly4j.common.util.map.MapUtil;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

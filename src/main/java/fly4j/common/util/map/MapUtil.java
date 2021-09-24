@@ -1,13 +1,6 @@
-package fly4j.common.lang.map;
+package fly4j.common.util.map;
 
-import fly4j.common.lang.FlyResult;
-import fly4j.common.lang.StringConst;
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.File;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class MapUtil {

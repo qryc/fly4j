@@ -1,8 +1,8 @@
 package fly4j.common.file.version;
 
 import fly4j.common.file.FileUtil;
-import fly4j.common.lang.DateUtil;
-import fly4j.common.lang.FlyString;
+import fly4j.common.util.DateUtil;
+import fly4j.common.util.FlyString;
 import fly4j.common.os.OsUtil;
 import fly4j.common.file.store.FileJsonStrStore;
 

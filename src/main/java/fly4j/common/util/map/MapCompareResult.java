@@ -1,10 +1,9 @@
-package fly4j.common.lang.map;
+package fly4j.common.util.map;
 
-import fly4j.common.lang.FlyResult;
-import fly4j.common.lang.StringConst;
+import fly4j.common.domain.FlyResult;
+import fly4j.common.util.StringConst;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 

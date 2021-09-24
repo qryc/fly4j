@@ -1,4 +1,6 @@
-package fly4j.common.lang;
+package fly4j.common.domain;
+
+import fly4j.common.util.HtmlConvert;
 
 import java.util.ArrayList;
 import java.util.List;

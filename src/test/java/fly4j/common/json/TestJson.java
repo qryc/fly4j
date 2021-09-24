@@ -1,7 +1,6 @@
 package fly4j.common.json;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import fly4j.common.lang.JsonUtils;
+import fly4j.common.util.JsonUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

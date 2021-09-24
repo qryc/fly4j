@@ -1,4 +1,4 @@
-package fly4j.common.lang;
+package fly4j.common.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;

@@ -1,4 +1,4 @@
-package fly4j.common.lang;
+package fly4j.common.domain;
 
 
 import org.apache.commons.lang3.StringUtils;
