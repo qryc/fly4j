@@ -1,7 +1,7 @@
 package fly4j.common.back;
 
 
-import fly4j.common.back.zip.Zip4jTool;
+import fly4j.common.file.zip.Zip4jTool;
 import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;

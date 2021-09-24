@@ -1,21 +1,15 @@
 package fly4j.common.back;
 
-import fly4j.common.back.doublefile.DoubleFileInOneFile;
-import fly4j.common.back.version.DirVersionGen;
+import fly4j.common.file.back.version.DirVersionGen;
 import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * @author qryc
