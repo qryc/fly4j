@@ -1,4 +1,4 @@
-package fly4j.common.http.file;
+package fly4j.common.http;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
