@@ -1,6 +1,5 @@
-package fly4j.common.back;
+package fly4j.common.file.compare;
 
-import fly4j.common.file.compare.DoubleFileInOneFile;
 import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -12,14 +11,13 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
  * @author qryc
  */
 @RunWith(BlockJUnit4ClassRunner.class)
-public class TestDoubleFileInOneFile {
+public class TestDirCompareCore4One {
 
 
     @Before
@@ -34,9 +32,9 @@ public class TestDoubleFileInOneFile {
         File fileACopy = Path.of(TData.tDataDirPath.toString(), "readmeCopy.md").toFile();
         FileUtils.copyFile(fileA, fileACopy);
 
-        LinkedHashMap<String, List<File>> resultMap = DoubleFileInOneFile.doubleFileCheck(TData.tDataDirPath.toString(), null);
-        Assert.assertEquals(1, resultMap.size());
-        List<File> files = resultMap.values().iterator().next();
+        DirCompareCore.CompareResult compareResult = DirCompareCore.compare(DirCompareCore.CompareType.ONE, TData.tDataDirPath.toString(), null, null);
+        Assert.assertEquals(1, compareResult.oneSameObjs.size());
+        List<File> files = compareResult.oneSameObjs.get(0).sames();
         Assert.assertEquals(2, files.size());
         if (files.get(0).getAbsolutePath().equals(fileA.getAbsolutePath())) {
             Assert.assertEquals(fileA.getAbsolutePath(), files.get(0).getAbsolutePath());

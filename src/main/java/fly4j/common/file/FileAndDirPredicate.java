@@ -23,7 +23,7 @@ public class FileAndDirPredicate implements Predicate<File> {
     public boolean test(File file) {
         if (null != acceptDirOrFileNames) {
             for (String filterDir : this.acceptDirOrFileNames) {
-                if (file.isDirectory() && file.getName().contains(filterDir)) {
+                if (file.getName().contains(filterDir)) {
                     return true;
                 }
             }

@@ -34,7 +34,7 @@ public class TestFileAndDirFilter {
                 Set.of("iml", "md5"));
         Assert.assertTrue(fileAndDirPredicate.test(new File(TData.tPath.toString() + "/.idea")));
         Assert.assertTrue(fileAndDirPredicate.test(new File(TData.tPath.toString() + "/.idea/")));
-        Assert.assertFalse(fileAndDirPredicate.test(new File(TData.tPath.toString() + "/.ideaA")));
+        Assert.assertTrue(fileAndDirPredicate.test(new File(TData.tPath.toString() + "/.ideaA")));
         Assert.assertFalse(fileAndDirPredicate.test(new File(TData.tPath.toString() + "/.idea/a.txt")));
     }
 

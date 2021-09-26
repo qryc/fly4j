@@ -1,7 +1,7 @@
 package fly4j.common.back;
 
 
-import fly4j.common.file.compare.DirCompareService;
+import fly4j.common.file.compare.DirCompareCore;
 import fly4j.test.util.TData;
 import org.junit.After;
 import org.junit.Before;
@@ -21,7 +21,7 @@ public class TestDirZipService {
     public TestDirZipService() {
 //        FileAndDirFilter fileAndDirFilter = new FileAndDirFilter();
 //        fileAndDirFilter.setFilterDirNames(Set.of(""));
-        DirCompareService dirCompareService = new DirCompareService();
+        DirCompareCore dirCompareService = new DirCompareCore();
 //        dirCompareService.setNoNeedCalMd5FileFilter(fileAndDirFilter);
     }
 

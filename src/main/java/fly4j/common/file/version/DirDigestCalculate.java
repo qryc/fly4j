@@ -13,12 +13,12 @@ import java.util.function.Predicate;
 
 public class DirDigestCalculate {
 
-    public static LinkedHashMap<String, List<File>> getFilesMd5DoubleMap(List<File> doubleFilesByLen) {
+    public static LinkedHashMap<String, List<File>> getFilesMd5DoubleMap(List<File> files) {
         LinkedHashMap<String, List<File>> md5RevertMap_md5 = new LinkedHashMap<>();
-        doubleFilesByLen.forEach(file -> {
+        files.forEach(file -> {
             String md5 = FileUtil.getMD5(file);
-            List<File> files = md5RevertMap_md5.computeIfAbsent(md5, key -> new ArrayList<>());
-            files.add(file);
+            List<File> md5Files = md5RevertMap_md5.computeIfAbsent(md5, key -> new ArrayList<>());
+            md5Files.add(file);
         });
         return md5RevertMap_md5;
     }

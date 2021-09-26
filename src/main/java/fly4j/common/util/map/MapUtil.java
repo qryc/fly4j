@@ -25,34 +25,6 @@ public class MapUtil {
 
 
 
-    /**
-     * historyMd5MapRead 为基准
-     */
-    public static MapCompareResult compareTwoMap(Map<String, String> historyMd5MapRead, Map<String, String> currentMd5Map) {
-        MapCompareResult result = new MapCompareResult();
 
-
-        //遍历历史的，查找删除的Key
-        historyMd5MapRead.forEach((oldKey, oValue) -> {
-            result.count.addAndGet(1);
-            String md5New = currentMd5Map.get(oldKey);
-            if (null == md5New) {
-                result.deleteKeys.add(oldKey);
-            } else if (md5New.equals(oValue)) {
-
-            } else {
-                result.diffKeys.add(oldKey);
-            }
-        });
-
-        //遍历当前的，查找新增
-        currentMd5Map.forEach((cKey, cValue) -> {
-            String md5History = historyMd5MapRead.get(cKey);
-            if (null == md5History) {
-                result.addKeys.add(cKey);
-            }
-        });
-        return result;
-    }
 
 }

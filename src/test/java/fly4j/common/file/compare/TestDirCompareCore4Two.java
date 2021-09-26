@@ -1,6 +1,5 @@
-package fly4j.common.back;
+package fly4j.common.file.compare;
 
-import fly4j.common.file.compare.DirCompareService;
 import fly4j.common.file.FileUtil;
 import fly4j.test.util.TData;
 import org.apache.commons.io.FileUtils;
@@ -14,13 +13,12 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
 
 /**
  * @author qryc
  */
 @RunWith(BlockJUnit4ClassRunner.class)
-public class TestDirCompreService {
+public class TestDirCompareCore4Two {
 
 
     @Before
@@ -39,10 +37,17 @@ public class TestDirCompreService {
         Files.writeString(Path.of(TData.tDataDirPath.toString(), "李白/夜宿山寺.txt"), "危楼高百尺");
 
         //backDirPath 作为已经备份好的，sourceDirPath作为要删除的。
-        Map<File, File> deleteFiles = DirCompareService.getDeleteDoubleFileMap(historyDataDir, testDataDir, null);
-        Assert.assertEquals(4, deleteFiles.size());
+        DirCompareCore.CompareResult compareResult = DirCompareCore.compare(DirCompareCore.CompareType.TWO_SAME, historyDataDir.getAbsolutePath(), testDataDir.getAbsolutePath(), null);
+        Assert.assertEquals(4, compareResult.leftRightSameObjs.size());
 
-        FileUtil.deleteRepeatFiles(deleteFiles);
+        //删除重复文件
+        compareResult.leftRightSameObjs.forEach(sameObj -> {
+            sameObj.rights().forEach(deleteFile -> {
+                FileUtil.deleteRepeatFile(deleteFile, sameObj.lefts().get(0));
+            });
+        });
+
+
         //源文件新增未动
         Assert.assertTrue(Files.exists(Path.of(testDataDir.getAbsolutePath(), "李白/夜宿山寺.txt")));
         //源文件已经删除
