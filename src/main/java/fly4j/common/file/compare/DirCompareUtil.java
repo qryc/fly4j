@@ -9,8 +9,15 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class DirCompareCore {
+public class DirCompareUtil {
     public static record LeftRightSameObj(List<File> lefts, List<File> rights, String md5) {
+        @Override
+        public String toString() {
+            return "LeftRightSameObj{" +
+                    "lefts=" + lefts +
+                    ", rights=" + rights +
+                    '}';
+        }
     }
 
     public static record OneSameObj(List<File> sames, String md5) {
