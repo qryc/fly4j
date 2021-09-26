@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
-public class DirDigestCalculate {
-
+public class DigestCalculate {
+    public enum DigestType {
+        MD5, LEN
+    }
     public static LinkedHashMap<String, List<File>> getFilesMd5DoubleMap(List<File> files) {
         LinkedHashMap<String, List<File>> md5RevertMap_md5 = new LinkedHashMap<>();
         files.forEach(file -> {
@@ -23,16 +25,16 @@ public class DirDigestCalculate {
         return md5RevertMap_md5;
     }
 
-    public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, BackModel.DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
+    public static LinkedHashMap<String, String> getDirDigestMap(String checkBaseDirStr, DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
         LinkedHashMap<File, String> digestFileMap = getDirDigestFileMap(checkBaseDirStr, digestType, noNeedCalMd5FileFilter);
         return LinkedHashMapUtil.alterKey(digestFileMap, file -> FilenameUtil.getSubPathUnix(file.getAbsolutePath(), checkBaseDirStr));
     }
 
-    public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, BackModel.DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
+    public static LinkedHashMap<File, String> getDirDigestFileMap(String checkBaseDirStr, DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
         return getDirDigestFileMap(new File(checkBaseDirStr), digestType, noNeedCalMd5FileFilter);
     }
 
-    public static LinkedHashMap<File, String> getDirDigestFileMap(File checkBaseDir, BackModel.DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
+    public static LinkedHashMap<File, String> getDirDigestFileMap(File checkBaseDir, DigestType digestType, Predicate<File> noNeedCalMd5FileFilter) {
         LinkedHashMap<File, String> md5FileMap = new LinkedHashMap<>();
         AtomicLong count = new AtomicLong(0);
         FileUtil.walkAllFileIgnoreMacShadowFile(checkBaseDir.toPath().toFile(), noNeedCalMd5FileFilter, file -> {
@@ -45,9 +47,10 @@ public class DirDigestCalculate {
     }
 
 
-    public static String getMd5(File file, BackModel.DigestType versionType) {
-        return BackModel.DigestType.LEN.equals(versionType) ? "" + file.length() : FileUtil.getMD5(file);
+    public static String getMd5(File file, DigestType versionType) {
+        return DigestType.LEN.equals(versionType) ? "" + file.length() : FileUtil.getMD5(file);
     }
+
 
 
 }

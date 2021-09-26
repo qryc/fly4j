@@ -1,8 +1,7 @@
 package fly4j.common.back;
 
 
-import fly4j.common.file.version.BackModel;
-import fly4j.common.file.version.DirDigestCalculate;
+import fly4j.common.file.version.DigestCalculate;
 import fly4j.common.util.JsonUtils;
 import fly4j.common.os.OsUtil;
 import fly4j.test.util.TData;
@@ -42,7 +41,7 @@ public class TestDirMd5Calculate {
         }
         String md5 = """
                 {"Java/java语法.txt":"25","Java/Spring框架.txt":"33","readme.md":"24","李白/静夜思.txt":"15"}""";
-        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(tDataDirPath.toString(), BackModel.DigestType.LEN, null));
+        String md5FileStr = JsonUtils.writeValueAsString(DigestCalculate.getDirDigestMap(tDataDirPath.toString(), DigestCalculate.DigestType.LEN, null));
         Assert.assertEquals(md5, md5FileStr);
     }
 
@@ -53,7 +52,7 @@ public class TestDirMd5Calculate {
         }
         String md5 = """
                 {"Java/java语法.txt":"f29a628831fe901bbdd3132bbdc2313e","Java/Spring框架.txt":"5fb14d685c15f75c92d243da709cc28b","readme.md":"a723b646fe33ab2f0c8e8ed4c4583f0b","李白/静夜思.txt":"7bae0c4e8ec3f7dededc3450137efa04"}""";
-        String md5FileStr = JsonUtils.writeValueAsString(DirDigestCalculate.getDirDigestMap(tDataDirPath.toString(), BackModel.DigestType.MD5, null));
+        String md5FileStr = JsonUtils.writeValueAsString(DigestCalculate.getDirDigestMap(tDataDirPath.toString(), DigestCalculate.DigestType.MD5, null));
         Assert.assertEquals(md5, md5FileStr);
     }
 

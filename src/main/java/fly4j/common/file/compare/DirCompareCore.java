@@ -1,8 +1,7 @@
 package fly4j.common.file.compare;
 
 import fly4j.common.file.FilenameUtil;
-import fly4j.common.file.version.BackModel;
-import fly4j.common.file.version.DirDigestCalculate;
+import fly4j.common.file.version.DigestCalculate;
 import fly4j.common.util.map.MapUtil;
 
 import java.io.File;
@@ -59,9 +58,9 @@ public class DirCompareCore {
         List<LeftRightSameObj> leftRightSameObjs = new ArrayList<>();
         /**第一步：通过长度进行第一轮筛选长度一致的可疑文件**/
         //Ready的md5
-        Map<File, String> leftLenMap_file = DirDigestCalculate.getDirDigestFileMap(leftDirStr, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);
+        Map<File, String> leftLenMap_file = DigestCalculate.getDirDigestFileMap(leftDirStr, DigestCalculate.DigestType.LEN, noNeedCalMd5FileFilter);
         //取得新文件夹的Md5
-        Map<File, String> rightLenMap_file = DirDigestCalculate.getDirDigestFileMap(rightDirStr, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);
+        Map<File, String> rightLenMap_file = DigestCalculate.getDirDigestFileMap(rightDirStr, DigestCalculate.DigestType.LEN, noNeedCalMd5FileFilter);
 
 
         //查找新文件夹中和老的文件夹长度一致的文件
@@ -78,8 +77,8 @@ public class DirCompareCore {
 
         //进一步删选MD5一致的文件
         //先生成新的反向
-        LinkedHashMap<String, List<File>> leftRevertMap_md5 = DirDigestCalculate.getFilesMd5DoubleMap(leftDoubleFilesFromLen);
-        LinkedHashMap<String, List<File>> rightRevertMap_md5 = DirDigestCalculate.getFilesMd5DoubleMap(rightDoubleFileFromLen);
+        LinkedHashMap<String, List<File>> leftRevertMap_md5 = DigestCalculate.getFilesMd5DoubleMap(leftDoubleFilesFromLen);
+        LinkedHashMap<String, List<File>> rightRevertMap_md5 = DigestCalculate.getFilesMd5DoubleMap(rightDoubleFileFromLen);
         //遍历老的，如果新的有存在重复，则删除
         //key 要删除的，value，重复文件
         leftRevertMap_md5.forEach((leftMd5, leftFiles) -> {
@@ -97,7 +96,7 @@ public class DirCompareCore {
 
         /**第一步，使用Length初筛**/
         //取得文件长度的Map
-        LinkedHashMap<File, String> fileLengthMapAll = DirDigestCalculate.getDirDigestFileMap(leftDirStr, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);
+        LinkedHashMap<File, String> fileLengthMapAll = DigestCalculate.getDirDigestFileMap(leftDirStr, DigestCalculate.DigestType.LEN, noNeedCalMd5FileFilter);
         //转换Map：Key:文件长度，value：长度相等的文件列表
         LinkedHashMap<String, List<File>> lengthGroupFileMap_len = MapUtil.convert2ValueMap(fileLengthMapAll);
         //从ValueMap中查找重复文件
@@ -108,7 +107,7 @@ public class DirCompareCore {
 
         /**第二步，二次MD5检验**/
         //长度相等的一堆数据，生成新的反相Map
-        LinkedHashMap<String, List<File>> md5RevertMap_md5 = DirDigestCalculate.getFilesMd5DoubleMap(doubleFilesByLen);
+        LinkedHashMap<String, List<File>> md5RevertMap_md5 = DigestCalculate.getFilesMd5DoubleMap(doubleFilesByLen);
         //删选MD5相等的
         MapUtil.filterLinkedHashMap(md5RevertMap_md5, e -> e.getValue().size() > 1).forEach((md5Str, files) -> {
             oneSameObjs.add(new OneSameObj(files, md5Str));
@@ -119,9 +118,9 @@ public class DirCompareCore {
     public static CompareResult compareTwoFull(String leftDirStr, String rightDirStr, Predicate<File> noNeedCalMd5FileFilter) {
         CompareResult compreResult = new CompareResult();
         //取得上次的md5
-        Map<File, String> leftMap_File = DirDigestCalculate.getDirDigestFileMap(leftDirStr, BackModel.DigestType.MD5, noNeedCalMd5FileFilter);
+        Map<File, String> leftMap_File = DigestCalculate.getDirDigestFileMap(leftDirStr, DigestCalculate.DigestType.MD5, noNeedCalMd5FileFilter);
         //取得文件夹的Md5
-        Map<File, String> rightMap_File = DirDigestCalculate.getDirDigestFileMap(rightDirStr, BackModel.DigestType.MD5, noNeedCalMd5FileFilter);
+        Map<File, String> rightMap_File = DigestCalculate.getDirDigestFileMap(rightDirStr, DigestCalculate.DigestType.MD5, noNeedCalMd5FileFilter);
 
         LinkedHashMap<String, List<File>> leftGroupFileMap_md5 = MapUtil.convert2ValueMap(leftMap_File);
         LinkedHashMap<String, List<File>> rightGroupFileMap_md5 = MapUtil.convert2ValueMap(rightMap_File);
