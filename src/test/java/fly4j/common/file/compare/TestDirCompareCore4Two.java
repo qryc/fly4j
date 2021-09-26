@@ -13,6 +13,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * @author qryc
@@ -37,11 +38,11 @@ public class TestDirCompareCore4Two {
         Files.writeString(Path.of(TData.tDataDirPath.toString(), "李白/夜宿山寺.txt"), "危楼高百尺");
 
         //backDirPath 作为已经备份好的，sourceDirPath作为要删除的。
-        DirCompareCore.CompareResult compareResult = DirCompareCore.compare(DirCompareCore.CompareType.TWO_SAME, historyDataDir.getAbsolutePath(), testDataDir.getAbsolutePath(), null);
-        Assert.assertEquals(4, compareResult.leftRightSameObjs.size());
+        List<DirCompareCore.LeftRightSameObj> leftRightSameObjs = DirCompareCore.compareTwoSame(historyDataDir.getAbsolutePath(), testDataDir.getAbsolutePath(), null);
+        Assert.assertEquals(4, leftRightSameObjs.size());
 
         //删除重复文件
-        compareResult.leftRightSameObjs.forEach(sameObj -> {
+        leftRightSameObjs.forEach(sameObj -> {
             sameObj.rights().forEach(deleteFile -> {
                 FileUtil.deleteRepeatFile(deleteFile, sameObj.lefts().get(0));
             });

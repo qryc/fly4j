@@ -4,7 +4,6 @@ import fly4j.common.file.FilenameUtil;
 import fly4j.common.file.version.BackModel;
 import fly4j.common.file.version.DirDigestCalculate;
 import fly4j.common.util.map.MapUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.*;
@@ -27,16 +26,8 @@ public class DirCompareCore {
     public static record LeftRightModifyObj(File left, File right) {
     }
 
-    public static enum CompareType {
-        ONE, TWO_SAME, TWO_FULL;
-    }
 
     public static class CompareResult {
-        /**
-         * 一个文件夹对比
-         **/
-        //一个文件夹内相等的部分
-        public List<OneSameObj> oneSameObjs = new ArrayList<>();
 
         /**
          * 两个文件夹对比，不区分修改
@@ -63,28 +54,9 @@ public class DirCompareCore {
 
     }
 
-    //md5 or size
-    public static CompareResult compare(CompareType compareType, String leftDirStr, String rightDirStr, Predicate<File> noNeedCalMd5FileFilter) {
 
-        if (StringUtils.isBlank(leftDirStr) && StringUtils.isBlank(rightDirStr)) {
-            throw new RuntimeException("left & right is empty");
-        }
-        switch (compareType) {
-            case ONE: //单文件对比
-                return compareOneDir(leftDirStr, noNeedCalMd5FileFilter);
-            case TWO_SAME://两个文件夹，使用长度加速
-                return compareTwoSame(leftDirStr, rightDirStr, noNeedCalMd5FileFilter);
-            case TWO_FULL://完整对比，必须使用MD5
-                return compareTwo(leftDirStr, rightDirStr, noNeedCalMd5FileFilter);
-            default:
-                throw new UnsupportedOperationException();
-        }
-
-
-    }
-
-    private static CompareResult compareTwoSame(String leftDirStr, String rightDirStr, Predicate<File> noNeedCalMd5FileFilter) {
-        CompareResult compreResult = new CompareResult();
+    public static List<LeftRightSameObj> compareTwoSame(String leftDirStr, String rightDirStr, Predicate<File> noNeedCalMd5FileFilter) {
+        List<LeftRightSameObj> leftRightSameObjs = new ArrayList<>();
         /**第一步：通过长度进行第一轮筛选长度一致的可疑文件**/
         //Ready的md5
         Map<File, String> leftLenMap_file = DirDigestCalculate.getDirDigestFileMap(leftDirStr, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);
@@ -113,15 +85,16 @@ public class DirCompareCore {
         leftRevertMap_md5.forEach((leftMd5, leftFiles) -> {
             if (rightRevertMap_md5.containsKey(leftMd5)) {
                 LeftRightSameObj leftRightSameObj = new LeftRightSameObj(leftFiles, rightRevertMap_md5.get(leftMd5), leftMd5);
-                compreResult.leftRightSameObjs.add(leftRightSameObj);
+                leftRightSameObjs.add(leftRightSameObj);
 //                        //要删除的
             }
         });
-        return compreResult;
+        return leftRightSameObjs;
     }
 
-    private static CompareResult compareOneDir(String leftDirStr, Predicate<File> noNeedCalMd5FileFilter) {
-        CompareResult compreResult = new CompareResult();
+    public static List<OneSameObj> compareOneDir(String leftDirStr, Predicate<File> noNeedCalMd5FileFilter) {
+        List<OneSameObj> oneSameObjs = new ArrayList<>();
+
         /**第一步，使用Length初筛**/
         //取得文件长度的Map
         LinkedHashMap<File, String> fileLengthMapAll = DirDigestCalculate.getDirDigestFileMap(leftDirStr, BackModel.DigestType.LEN, noNeedCalMd5FileFilter);
@@ -138,12 +111,12 @@ public class DirCompareCore {
         LinkedHashMap<String, List<File>> md5RevertMap_md5 = DirDigestCalculate.getFilesMd5DoubleMap(doubleFilesByLen);
         //删选MD5相等的
         MapUtil.filterLinkedHashMap(md5RevertMap_md5, e -> e.getValue().size() > 1).forEach((md5Str, files) -> {
-            compreResult.oneSameObjs.add(new OneSameObj(files, md5Str));
+            oneSameObjs.add(new OneSameObj(files, md5Str));
         });
-        return compreResult;
+        return oneSameObjs;
     }
 
-    private static CompareResult compareTwo(String leftDirStr, String rightDirStr, Predicate<File> noNeedCalMd5FileFilter) {
+    public static CompareResult compareTwoFull(String leftDirStr, String rightDirStr, Predicate<File> noNeedCalMd5FileFilter) {
         CompareResult compreResult = new CompareResult();
         //取得上次的md5
         Map<File, String> leftMap_File = DirDigestCalculate.getDirDigestFileMap(leftDirStr, BackModel.DigestType.MD5, noNeedCalMd5FileFilter);

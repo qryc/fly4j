@@ -32,9 +32,9 @@ public class TestDirCompareCore4One {
         File fileACopy = Path.of(TData.tDataDirPath.toString(), "readmeCopy.md").toFile();
         FileUtils.copyFile(fileA, fileACopy);
 
-        DirCompareCore.CompareResult compareResult = DirCompareCore.compare(DirCompareCore.CompareType.ONE, TData.tDataDirPath.toString(), null, null);
-        Assert.assertEquals(1, compareResult.oneSameObjs.size());
-        List<File> files = compareResult.oneSameObjs.get(0).sames();
+        List<DirCompareCore.OneSameObj> oneSameObjs = DirCompareCore.compareOneDir(TData.tDataDirPath.toString(), null);
+        Assert.assertEquals(1, oneSameObjs.size());
+        List<File> files = oneSameObjs.get(0).sames();
         Assert.assertEquals(2, files.size());
         if (files.get(0).getAbsolutePath().equals(fileA.getAbsolutePath())) {
             Assert.assertEquals(fileA.getAbsolutePath(), files.get(0).getAbsolutePath());
