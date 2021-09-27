@@ -1,7 +1,7 @@
 package fly4j.common.file.compare;
 
 import fly4j.common.file.FileUtil;
-import fly4j.test.util.TData;
+import fly4j.common.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;

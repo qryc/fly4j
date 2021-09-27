@@ -1,6 +1,5 @@
 package fly4j.common.file.zip;
 
-import fly4j.common.file.compare.DirVersionGen;
 import fly4j.common.domain.FlyResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,10 +19,10 @@ public class DirZipService {
     public static FlyResult zipDirWithVerify(ZipConfig zipConfig) throws IOException {
         FlyResult backResult = FlyResult.of(true);
         //生成MD5摘要文件
-        Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(),
-                DirVersionGen.getDefaultVersionFileName(zipConfig.sourceDir().getAbsolutePath()));
-        DirVersionGen.saveDirVersionModel2File(zipConfig.sourceDir().toString(),
-                zipConfig.refusePredicate(), md5StorePath);
+//        Path md5StorePath = Path.of(zipConfig.getDefaultSourceMd5File().toString(),
+//                DirVersionGen.getDefaultVersionFileName(zipConfig.sourceDir().getAbsolutePath()));
+//        DirVersionGen.saveDirVersionModel2File(zipConfig.sourceDir().toString(),
+//                zipConfig.refusePredicate(), md5StorePath);
         //执行备份 backFile
         Zip4jTool.zipDir(zipConfig.destZipFile(), zipConfig.sourceDir(), zipConfig.password());
         backResult.append("executeBack success srcFile(" + zipConfig.sourceDir()).append(") zipe to (")

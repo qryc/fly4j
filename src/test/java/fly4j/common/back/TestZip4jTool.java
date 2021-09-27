@@ -2,7 +2,7 @@ package fly4j.common.back;
 
 
 import fly4j.common.file.zip.Zip4jTool;
-import fly4j.test.util.TData;
+import fly4j.common.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -17,8 +17,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static fly4j.test.util.TData.tDataDirPath;
-import static fly4j.test.util.TData.tPath;
+import static fly4j.common.test.util.TData.tDataDirPath;
+import static fly4j.common.test.util.TData.tPath;
 
 /**
  * @author qryc

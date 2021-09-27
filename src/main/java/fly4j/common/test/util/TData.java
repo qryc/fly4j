@@ -1,8 +1,8 @@
-package fly4j.test.util;
+package fly4j.common.test.util;
 
 import fly4j.common.os.OsUtil;
 import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
+import org.apache.logging.log4j.core.util.Assert;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,7 +34,7 @@ public class TData {
         if (Files.exists(tPath))
             FileUtils.forceDelete(tPath.toFile());
 
-        Assert.assertFalse(Files.exists(tDataDirPath));
+        assert (!Files.exists(tDataDirPath));
 
         //创建测试文件
         Files.createDirectories(tDataDirPath.resolve("Java"));

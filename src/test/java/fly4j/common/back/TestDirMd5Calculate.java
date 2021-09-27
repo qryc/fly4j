@@ -4,7 +4,7 @@ package fly4j.common.back;
 import fly4j.common.file.compare.DigestCalculate;
 import fly4j.common.util.JsonUtils;
 import fly4j.common.os.OsUtil;
-import fly4j.test.util.TData;
+import fly4j.common.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -15,7 +15,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static fly4j.test.util.TData.tDataDirPath;
+import static fly4j.common.test.util.TData.tDataDirPath;
 
 /**
  * @author qryc
