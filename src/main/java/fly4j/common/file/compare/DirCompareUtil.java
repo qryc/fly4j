@@ -1,7 +1,6 @@
 package fly4j.common.file.compare;
 
 import fly4j.common.file.FilenameUtil;
-import fly4j.common.file.version.DigestCalculate;
 import fly4j.common.util.map.MapUtil;
 
 import java.io.File;

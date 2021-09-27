@@ -1,4 +1,4 @@
-package fly4j.common.file.version;
+package fly4j.common.file.compare;
 
 import fly4j.common.file.FileUtil;
 import fly4j.common.file.FilenameUtil;

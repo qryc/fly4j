@@ -1,6 +1,6 @@
 package fly4j.common.file.zip;
 
-import fly4j.common.file.version.DirVersionGen;
+import fly4j.common.file.compare.DirVersionGen;
 import fly4j.common.domain.FlyResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

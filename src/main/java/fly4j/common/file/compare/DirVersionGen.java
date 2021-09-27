@@ -1,4 +1,4 @@
-package fly4j.common.file.version;
+package fly4j.common.file.compare;
 
 import fly4j.common.file.FileUtil;
 import fly4j.common.util.DateUtil;
@@ -19,9 +19,7 @@ import java.util.function.Predicate;
  * Created by qryc on 2021/9/6
  */
 public class DirVersionGen {
-    public static record DirVersionGenParam(String checkBaseDirStr, Predicate<File> refusePredicate,
-                                            String checkDate) {
-    }
+
     public static record FileDigestModel(String name, String md5, String length) {
         @Override
         public String toString() {
@@ -52,21 +50,18 @@ public class DirVersionGen {
     }
 
     public static String saveDirVersionModel2File(String checkDirStr, Predicate<File> noNeedCalMd5FileFilter, Path md5StorePath) throws IOException {
-        DirVersionGenParam checkParam = new DirVersionGenParam(checkDirStr,
-                noNeedCalMd5FileFilter,
-                DateUtil.getDateStr(new Date()));
-        String dirVersionStr = DirVersionGen.genDirVersionModel(checkParam).toString();
+        String dirVersionStr = DirVersionGen.genDirVersionStr(checkDirStr,noNeedCalMd5FileFilter).toString();
         Files.writeString(md5StorePath, dirVersionStr);
         return dirVersionStr;
     }
 
-    public static String genDirVersionModel(DirVersionGenParam checkParam) {
+    public static String genDirVersionStr(String checkDirStr, Predicate<File> noNeedCalMd5FileFilter) {
 
         var resultBuilder = new StringBuilder();
         //文件版本信息
         AtomicLong count = new AtomicLong(0);
-        File dirFile = new File(checkParam.checkBaseDirStr());
-        FileUtil.walkAllFileIgnoreMacShadowFile(dirFile, checkParam.refusePredicate(), file -> {
+        File dirFile = new File(checkDirStr);
+        FileUtil.walkAllFileIgnoreMacShadowFile(dirFile, noNeedCalMd5FileFilter, file -> {
             //生成md5
             count.incrementAndGet();
             //生成md5
@@ -79,13 +74,13 @@ public class DirVersionGen {
         resultBuilder.append("//").append("os.name:").append(OsUtil.getOsName()).append(StringUtils.LF);
         //结果信息
         resultBuilder.append("//").append("files.size:").append(count.get()).append(StringUtils.LF);
-        resultBuilder.append("//").append("checkParam.checkDate:").append(checkParam.checkDate()).append(StringUtils.LF);
-        resultBuilder.append("//").append("checkParam.refusePredicate:").append(checkParam.refusePredicate()).append(StringUtils.LF);
+        resultBuilder.append("//").append("checkParam.checkDate:").append(DateUtil.getDateStr(new Date())).append(StringUtils.LF);
+        resultBuilder.append("//").append("checkParam.refusePredicate:").append(noNeedCalMd5FileFilter).append(StringUtils.LF);
         return resultBuilder.toString();
     }
 
 
-    public static VersionCheckResult checkDirChange(File checkDir, File md5File, Predicate<File> noNeedCalMd5FileFilter) throws IOException {
+    public static VersionCheckResult checkDirChangeByFile(String checkDirStr, File md5File, Predicate<File> noNeedCalMd5FileFilter) throws IOException {
 
 
         if (null == md5File) {
@@ -93,15 +88,21 @@ public class DirVersionGen {
         }
 
         //取得上次的文件夹digest摘要信息
-        List<FileDigestModel> fileDigestModels = new ArrayList<>();
         List<String> historyStrs = Files.readAllLines(md5File.toPath());
+        return checkDirChangeByStr(checkDirStr, historyStrs, noNeedCalMd5FileFilter);
+    }
+
+    public static VersionCheckResult checkDirChangeByStr(String checkDirStr, List<String> historyStrs, Predicate<File> noNeedCalMd5FileFilter) throws IOException {
+
+        //取得上次的文件夹digest摘要信息
+        List<FileDigestModel> fileDigestModels = new ArrayList<>();
         historyStrs.forEach(s -> {
             if (StringUtils.isNoneBlank(s) && !s.startsWith("//")) {
                 fileDigestModels.add(FileDigestModel.of(s));
             }
         });
         //取得文件夹的当前的digest信息
-        Map<String, String> currentMd5Map = DigestCalculate.getDirDigestMap(checkDir.getAbsolutePath(), DigestCalculate.DigestType.MD5, noNeedCalMd5FileFilter);
+        Map<String, String> currentMd5Map = DigestCalculate.getDirDigestMap(checkDirStr, DigestCalculate.DigestType.MD5, noNeedCalMd5FileFilter);
         //进一步删选MD5一致的文件
         //先生成新的反向
         LinkedHashMap<String, List<String>> currentMd5RevertMap_md5 = MapUtil.convert2ValueMap(currentMd5Map);
@@ -120,6 +121,5 @@ public class DirVersionGen {
         return new VersionCheckResult(okFiles, deleteFiles);
 
     }
-
 
 }

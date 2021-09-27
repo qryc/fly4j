@@ -1,7 +1,7 @@
 package fly4j.common.back;
 
 
-import fly4j.common.file.version.DigestCalculate;
+import fly4j.common.file.compare.DigestCalculate;
 import fly4j.common.util.JsonUtils;
 import fly4j.common.os.OsUtil;
 import fly4j.test.util.TData;

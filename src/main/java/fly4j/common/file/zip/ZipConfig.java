@@ -1,6 +1,6 @@
 package fly4j.common.file.zip;
 
-import fly4j.common.file.version.DigestCalculate;
+import fly4j.common.file.compare.DigestCalculate;
 
 import java.io.File;
 import java.nio.file.Path;
