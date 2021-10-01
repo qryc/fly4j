@@ -7,6 +7,14 @@ public class FlyResult {
     private boolean success;
     private StringBuilder msg = new StringBuilder();
 
+    @Override
+    public String toString() {
+        return "FlyResult{" +
+                "success=" + success +
+                ", msg=" + msg +
+                '}';
+    }
+
     private FlyResult(boolean success) {
         this.success = success;
     }
