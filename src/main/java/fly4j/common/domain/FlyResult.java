@@ -43,12 +43,12 @@ public class FlyResult {
     }
 
 
-    public FlyResult append(String msg) {
+    public FlyResult append(Object msg) {
         this.msg.append(msg);
         return this;
     }
 
-    public FlyResult appendLine(String msg) {
+    public FlyResult appendLine(Object msg) {
         this.msg.append(msg).append(StringUtils.LF);
         return this;
     }
