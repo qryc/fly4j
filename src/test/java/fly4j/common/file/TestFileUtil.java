@@ -109,6 +109,8 @@ public class TestFileUtil {
         //删除相同同一个文件
         FileUtil.deleteRepeatFile(fileA, fileA);
         Assert.assertEquals(true,fileA.exists());
+        FileUtil.deleteRepeatFile(fileA, new File(fileA.getAbsolutePath()));
+        Assert.assertEquals(true,fileA.exists());
 
         //删除不同文件
         File fileB = Path.of(TData.tDataDirPath.toString(), "b.txt").toFile();
