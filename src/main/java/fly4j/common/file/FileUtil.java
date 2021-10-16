@@ -54,12 +54,25 @@ public class FileUtil {
         });
     }
 
+    public static boolean deleteEmptyDir(File file) {
+        if (isEmptyDir(file)) {
+            return file.delete();
+        } else {
+            return false;
+        }
+
+    }
+
+    public static boolean isEmptyDir(File file) {
+        return file.exists() && file.isDirectory() && file.listFiles().length == 0;
+    }
+
     public static int deleteEmptyDirs(Path checkPath) throws IOException {
         AtomicInteger count = new AtomicInteger();
         Files.walk(checkPath).forEach(path -> {
             File file = path.toFile();
-            if (file.exists() && file.isDirectory() && file.listFiles().length == 0) {
-                file.delete();
+            if (isEmptyDir(file)) {
+                deleteEmptyDir(file);
                 count.addAndGet(1);
             }
         });

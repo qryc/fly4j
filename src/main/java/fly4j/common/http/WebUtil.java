@@ -51,7 +51,7 @@ public class WebUtil {
     }
 
     public static Integer getParameterInt(HttpServletRequest request, String paramName, Integer defaultValue) {
-        return request.getParameter(paramName) != null ? Integer.valueOf(request.getParameter(paramName)) : defaultValue;
+        return StringUtils.isNotBlank(request.getParameter(paramName)) ? Integer.valueOf(request.getParameter(paramName)) : defaultValue;
     }
 
     public static Integer getParameterInt(HttpServletRequest request, String paramName) {
@@ -59,7 +59,7 @@ public class WebUtil {
     }
 
     public static Long getParameterLong(HttpServletRequest request, String paramName, Long defaultValue) {
-        return request.getParameter(paramName) != null ? Long.valueOf(request.getParameter(paramName)) : defaultValue;
+        return StringUtils.isNotBlank(request.getParameter(paramName)) ? Long.valueOf(request.getParameter(paramName)) : defaultValue;
     }
 
     public static Long getParameterLong(HttpServletRequest request, String paramName) {
