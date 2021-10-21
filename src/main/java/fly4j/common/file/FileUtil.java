@@ -26,7 +26,9 @@ public class FileUtil {
 
     public static void walkAllFile(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
         File[] files = walkDir.listFiles();
-
+        if (null == files) {
+            return;
+        }
         for (File cfile : files) {
             if (null != refusePredicate && refusePredicate.test(cfile)) {
                 continue;

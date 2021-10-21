@@ -1,5 +1,7 @@
 package fly4j.common.file.store;
 
+import fly4j.common.file.FileUtil;
+import fly4j.common.util.ExceptionUtil;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -21,6 +23,19 @@ import java.util.List;
 public class FileStrStore {
     private static Charset fileCharset = Charset.forName("utf-8");
 
+    public static List<String> getAllChildrenValues(Path parentPath, String keyPre) throws IOException {
+        List<String> values = new ArrayList<>();
+        FileUtil.walkAllFile(parentPath.toFile(), null, file -> ExceptionUtil.wrapperRuntime(() -> {
+            if (file.getName().startsWith(".")) {
+                return;
+            }
+            if (file.getName().startsWith(keyPre)) {
+                String json = Files.readString(file.toPath());
+                values.add(json);
+            }
+        }));
+        return values;
+    }
 
     public static List<String> getValues(Path parentPath, String keyPre) throws IOException {
         List<String> values = new ArrayList<>();
