@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
@@ -23,7 +24,7 @@ import java.util.function.Predicate;
  * @author qryc
  */
 public class FileUtil {
-
+    private static Charset fileCharset = Charset.forName("utf-8");
     public static void walkAllFile(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
         File[] files = walkDir.listFiles();
         if (null == files) {
@@ -48,6 +49,16 @@ public class FileUtil {
                 consumer.accept(file);
             }
         });
+    }
+
+    public static void walkFiles(File walkDir, Consumer<File> consumer) throws IOException {
+        File[] files = walkDir.listFiles();
+        if (null == files) {
+            return;
+        }
+        for (File file : walkDir.listFiles()) {
+            consumer.accept(file);
+        }
     }
 
     public static void deleteRepeatFiles(Map<File, File> deleteFileMaps) {
