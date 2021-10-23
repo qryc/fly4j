@@ -2,6 +2,8 @@ package fly4j.common.file;
 
 import org.apache.commons.io.FilenameUtils;
 
+import java.nio.file.Path;
+
 /**
  * Created by qryc on 2021/9/7
  */
@@ -37,6 +39,10 @@ public class FilenameUtil {
 
         return filePathStr.replace(baseDirPathStr + "/", "");
 
+    }
+
+    public static String getSubPathUnix2(String filePathStr, String baseDirPathStr) {
+        return Path.of(baseDirPathStr).relativize(Path.of(filePathStr)).toString();
     }
 
     public static String trimStartVirgule(String key) {

@@ -1,5 +1,6 @@
 package fly4j.common.file;
 
+import fly4j.common.os.OsUtil;
 import fly4j.common.test.util.TData;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -99,7 +100,34 @@ public class TestFileUtil {
 
 
     }
+    @Test
+    public void getSubPathUnix2() throws Exception {
+        var key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a.txt", "/export/资料/");
+        Assert.assertEquals("文件/a.txt", key);
+        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a.txt", "/export/资料");
+        Assert.assertEquals("文件/a.txt", key);
+        if(OsUtil.isWindows()){
+            key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件\\a.txt", "D:\\资料");
+            Assert.assertEquals("文件/a.txt", key);
+            key = FilenameUtil.getSubPathUnix2("D:\\文件\\a.txt", "D:");
+            Assert.assertEquals("文件/a.txt", key);
+        }
 
+        key = FilenameUtil.getSubPathUnix2("/export/资料/文件", "/export/资料/文件");
+        Assert.assertEquals("", key);
+        key = FilenameUtil.getSubPathUnix2("/export/资料/文件", "/export/资料/文件/");
+        Assert.assertEquals("", key);
+        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/", "/export/资料/文件/");
+        Assert.assertEquals("", key);
+        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a", "/export/资料/文件/");
+        Assert.assertEquals("a", key);
+        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a", "/export/资料/文件");
+        Assert.assertEquals("a", key);
+        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a/", "/export/资料/文件/");
+        Assert.assertEquals("a", key);
+
+
+    }
     @Test
     public void deleteOneRepeatFile() throws Exception {
         File fileA = Path.of(TData.tDataDirPath.toString(), "readme.md").toFile();
