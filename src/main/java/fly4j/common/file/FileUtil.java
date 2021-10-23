@@ -174,14 +174,6 @@ public class FileUtil {
     }
 
 
-    public static boolean rename(File file, String newNameNoWithEx) {
-        if (!file.isDirectory()) {
-            String prefix = FilenameUtils.getExtension(file.getName());
-            String newAbsolutePath = FilenameUtils.getFullPath(file.getAbsolutePath()) + newNameNoWithEx + "." + prefix;
-            return (file.canWrite() && file.renameTo(new File(newAbsolutePath)));
-        }
-        return false;
-    }
 
     public static File getClassPathFile(String path) {
         try {
