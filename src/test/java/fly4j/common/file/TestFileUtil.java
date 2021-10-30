@@ -100,57 +100,77 @@ public class TestFileUtil {
 
 
     }
+
     @Test
     public void getSubPathUnix2() throws Exception {
-        var key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a.txt", "/export/资料/");
-        Assert.assertEquals("文件/a.txt", key);
-        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a.txt", "/export/资料");
-        Assert.assertEquals("文件/a.txt", key);
-        if(OsUtil.isWindows()){
-            key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件\\a.txt", "D:\\资料");
+        if (OsUtil.isMac()) {
+            var key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a.txt", "/export/资料/");
             Assert.assertEquals("文件/a.txt", key);
-            key = FilenameUtil.getSubPathUnix2("D:\\文件\\a.txt", "D:");
+            key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a.txt", "/export/资料");
             Assert.assertEquals("文件/a.txt", key);
-        }
 
-        key = FilenameUtil.getSubPathUnix2("/export/资料/文件", "/export/资料/文件");
-        Assert.assertEquals("", key);
-        key = FilenameUtil.getSubPathUnix2("/export/资料/文件", "/export/资料/文件/");
-        Assert.assertEquals("", key);
-        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/", "/export/资料/文件/");
-        Assert.assertEquals("", key);
-        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a", "/export/资料/文件/");
-        Assert.assertEquals("a", key);
-        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a", "/export/资料/文件");
-        Assert.assertEquals("a", key);
-        key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a/", "/export/资料/文件/");
-        Assert.assertEquals("a", key);
+            key = FilenameUtil.getSubPathUnix2("/export/资料/文件", "/export/资料/文件");
+            Assert.assertEquals("", key);
+            key = FilenameUtil.getSubPathUnix2("/export/资料/文件", "/export/资料/文件/");
+            Assert.assertEquals("", key);
+            key = FilenameUtil.getSubPathUnix2("/export/资料/文件/", "/export/资料/文件/");
+            Assert.assertEquals("", key);
+            key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a", "/export/资料/文件/");
+            Assert.assertEquals("a", key);
+            key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a", "/export/资料/文件");
+            Assert.assertEquals("a", key);
+            key = FilenameUtil.getSubPathUnix2("/export/资料/文件/a/", "/export/资料/文件/");
+            Assert.assertEquals("a", key);
+
+
+        }
+        if (OsUtil.isWindows()) {
+            var key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件\\a.txt", "D:\\资料");
+            Assert.assertEquals("文件\\a.txt", key);
+            key = FilenameUtil.getSubPathUnix2("D:\\文件\\a.txt", "D:\\");
+            Assert.assertEquals("文件\\a.txt", key);
+
+            key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件", "D:\\资料\\文件");
+            Assert.assertEquals("", key);
+            key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件", "D:\\资料\\文件\\");
+            Assert.assertEquals("", key);
+            key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件\\", "D:\\资料\\文件\\");
+            Assert.assertEquals("", key);
+            key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件\\a", "D:\\资料\\文件\\");
+            Assert.assertEquals("a", key);
+            key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件\\a", "D:\\资料\\文件");
+            Assert.assertEquals("a", key);
+            key = FilenameUtil.getSubPathUnix2("D:\\资料\\文件\\a\\", "D:\\资料\\文件\\");
+            Assert.assertEquals("a", key);
+
+        }
 
 
     }
+
     @Test
     public void deleteOneRepeatFile() throws Exception {
         File fileA = Path.of(TData.tDataDirPath.toString(), "readme.md").toFile();
         File fileACopy = Path.of(TData.tDataDirPath.toString(), "readmeCopy.md").toFile();
-        Assert.assertEquals(true,fileA.exists());
+        Assert.assertEquals(true, fileA.exists());
 
         //删除相同同一个文件
         FileUtil.deleteRepeatFile(fileA, fileA);
-        Assert.assertEquals(true,fileA.exists());
+        Assert.assertEquals(true, fileA.exists());
         FileUtil.deleteRepeatFile(fileA, new File(fileA.getAbsolutePath()));
-        Assert.assertEquals(true,fileA.exists());
+        Assert.assertEquals(true, fileA.exists());
 
         //删除不同文件
         File fileB = Path.of(TData.tDataDirPath.toString(), "b.txt").toFile();
         FileUtil.deleteRepeatFile(fileA, fileB);
-        Assert.assertEquals(true,fileA.exists());
+        Assert.assertEquals(true, fileA.exists());
 
         //删除重复文件
-        Assert.assertEquals(false,fileACopy.exists());
-        FileUtils.copyFile(fileA,fileACopy);
-        Assert.assertEquals(true,fileACopy.exists());
+        Assert.assertEquals(false, fileACopy.exists());
+        FileUtils.copyFile(fileA, fileACopy);
+        Assert.assertEquals(true, fileACopy.exists());
         FileUtil.deleteRepeatFile(fileA, fileACopy);
-        Assert.assertEquals(false,fileA.exists());
+        Assert.assertEquals(false, fileA.exists());
     }
 
     private static void testFilePath() {
