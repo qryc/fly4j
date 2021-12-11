@@ -55,12 +55,40 @@ public class FileUtil {
         }
     }
 
+    public static void walkAllDir(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
+        File[] files = walkDir.listFiles();
+        if (null == files) {
+            return;
+        }
+        for (File cfile : files) {
+            if (null != refusePredicate && refusePredicate.test(cfile)) {
+                continue;
+            }
+            if (cfile.isDirectory()) {
+                consumer.accept(cfile);
+                //递归
+                walkAllDir(cfile, refusePredicate, consumer);
+            } else {
+
+            }
+        }
+    }
+
     public static void walkAllFileIgnoreMacShadowFile(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
         walkAllFile(walkDir, refusePredicate, file -> {
             if (!file.getAbsolutePath().contains("._")) {
                 consumer.accept(file);
             }
         });
+    }
+
+    public static void walkAllDirIgnoreHiddenDir(File walkDir, Consumer<File> consumer) {
+        walkAllDir(walkDir, file -> {
+            if (file.isDirectory() && file.getName().startsWith(".")) {
+                return true;
+            }
+            return false;
+        }, consumer);
     }
 
     public static void walkFiles(File walkDir, Consumer<File> consumer) throws IOException {
@@ -101,9 +129,13 @@ public class FileUtil {
     public static boolean isEmptyDirIgnoreSpecial(File file) {
         if (file.exists() && file.isDirectory()) {
             for (File f : file.listFiles()) {
-                if (!emptyFiles.contains(f.getName())) {
-                    return false;
+                if (f.getName().contains("._")) {
+                    continue;
                 }
+                if (emptyFiles.contains(f.getName())) {
+                    continue;
+                }
+                return false;
             }
             return true;
         } else {
