@@ -25,6 +25,18 @@ import java.util.function.Predicate;
  */
 public class FileUtil {
     private static Charset fileCharset = Charset.forName("utf-8");
+    /**
+     * 特殊文件视作空文件
+     * .DS_Store
+     * Thumbs.db 是一个用于Microsoft Windows XP或mac os x缓存Windows Explorer的缩略图的文件
+     */
+    public static final Set<String> emptyFiles = new HashSet<>();
+
+    static {
+        emptyFiles.add(".DS_Store");
+        emptyFiles.add("Thumbs.db");
+    }
+
     public static void walkAllFile(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
         File[] files = walkDir.listFiles();
         if (null == files) {
@@ -67,8 +79,14 @@ public class FileUtil {
         });
     }
 
-    public static boolean deleteEmptyDir(File file) {
-        if (isEmptyDir(file)) {
+    public static boolean deleteEmptyDirIgnoreSpecial(File file) {
+        //删除特殊文件
+        for (File f : file.listFiles()) {
+            if (f.isFile() && emptyFiles.contains(f.getName())) {
+                f.delete();
+            }
+        }
+        if (isEmptyDirIgnoreSpecial(file)) {
             return file.delete();
         } else {
             return false;
@@ -76,16 +94,29 @@ public class FileUtil {
 
     }
 
-    public static boolean isEmptyDir(File file) {
-        return file.exists() && file.isDirectory() && file.listFiles().length == 0;
+    /**
+     * @param file
+     * @return
+     */
+    public static boolean isEmptyDirIgnoreSpecial(File file) {
+        if (file.exists() && file.isDirectory()) {
+            for (File f : file.listFiles()) {
+                if (!emptyFiles.contains(f.getName())) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static int deleteEmptyDirs(Path checkPath) throws IOException {
+    public static int deleteEmptyDirsIgnoreSpecial(Path checkPath) throws IOException {
         AtomicInteger count = new AtomicInteger();
         Files.walk(checkPath).forEach(path -> {
             File file = path.toFile();
-            if (isEmptyDir(file)) {
-                deleteEmptyDir(file);
+            if (isEmptyDirIgnoreSpecial(file)) {
+                deleteEmptyDirIgnoreSpecial(file);
                 count.addAndGet(1);
             }
         });
@@ -172,7 +203,6 @@ public class FileUtil {
             }
         }
     }
-
 
 
     public static File getClassPathFile(String path) {
