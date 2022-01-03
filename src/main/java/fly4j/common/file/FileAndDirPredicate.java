@@ -20,6 +20,13 @@ public class FileAndDirPredicate implements Predicate<File> {
     }
 
     @Override
+    public String toString() {
+        return "文件/文件夹名=" + acceptDirOrFileNames +
+                ", 文件类型=" + acceptExtensions;
+
+    }
+
+    @Override
     public boolean test(File file) {
         if (null != acceptDirOrFileNames) {
             for (String filterDir : this.acceptDirOrFileNames) {

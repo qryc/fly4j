@@ -37,6 +37,22 @@ public class FileUtil {
         emptyFiles.add("Thumbs.db");
     }
 
+    public static void walkAllFileAndDir(File walkDir, Consumer<File> consumer) {
+        File[] files = walkDir.listFiles();
+        if (null == files) {
+            return;
+        }
+        for (File cfile : files) {
+            if (cfile.isDirectory()) {
+                consumer.accept(cfile);
+                //递归
+                walkAllFileAndDir(cfile, consumer);
+            } else {
+                consumer.accept(cfile);
+            }
+        }
+    }
+
     public static void walkAllFile(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
         File[] files = walkDir.listFiles();
         if (null == files) {
