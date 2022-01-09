@@ -27,13 +27,13 @@ public class FileUtil {
     private static Charset fileCharset = Charset.forName("utf-8");
     /**
      * 特殊文件视作空文件
-     * .DS_Store
-     * Thumbs.db 是一个用于Microsoft Windows XP或mac os x缓存Windows Explorer的缩略图的文件
      */
     public static final Set<String> emptyFiles = new HashSet<>();
 
     static {
+        //DS_Store是Mac OS保存文件夹的自定义属性的隐藏文件，如文件的图标位置或背景色
         emptyFiles.add(".DS_Store");
+        // Thumbs.db 是一个用于Microsoft Windows XP或mac os x缓存Windows Explorer的缩略图的文件
         emptyFiles.add("Thumbs.db");
     }
 
