@@ -31,7 +31,9 @@ public class TestZip4jTool {
 
     @Before
     public void setup() throws Exception {
-        TData.createTestFiles();
+        TData.deleteTestDir();
+        //创建测试文件
+        TData.createTestDefaultFiles();
     }
 
     @Test

@@ -4,6 +4,7 @@ import fly4j.common.os.OsUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.core.util.Assert;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -27,16 +28,15 @@ public class TData {
         System.out.println("sourceDirPath:" + tDataDirPath);
     }
 
-
+    @Deprecated
     public static void createTestFiles() throws Exception {
-        //删除并重新创建测试目录
-        System.out.println("createTestFiles in:" + tPath);
-        if (Files.exists(tPath))
-            FileUtils.forceDelete(tPath.toFile());
-
-        assert (!Files.exists(tDataDirPath));
-
+        deleteTestDir();
         //创建测试文件
+        createTestDefaultFiles();
+
+    }
+
+    public static void createTestDefaultFiles() throws IOException {
         Files.createDirectories(tDataDirPath.resolve("Java"));
         Files.createDirectories(tDataDirPath.resolve("李白"));
         Files.writeString(tDataDirPath.resolve("readme.md"), "个人资料保存目录");
@@ -44,7 +44,15 @@ public class TData {
         Files.writeString(tDataDirPath.resolve("Java/Spring框架.txt"), "Spring框架IOC，AOP，支持MVC");
         Files.writeString(tDataDirPath.resolve("李白/静夜思.txt"), "窗前明月光");
         Files.createDirectories(tDataDirPath.resolve("todo"));
+    }
 
+    public static void deleteTestDir() throws IOException {
+        //删除并重新创建测试目录
+        System.out.println("createTestFiles in:" + tPath);
+        if (Files.exists(tPath))
+            FileUtils.forceDelete(tPath.toFile());
+
+        assert (!Files.exists(tDataDirPath));
     }
 
 
