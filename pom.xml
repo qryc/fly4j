@@ -127,7 +127,6 @@
         </dependency>
 
 
-
         <!--json-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -175,6 +174,21 @@
             <artifactId>commons-email</artifactId>
             <version>${commons-email.version}</version>
         </dependency>
+
+        <!--bench mark-->
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.19</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>1.19</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
     <build>
 
