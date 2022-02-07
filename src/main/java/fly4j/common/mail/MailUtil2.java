@@ -14,9 +14,10 @@ public class MailUtil2 {
     }
 
     public void sendSimpleMail(String subject, String content, String mailTo) throws EmailException {
-
         MailUtil.sendSimpleMail(mailConfigModel, subject, content, mailTo);
     }
 
-
+    public void setMailConfigModel(MailUtil.MailConfigModel mailConfigModel) {
+        this.mailConfigModel = mailConfigModel;
+    }
 }
