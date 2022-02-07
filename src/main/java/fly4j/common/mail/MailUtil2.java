@@ -4,7 +4,7 @@ import org.apache.commons.mail.EmailException;
 
 /**
  * 非静态
- * Created by qiuriyuchen on 2022/02/07.
+ * Created by qryc on 2022/02/07.
  */
 public class MailUtil2 {
     private MailUtil.MailConfigModel mailConfigModel;
