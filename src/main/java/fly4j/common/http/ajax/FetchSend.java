@@ -17,6 +17,7 @@ public interface FetchSend {
         try {
             writer.write(this.getAjaxPrintStr());
         } catch (Exception e) {
+            log.error("doAjaxError",e);
             writer.write(e.getMessage());
         } finally {
             if (null != writer) {
