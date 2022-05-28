@@ -71,6 +71,26 @@ public class FileUtil {
         }
     }
 
+    public static void walkAllFileIgnoreHidden(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
+        File[] files = walkDir.listFiles();
+        if (null == files) {
+            return;
+        }
+        for (File cfile : files) {
+            if (null != refusePredicate && refusePredicate.test(cfile)) {
+                continue;
+            }
+            if (cfile.isDirectory()) {
+                //递归
+                walkAllFile(cfile, refusePredicate, consumer);
+            } else {
+                if (!cfile.getName().startsWith(".")) {
+                    consumer.accept(cfile);
+                }
+            }
+        }
+    }
+
     public static void walkAllDir(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
         File[] files = walkDir.listFiles();
         if (null == files) {
