@@ -82,7 +82,9 @@ public class FileUtil {
             }
             if (cfile.isDirectory()) {
                 //递归
-                walkAllFile(cfile, refusePredicate, consumer);
+                if (!cfile.getName().startsWith(".")) {
+                    walkAllFileIgnoreHidden(cfile, refusePredicate, consumer);
+                }
             } else {
                 if (!cfile.getName().startsWith(".")) {
                     consumer.accept(cfile);
