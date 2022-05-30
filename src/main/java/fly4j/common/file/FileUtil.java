@@ -93,6 +93,7 @@ public class FileUtil {
         }
     }
 
+
     public static void walkAllDir(File walkDir, Predicate<File> refusePredicate, Consumer<File> consumer) {
         File[] files = walkDir.listFiles();
         if (null == files) {
@@ -208,6 +209,9 @@ public class FileUtil {
     }
 
     public static boolean isImg(File file) {
+        if (file.getName().endsWith(".svg")) {
+            return true;
+        }
         try {
             BufferedImage image = ImageIO.read(file);
             return image != null;
