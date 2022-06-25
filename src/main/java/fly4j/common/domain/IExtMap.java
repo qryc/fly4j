@@ -29,6 +29,9 @@ public interface IExtMap<T> {
 
     @JsonIgnore
     default T setExtStringValue(String key, Object value) {
+        if (null == value) {
+            return (T) this;
+        }
         this.getExtMap().put(key, value.toString());
         return (T) this;
     }
