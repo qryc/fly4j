@@ -23,8 +23,12 @@ public class MapUtil {
         return valueMap;
     }
 
-
-
+    public static Boolean getBooleanDFalse(Map<String, String> map, String key) {
+        if (null == map.get(key)) {
+            return false;
+        }
+        return Boolean.valueOf(map.get(key));
+    }
 
 
 }

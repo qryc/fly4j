@@ -7,7 +7,6 @@ import java.util.Map;
 public interface IExtMap<T> {
     Map<String, String> getExtMap();
 
-    T setExtMap(Map<String, String> extMap);
 
     @JsonIgnore
     default Boolean getExtBooleanValue(String key) {
