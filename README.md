@@ -22,4 +22,4 @@ LimitRate limitRate = new LimitRateImpl(flyCache, 20, 2);
 // return is limit
 boolean isHot = limitRate.isHotLimit("127.0.0.1");
 ```
-
+## FileUtil
