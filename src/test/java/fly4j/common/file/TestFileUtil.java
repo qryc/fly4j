@@ -24,7 +24,7 @@ public class TestFileUtil {
 
     @Before
     public void setup() throws Exception {
-        TData.createTestFiles();
+        TData.setup();
     }
 
 

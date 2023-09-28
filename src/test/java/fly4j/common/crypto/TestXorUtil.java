@@ -18,7 +18,7 @@ public class TestXorUtil {
 
     @Before
     public void setup() throws Exception {
-        TData.createTestFiles();
+        TData.setup();
     }
 
     @Test

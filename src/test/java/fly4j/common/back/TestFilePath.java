@@ -19,7 +19,7 @@ import java.nio.file.Path;
 public class TestFilePath {
     @Before
     public void setup() throws Exception {
-        TData.createTestFiles();
+        TData.setup();
     }
 
     @Test

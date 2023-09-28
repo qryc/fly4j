@@ -12,6 +12,7 @@ import java.nio.file.Path;
  * Created by qryc on 2020/3/15.
  */
 public class TData {
+    public static Path readOnlyTestPath;
     //测试数据目录 userHome/flyDataTest
     public static Path tPath;
     //源文件 userHome/flyDataTest/sourcePath
@@ -23,17 +24,10 @@ public class TData {
             tPath = Path.of("D:/flyDataTest");
         } else {
             tPath = Path.of(System.getProperty("user.home"), "flyDataTest");
+            readOnlyTestPath=Path.of("/Volumes/HomeWork/FlyCode/FlyDoc/TestFile/");
         }
         tDataDirPath = tPath.resolve("资料");
         System.out.println("sourceDirPath:" + tDataDirPath);
-    }
-
-    @Deprecated
-    public static void createTestFiles() throws Exception {
-        deleteTestDir();
-        //创建测试文件
-        createTestDefaultFiles();
-
     }
 
     public static void createTestDefaultFiles() throws IOException {
@@ -48,12 +42,22 @@ public class TData {
 
     public static void deleteTestDir() throws IOException {
         //删除并重新创建测试目录
-        System.out.println("createTestFiles in:" + tPath);
+        System.out.println("deleteTestDir in:" + tPath);
         if (Files.exists(tPath))
             FileUtils.forceDelete(tPath.toFile());
 
         assert (!Files.exists(tDataDirPath));
     }
 
+    public static void setup() throws Exception {
+        //删除测试文件
+        deleteTestDir();
+        //创建测试文件
+        createTestDefaultFiles();
+    }
+
+    public static void tearDown() throws Exception {
+        FileUtils.forceDelete(TData.tPath.toFile());
+    }
 
 }
