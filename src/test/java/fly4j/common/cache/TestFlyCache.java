@@ -10,11 +10,16 @@ public class TestFlyCache {
 
     @Test
     public void testCache() throws Exception {
+        //创建一个大小位1000的缓存
         FlyCache flyCache = new FlyCacheJVM(1000);
+        //放入一个元素
         flyCache.put("akey", "avalue", 2);
+        //判断已经加入
         Assert.assertEquals("avalue", flyCache.get("akey"));
+        //判断生命周期
         Assert.assertTrue(flyCache.ttl("akey") > 0);
         Thread.sleep(3);
+        //判断已经过期
         Assert.assertNull(flyCache.get("akey"));
         Assert.assertTrue(flyCache.ttl("akey") < 0);
     }
