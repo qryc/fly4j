@@ -3,6 +3,7 @@ package fly4j.common.http;
 import fly4j.common.domain.FlyResult;
 import fly4j.common.file.BroserUtil;
 import fly4j.common.file.FileUtil;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +40,9 @@ public class FileDown {
         response.reset();
         if (FileUtil.isImg(file)) {
             response.setContentType("image/jpeg");
-        } else {
+        }else if(FileUtil.getSuffix(file).equals("mht")) {
+            response.setContentType("text/html");
+        }else {
             if (BroserUtil.isPacked(file.getName(), false)) {
                 downFileToResponse(response, file);
                 return;

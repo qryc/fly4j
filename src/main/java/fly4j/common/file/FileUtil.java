@@ -323,5 +323,14 @@ public class FileUtil {
         }
     }
 
+    public static String getSuffix(File file) {
+        int lastDotIndex = file.getName().lastIndexOf(".");
+        if (-1 == lastDotIndex) {
+            return "";
+        } else {
+            return file.getName().substring(lastDotIndex + 1);
+        }
+    }
+
 
 }
