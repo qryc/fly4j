@@ -40,10 +40,12 @@ public class TestFileUtil {
     @Test
     public void testFileSub() throws Exception {
         //toRealPath 要求文件必须存在，toAbsolutePath不需要
-        System.out.println(Path.of("/../a.txt"));
-        System.out.println(Path.of("/../a.txt").toAbsolutePath());
-        System.out.println(Path.of("/../a.txt").normalize());
-        System.out.println(new File("/../a.txt").getAbsolutePath());
+        String pathStr = "/../a.txt";
+        Assert.assertEquals(pathStr, Path.of(pathStr).toString());
+        Assert.assertEquals(pathStr, Path.of(pathStr).toAbsolutePath().toString());
+        Assert.assertEquals("/a.txt", Path.of(pathStr).normalize().toString());
+        Assert.assertEquals(pathStr, (new File(pathStr).getAbsolutePath().toString()));
+
 //        System.out.println(Path.of("D:\\flyNetDik\\admin/../admin\\backData").toRealPath());
 //
 //        System.out.println(Path.of("/../a.txt").toRealPath());
