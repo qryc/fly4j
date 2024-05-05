@@ -24,10 +24,10 @@ public class TrackContext {
         return threadLocal.get().trackInfoStrBuilder.toString();
     }
 
-    public static void appendTrackInfo(String iknowInfoAppend) {
+    public static void appendTrackInfo(String traceStr) {
         if (null == threadLocal.get())
             reset();
-        threadLocal.get().trackInfoStrBuilder.append(iknowInfoAppend).append(SPLIT);
-        System.out.println(iknowInfoAppend);
+        threadLocal.get().trackInfoStrBuilder.append(traceStr).append(SPLIT);
+        System.out.println(traceStr);
     }
 }
