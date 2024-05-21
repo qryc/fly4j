@@ -1,0 +1,59 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>
+        $!{ArticleContent.title()}
+    </title>
+    #parse("/WEB-INF/vm/common/head.vm")
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+<main id="mainDiv">
+    #parse("/WEB-INF/vm/common/menu-$!{clientConfig.vm}.vm")
+    #if(!${clientConfig.fullScreen})
+        <table style="border-color: transparent" width="100%">
+            <tr>
+                <td style="vertical-align:top;border-color: transparent" width="300px">
+                    <div class="dtree">
+
+
+
+                        <script type="text/javascript">
+
+                            d = new dTree('d');
+                                #foreach($d in $dtreeObjs)
+                                d.add($!{d.id},$!{d.pid}, '$!{d.name}', '$!{d.url}', '$!{d.name}', '$!{d.target}', '$!{d.icon}', '$!{d.iconOpen}', $!{d.open});
+                                #end
+
+                            document.write(d);
+
+                        </script>
+
+                    </div>
+
+                    <a href="/article/articles.do?buId=lastEdit&rootPath=$!{item.value}"> $!{item.key}</a> <br/>
+
+                </td>
+                <td style="vertical-align:top;border-color: transparent">
+                    ${cplArticle.articleOrganize.mdEditor}
+                    #if(${cplArticle.articleOrganize.mdEditor}=="tinyMce")
+                        #parse("/WEB-INF/vm/article/editRichText_tiny.vm")
+                    #end
+                    #if(${cplArticle.articleOrganize.mdEditor}=="ckEditor")
+                    #parse("/WEB-INF/vm/article/editRichText_ck.vm")
+                #end
+                </td>
+            </tr>
+        </table>
+    #else
+        #parse("/WEB-INF/vm/article/editRichText_tiny.vm")
+    #end
+</main>
+</body>
+</html>
+

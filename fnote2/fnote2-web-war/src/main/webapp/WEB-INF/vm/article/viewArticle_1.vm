@@ -1,0 +1,17 @@
+
+
+<!-- 追加区域-->
+#parse("/WEB-INF/vm/article/viewArticleAppend.vm")
+
+<h1 style="margin: 0 0;">${articleInfoVo.titleHtml}</h1>
+<div>
+    ${articleInfoVo.html}
+</div>
+
+<div class="entry-header">
+    创建于(${articleInfoVo.createTimeStr} )
+    修改( ${articleInfoVo.modifyTimeStr} )<br/>
+    文件：$!{noteFileStrDecode}<br/>
+    /article/viewArticle.do?id=${cplArticle.extId}<br/>
+    http://fly4j.cn/article/viewArticle.do?id=${cplArticle.extId}<br/>
+</div>

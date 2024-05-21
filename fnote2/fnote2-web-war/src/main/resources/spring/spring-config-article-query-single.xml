@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <bean id="articleLoad" class="flynote.article.query.impl.ArticleLoadImpl">
+        <property name="articleRepository" ref="articleRepositoryFile"></property>
+        <property name="pathService" ref="pathService"></property>
+<!--        <property name="filters">-->
+<!--            <list>-->
+<!--                                <bean class="qryc.article.GitArticleLoadFilter" p:articleRepository-ref="articleRepositoryFile"></bean>-->
+<!--            </list>-->
+<!--        </property>-->
+    </bean>
+    <bean id="articleViewQuery" class="flynote.article.app.articleview.ArticleViewQueryImpl">
+        <property name="articleLoad" ref="articleLoad"></property>
+        <property name="filterList">
+            <list>
+                <bean class="farticle.domain.extension.impl.query.view.MdFilter"></bean>
+                <bean class="farticle.domain.extension.impl.query.view.PicBedFilter">
+                    <property name="pathService" ref="pathService"></property>
+                </bean>
+                <bean class="farticle.domain.extension.impl.query.view.MobileFitFilter"></bean>
+                <bean class="farticle.domain.extension.impl.query.view.LocalHerfFilter"></bean>
+                <bean class="farticle.domain.extension.impl.query.view.WorkSpaceViewFilter"></bean>
+            </list>
+        </property>
+    </bean>
+    <bean id="eventCenter" class="fnote.common.event.EventCenter">
+        <property name="eventHandlers">
+            <list>
+                <bean class="fly.application.git.GitHandler">
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+</beans>
+

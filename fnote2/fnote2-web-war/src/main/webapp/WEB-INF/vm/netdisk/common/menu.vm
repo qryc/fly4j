@@ -1,0 +1,39 @@
+<style type="text/css">
+        #if(!${pageConfig.pc})
+        .nav-link {
+            display: block;
+            padding: 0.5rem 0.4rem;
+        }
+        #end
+</style>
+
+<header id="topDiv" class="navbar">
+    <ul class="nav titleFont">
+
+        <li class="nav-item">
+            <input type="text" name="searchTitle" id="searchTitle"
+                   value="$!{searchTitle}" size="6" onblur="globalSearch()"
+                   onkeydown="if(event.keyCode==13){globalSearch();}">
+        </li>
+
+        <li class="nav-item" v-for="item in menu.menuItems">
+            <a class="nav-link" v-bind:href="item.href"> {{ item.title }}</a>
+        </li>
+
+        <li class="nav-item dropdown" v-if="menu.showDownMenu">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">${flyContext.pin}</a>
+            <div class="dropdown-menu">
+                <template v-for="item in menu.downMenuItems">
+                    <a class="dropdown-item" v-bind:href="item.href"> {{ item.title }}</a>
+                </template>
+            </div>
+        </li>
+    </ul>
+</header>
+
+#if(${pageConfig.fullScreen})
+<script>
+    // $("#topDiv").hide();
+</script>
+#end
+

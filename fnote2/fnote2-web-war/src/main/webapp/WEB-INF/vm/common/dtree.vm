@@ -1,0 +1,16 @@
+<div class="dtree">
+
+
+    <br/>
+    <script type="text/javascript">
+
+        d = new dTree('d');
+            #foreach($d in $dtreeObjs)
+            d.add($!{d.id},$!{d.pid}, '$!{d.name}', '$!{d.url}', '$!{d.name}', '$!{d.target}', '$!{d.icon}', '$!{d.iconOpen}', $!{d.open});
+            #end
+
+        document.write(d);
+
+    </script>
+
+</div>

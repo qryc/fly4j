@@ -1,0 +1,29 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+</head>
+<body>
+
+<main id="mainDiv">
+    #parse("/WEB-INF/vm/common/menu-$!{clientConfig.vm}.vm")
+    <form name="addBlogForm" id="addBlogForm" action="/articleMaintain/addBlog4Md.do" method="post"
+          onsubmit="return check();">
+        <div class="entry-header">
+            <a href="javascript:check()" target="_self">提交变动</a>
+        </div>
+        <input type="hidden" name="noteFileStr" value="$!alterBlogParam.noteFileStr"/>
+        #if(${pageConfig.pc})
+            <textarea class="mdTextArea" rows="100" name="mdContent"
+                      id="mdContent">$!alterBlogParam.mdContent</textarea>
+        #else
+            <textarea class="mdTextAreaMobile" rows="25" name="mdContent"
+                      id="mdContent">$!alterBlogParam.mdContent</textarea>
+        #end
+    </form>
+</main>
+</body>
+</html>
+
+

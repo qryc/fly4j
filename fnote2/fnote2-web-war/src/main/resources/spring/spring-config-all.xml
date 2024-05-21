@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
+    <!-- 通用配置 开始  -->
+
+
+    <bean id="mailUtil2" class="fly4j.common.mail.MailUtil2">
+        <property name="mailConfigModel">
+            <bean class="fly4j.common.mail.MailUtil$MailConfigModel">
+                <property name="hostName" value="${sysEmailConfig.hostName}"></property>
+                <property name="userName" value="${sysEmailConfig.userName}"></property>
+                <property name="password" value="${sysEmailConfig.password}"></property>
+                <property name="fromEmail" value="${sysEmailConfig.fromEmail}"></property>
+            </bean>
+        </property>
+    </bean>
+    <!-- 只可以在Servlet和jsp和Spring生命周期无关类中，Spring生命周期可以管理的，使用springContextHolder会造成依赖不清楚-->
+    <bean id="springContextHolder" class="fnote.common.web.SpringContextHolder"
+          lazy-init="false"/>
+    <!-- 通用配置 结束 -->
+    <!-- 每个模块独立Spring配置-->
+    <import resource="classpath:spring/spring-config-repository.xml"/>
+    <import resource="classpath:spring/spring-config-user.xml"/>
+    <import resource="classpath:spring/spring-config-login.xml"/>
+    <import resource="classpath:spring/spring-config-article-maintain.xml"/>
+    <import resource="classpath:spring/spring-config-article-query-list.xml"/>
+    <import resource="classpath:spring/spring-config-article-query-single.xml"/>
+    <import resource="classpath:spring/spring-config-article-share.xml"/>
+    <import resource="classpath:spring/spring-config-back.xml"/>
+    <import resource="classpath:spring/spring-config-deploy.xml"/>
+    <!--    <import resource="classpath:spring/spring-config-dt.xml"/>-->
+    <bean class="fnote.web.listener.NoteBootInfoLogger">
+        <property name="pathService" ref="pathService"></property>
+    </bean>
+    <import resource="classpath:spring/spring-config-menu.xml"/>
+
+    <beans profile="online">
+<!--        <context:property-placeholder location="classpath:properties.online/fly.properties"/>-->
+        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.online/fly.properties"/>
+
+    </beans>
+    <beans profile="dev">
+<!--        <context:property-placeholder location="classpath:properties.dev/fly.properties"/>-->
+        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.dev/fly.properties"/>
+    </beans>
+    <beans profile="dev_online_data">
+<!--        <context:property-placeholder location="classpath:properties.dev_online_data/fly.properties"/>-->
+        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.dev_online_data/fly.properties"/>
+    </beans>
+</beans>

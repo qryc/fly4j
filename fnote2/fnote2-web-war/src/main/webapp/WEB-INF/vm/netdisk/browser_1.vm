@@ -1,0 +1,83 @@
+<header id="topDiv" class="d-flex flex-wrap">
+    <!-- 按钮：用于打开模态框 -->
+    <button type="button" class="btn btn-outline-primary  mr-1" data-toggle="modal" data-target="#createDirModal">
+        创建文件夹
+    </button>
+    <button type="button" class="btn btn-primary  mr-1" data-toggle="modal" data-target="#fileUploadModal">
+        文件上传
+    </button>
+    <button type="button" class="btn btn-primary  mr-1" onclick="submitBrowser('/browser/move.do')">
+        移动文件
+    </button>
+    <button type="button" class="btn btn-primary  mr-1" data-toggle="modal" data-target="#renameDirModal">
+        重命名文件
+    </button>
+
+    <button type="button" class="btn btn-outline-secondary mr-1" onclick="submitFileOperationNoInput('delete')">
+        删除文件
+    </button>
+    <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+        ${flyContext.pin}
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="/article/articles.do?buId=lastEdit">文章管理</a>
+    </div>
+</header>
+<!-- 展示当前文件夹信息-->
+<div class="entry-header">
+    $fileUtils.byteCountToDisplaySize(${browserResult.totalSize})>
+    in ${browserResult.fileCount} 文件
+</div>
+
+
+#if(${operationResult.message})
+<div class="alert alert-success">
+    ${operationResult.message}
+</div>
+#end
+#if(${operationResult.error})
+<div class="alert alert-danger">
+    Error!!!: ${operationResult.error}
+</div>
+#end
+<div style="font-size: 0.8em" class="mt-1">
+    <a href="/browser/list.do?sort=1&amp;currDir=">[全部文件 ]</a>
+
+    #if(${browserResult.parentDirStr})
+        <a href="/browser/list.do?sort=1&amp;currDir=${browserResult.parentDirStr}">[上一级]</a>
+    #end
+    ${browserResult.currDirStr}
+</div>
+#parse("/WEB-INF/vm/netdisk/newFormModalDialogs.vm")
+<form id="browserForm" action="" method="post">
+    #parse("/WEB-INF/vm/netdisk/inFormModalDialogs.vm")
+
+    当前文件夹(可以通过文章列表改变默认值，作为移动文件的目标文件) <input type="text" id="destName"
+                                                                         name="destName" value="$!{rootPath}" size="100">
+    <br>
+    <input type="checkbox" name="selall" onClick="AllFiles(this.form)">
+    全选
+    <br/>
+    <table>
+        <tr>
+            <td> 选择</td>
+            <td> 标题</td>
+            <td> 操作</td>
+            <td> 修改时间</td>
+            <td> 文件大小</td>
+        </tr>
+        #foreach($fileInfo in $fileInfos)
+            <tr>
+                <td> $!{fileInfo.checkBox}</td>
+                <td>   $!{fileInfo.hrefTitle}</td>
+                <td>  $!{fileInfo.fileOperations}</td>
+                <td>  $!{fileInfo.dayStrCn}</td>
+                <td>  $!{fileInfo.displaySize}</td>
+            </tr>
+        #end
+    </table>
+
+    <input type="hidden" name="currDir" value="${browserResult.currDirStr}">
+    <input type="hidden" name="sortMode" value="${browserResult.sortMode4Pre}">
+</form>
+</div>

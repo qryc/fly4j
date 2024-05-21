@@ -1,0 +1,58 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+
+</head>
+<body>
+
+<main id="mainDiv">
+    #parse("/WEB-INF/vm/common/menu.vm")
+    <!--强制换行 -->
+    <div style="clear: both"></div>
+    <div class="entry-header">
+        $!{menuTopRight}
+    </div>
+
+    #if(!${clientConfig.fullScreen})
+        <table style="border-color: transparent;table-layout: fixed;" width="100%">
+            <tr>
+                <td style="vertical-align:top">
+                    #parse("/WEB-INF/vm/article/articleList_1.vm")
+                </td>
+                <td style="vertical-align:top;word-wrap:break-word;font-size: 0.8em;" width="250px">
+                    <div class="dtree">
+                        <script type="text/javascript">
+
+                            d = new dTree('d');
+                                #foreach($d in $dtreeObjs)
+                                d.add($!{d.id},$!{d.pid}, '$!{d.name}', '$!{d.url}', '$!{d.name}', '$!{d.target}', '$!{d.icon}', '$!{d.iconOpen}', $!{d.open});
+                                #end
+
+                            document.write(d);
+
+                        </script>
+
+                    </div>
+
+                    <a href="/article/articles.do?buId=lastEdit&rootPath=$!{item.value}"> $!{item.key}</a> <br/>
+
+                </td>
+
+
+            </tr>
+        </table>
+    #else
+        #parse("/WEB-INF/vm/article/articleList_1.vm")
+    #end
+
+
+</main>
+</body>
+</html>
+
+
+
+ 
+

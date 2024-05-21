@@ -1,0 +1,101 @@
+<script language="javascript">
+    //验证审核意见
+    function check() {
+        var mdContent = document.getElementById("mdContent").value;
+        if (mdContent == '') {
+            alert("内容不能为空!");
+            return false;
+        }
+        return document.forms[0].submit();
+    }
+
+    function ajaxSave() {
+        jQuery.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "/articleMaintain/ajaxSave.do",
+            data: $('#addBlogForm').serialize(),
+            success: function (str) {
+                // alert(str);
+            },
+            error: function (XMLHttpResponse) {
+                alert("error");
+            }
+        });
+    }
+
+    //  setInterval("ajaxSave()", 5 * 1000);
+</script>
+<style type="text/css">
+    .ck {
+        max-width: ${clientConfig.getExtStringValue("ckWidth")}px;
+    }
+    .ck-content .image-inline img, .ck-content .image-inline picture{
+        max-width: 50%
+    }
+
+    element.style {
+    }
+    <style>
+     .ck-content pre code {
+         background: unset;
+         border-radius: 0;
+         padding: 0;
+     }
+    pre code {
+        font-size:0.7em;
+
+    }
+</style>
+<form name="addBlogForm" id="addBlogForm" action="/articleMaintain/addBlog4Md.do" method="post"
+      onsubmit="return check();">
+    <input type="hidden" name="noteFileStr" value="$!alterBlogParam.noteFileStr"/>
+    <input type="hidden" name="edithome" value="$!edithome"/>
+    <br/>
+    #if(${pageConfig.pc})
+        <textarea class="mdTextArea" rows="100" name="mdContent"
+                  id="mdContent" >$!alterBlogParam.mdContent</textarea>
+    #else
+        <textarea class="mdTextAreaMobile" rows="25" name="mdContent"
+                  id="mdContent">$!alterBlogParam.mdContent</textarea>
+    #end
+    <script src="/js/ckeditor/ckeditor.js"></script>
+    <link rel="stylesheet" href="/js/ckeditor/custom.css" type="text/css">
+
+</form>
+<script>
+    var editor = ClassicEditor.create(document.querySelector('#mdContent'))
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error('There was a problem initializing the editor.', error);
+            });
+    // editor.on('change',function(){
+    //     alert("sdfsf");
+    //     $("#noSaveSpan").html("未保存！");
+    // });
+    editor.model.document.on('change:data', function () {
+        // $("#" + editorId).val(editor.getData());
+        $("#noSaveSpan").html("未保存！");
+    });
+</script>
+<script>
+    var mulcontentTip = "${addArticleManual}";
+    var t = document.getElementById('mdContent');
+    if (t.innerHTML == '') {
+        t.innerHTML = mulcontentTip;
+    }
+
+    t.onfocus = function () {
+        if (this.innerHTML == mulcontentTip) {
+            this.innerHTML = '';
+        }
+    };
+
+    t.onblur = function () {
+        if (this.innerHTML == '') {
+            this.innerHTML = mulcontentTip;
+        }
+    };
+</script>

@@ -1,0 +1,222 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+    <script language="javascript">
+        function viewPass() {
+            fetch('${flyContext.requestConfig().domainUrl}userConfig/viewPass', {
+                method: 'GET', credentials: 'include'
+            }).then(res => res.text()).then(res => alert(res)).catch(e => console.log("Oops, error", e));
+        }
+    </script>
+</head>
+<body>
+
+<main id="mainDiv">
+    <div id="articleVue">
+        #parse("/WEB-INF/vm/common/menu.vm")
+        <!--强制换行 -->
+        <div style="clear: both"></div>
+    </div>
+    <form action="/userConfig/updateBrowserSet.do" method="post">
+        <label for="showFolder">文章根目录管理</label>
+        #foreach($selectV in ${selectDirs})
+            <input type="checkbox" name="showFolder" value="${selectV}"> ${selectV}
+        #end
+        <br/>
+        设置只针对当前浏览器有效
+        <label for="fontEm">字体大小</label>
+        <select class="form-control" name="fontEm" id="fontEm">
+            <option value="0.5">0.5倍</option>
+            <option value="0.8">0.8倍</option>
+            <option value="1.0" selected="true">1</option>
+            <option value="1.2">1.2倍</option>
+            <option value="1.5">1.5倍</option>
+            <option value="2.0">2倍</option>
+            <option value="3.0">3倍</option>
+            <option value="4.0">4倍</option>
+        </select>
+
+
+        <label for="autoSave"> vm</label>
+        <select class="form-control" id="vm" name="vm">
+            <option value="simple" selected="true">极简</option>
+            <option value="normal">正常</option>
+        </select>
+
+
+        <div>
+            文件隐私保险
+            <label class="radio-inline">
+                <input type="radio" name="insurance" id="insurance1" value="true">显示保险柜内容
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="insurance" id="insurance2" value="false" checked>不显示保险柜内容
+            </label>
+        </div>
+        <div>
+            显示文件
+            <label class="radio-inline">
+                <input type="radio" name="showFile" id="showFile1" value="false" checked>不显示文件
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="showFile" id="showFile2" value="true">显示文件
+            </label>
+        </div>
+
+        <div>
+            全屏幕(控制Dtree)，ESC控制
+            <label class="radio-inline">
+                <input type="radio" name="fullScreen" id="fullScreen1" value="false" checked>普通(显示Dtree)
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="fullScreen" id="fullScreen2" value="true">全屏幕(隐藏Dtree)
+            </label>
+        </div>
+
+        <div>
+            Dtree文件夹选择(暂时废弃)
+            <label class="radio-inline">
+                <input type="radio" name="articleFolderSelect" id="articleFolderSelect1" value="false" checked>不显示
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="articleFolderSelect" id="articleFolderSelect2" value="true">显示
+            </label>
+        </div>
+
+        <div>
+            文章导航树
+            <label class="radio-inline">
+                <input type="radio" name="pageTree" id="pageTree1" value="false" checked>不显示
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="pageTree" id="pageTree2" value="true">显示
+            </label>
+        </div>
+        <div>
+            显示专辑
+            <label class="radio-inline">
+                <input type="radio" name="child2parent" id="child2parent1" value="false" checked>独立显示
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="child2parent" id="child2parent2" value="true">专辑显示
+            </label>
+        </div>
+
+
+        <div>
+            显示历史
+            <label class="radio-inline">
+                <input type="radio" name="showHis" id="showHis1" value="false" checked>不显示历史
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="showHis" id="showHis2" value="true">显示历史
+            </label>
+        </div>
+        <div>
+            工作路径
+            <label class="radio-inline">
+                <input type="radio" name="workPath" id="workPath0" value="article" checked>文章
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="workPath" id="workPath2" value="draft">草稿箱
+            </label>
+        </div>
+
+        <div>
+            工作空间
+            <label class="radio-inline">
+                <input type="radio" name="workspace" id="workspace1" value="company" checked>公司
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="workspace" id="workspace2" value="person">个人全部
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="workspace" id="workspace4" value="all">全部文章
+            </label>
+        </div>
+        <div>
+            Markdown编辑器
+            <label class="radio-inline">
+                <input type="radio" name="mdEditor" id="mdEditor1" value="1" checked>文本编辑器
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="mdEditor" id="mdEditor2" value="2">ckEditor
+            </label>
+        </div>
+
+
+        <div>
+            是否显示编辑器菜单
+            <label class="radio-inline">
+                <input type="radio" name="showEditorMenu" id="showEditorMenu1" value="false" checked>不显示菜单
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="showEditorMenu" id="showEditorMenu2" value="true">显示菜单
+            </label>
+        </div>
+        <div>
+            保存方式
+            <label class="radio-inline">
+                <input type="radio" name="ajaxSave" id="ajaxSave1" value="false" checked>页面刷新
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="ajaxSave" id="ajaxSave2" value="true">Ajax保存
+            </label>
+        </div>
+        <label for="title">CK编辑器宽度</label>
+        <input type="text" class="form-control" id="ckWidth" name="ckWidth" value='$!{clientConfig.ckWidth}'>
+
+        <label for="title">页面边距百分比</label>
+        <input type="text" class="form-control" id="mainDivMargin" name="mainDivMargin" value='$!{clientConfig.mainDivMargin}'>
+
+
+        <input type="submit" value="保存配置" class="btn btn-outline-secondary mt-3">
+        <a href="/userConfig/toBrowserSet.do" class="btn btn-outline-secondary mt-3"> 查看设置</a>
+    </form>
+
+
+    <script>
+            #foreach($showValue in ${clientConfig.showFolderList})
+            $("input:checkbox[value='$!{showValue}']").attr('checked', 'true');
+            #end
+
+        $("#fontEm").val("$!clientConfig.fontEm");
+        $("#vm").val("$!clientConfig.vm");
+        $("input[type=radio][name=insurance][value=$!{clientConfig.insurance}]").attr("checked", true);
+        $("input[type=radio][name=showFile][value=$!{clientConfig.showFile}]").attr("checked", true);
+        $("input[type=radio][name=articleFolderSelect][value=$!{clientConfig.articleFolderSelect}]").attr("checked", true);
+        $("input[type=radio][name=pageTree][value=$!{clientConfig.pageTree}]").attr("checked", true);
+        $("input[type=radio][name=child2parent][value=$!{clientConfig.child2parent}]").attr("checked", true);
+        $("input[type=radio][name=showHis][value=$!{clientConfig.showHis}]").attr("checked", true);
+        $("input[type=radio][name=workPath][value=$!{clientConfig.workPath}]").attr("checked", true);
+        $("input[type=radio][name=workspace][value=$!{clientConfig.workspace}]").attr("checked", true);
+        $("input[type=radio][name=mdEditor][value=$!{clientConfig.mdEditor}]").attr("checked", true);
+        $("input[type=radio][name=showEditorMenu][value=$!{clientConfig.showEditorMenu}]").attr("checked", true);
+        $("input[type=radio][name=ajaxSave][value=$!{clientConfig.ajaxSave}]").attr("checked", true);
+        $("input[type=radio][name=fullScreen][value=$!{clientConfig.fullScreen}]").attr("checked", true);
+    </script>
+</main>
+</body>
+</html>
+<script type="text/javascript">
+
+    const app = {
+        data() {
+            return {
+                menu: ''
+            }
+        },
+        mounted() {
+            axios.get('/menu/menuJson.do')
+                    .then(response => {
+                        this.menu = response.data;
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+        }
+    }
+    Vue.createApp(app).mount('#articleVue')
+</script>

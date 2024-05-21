@@ -1,0 +1,67 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+</head>
+<body>
+
+<main id="mainDiv">
+    <div id="articleVue">
+        #parse("/WEB-INF/vm/common/menu.vm")
+        <!--强制换行 -->
+        <div style="clear: both"></div>
+    </div>
+    <h3>个人设置</h3>
+    <form action="/userConfig/updatePersonalSet.do" method="post">
+        <label for="title">标题</label>
+        <input type="text" class="form-control" id="title" name="title" value="$!userInfo.userConfig.title">
+
+        <label for="name">首页</label>
+        <select class="form-control" name="homePage" id="homePage">
+            <option value="0" selected="true">报表页</option>
+            <option value="10">列表页</option>
+        </select>
+
+        <label for="mima">内容加密密码</label>
+        <input type="text" class="form-control" id="mima" name="mima" value="$!userInfo.userConfig.mima">
+        <label for="mima">备份Zip密码</label>
+        <input type="text" class="form-control" id="zipPwd" name="zipPwd" value="$!userInfo.extMap.zipPwd">
+        <label for="backAddr">备份地址</label>
+        <input type="text" class="form-control" id="backAddr" name="backAddr" value="$!backAddr">
+
+
+        <input type="submit" value="保存配置" class="btn btn-outline-secondary mt-3">
+        <button type="button" class="btn btn-outline-secondary mt-3"
+                onclick="window.location.href='/userConfig/toPersonalSet.do'">查看设置
+        </button>
+    </form>
+
+
+    <script>
+        $("#autoSave").val("$!userInfo.userConfig.autoSave");
+        $("#homePage").val("$!userInfo.userConfig.homePage");
+    </script>
+</main>
+</body>
+</html>
+<script type="text/javascript">
+
+    const app = {
+        data() {
+            return {
+                menu: ''
+            }
+        },
+        mounted() {
+            axios.get('/menu/menuJson.do')
+                    .then(response => {
+                        this.menu = response.data;
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+        }
+    }
+    Vue.createApp(app).mount('#articleVue')
+</script>

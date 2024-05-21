@@ -1,0 +1,96 @@
+<style type="text/css">
+        #if(!${pageConfig.pc})
+        .nav-link {
+            display: block;
+            padding: 0.5rem 0.4rem;
+        }
+        #end
+</style>
+
+<!--<header id="topDiv" class="navbar">-->
+<header id="topDiv" class="topDiv">
+    #if(!${flyContext.login})
+        <!-- no login -->
+    #elseif(${flyContext.admin})
+        <ul class="nav titleFont">
+            <li class="nav-item">
+                <input type="text" name="searchTitle" id="searchTitle"
+                       value="$!{searchTitle}" size="6" onblur="globalSearch()"
+                       onkeydown="if(event.keyCode==13){globalSearch();}">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/listUser.do" target="_self">用户管理</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login/loginOut.do">注销</a>
+            </li>
+
+        </ul>
+    #else
+        <ul class="nav titleFont">
+
+            <li class="nav-item">
+                <input type="text" name="searchTitle" id="searchTitle"
+                       value="$!{searchTitle}" size="6" onblur="globalSearch()"
+                       onkeydown="if(event.keyCode==13){globalSearch();}">
+            </li>
+
+            #if(${pageConfig.pc}||!${articleHo})
+                <li class="nav-item">
+                    <a class="nav-link" class="nav-link" href="/articleMaintain/toAddBlog.do"> 添加</a>
+                </li>
+            #end
+            <!-- »-->
+            #if(${articleView})
+                <li class="nav-item">
+                    <a class="nav-link" href="/article/viewArticle.do?id=$!articleView.id&append=true"
+                       target="_self">追加</a>
+                </li>
+
+                #if(${articleView.articleOrganize.mdEditor}&&${articleView.articleOrganize.editMode}==0)
+                    <li class="nav-item">
+                        <a class="nav-link" href="/articleMaintain/toEditArticle.do?id=$!articleView.id">修改</a>
+                    </li>
+                #end
+            #end
+
+            <li class="nav-item">
+                <a class="nav-link" href="/article/articles.do?buId=lastEdit" title="修改过的博客">近期</a>
+            </li>
+            <!-- 常用搜索关键词列表 -->
+            #foreach($searchCount in $searchCounts)
+                <li class="nav-item">
+                    <a class="nav-link" href="/article/.do?title=${searchCount.searchTitle}"
+                       title="${searchCount.count}">${searchCount.searchTitle}</a>
+                    |
+                </li>
+            #end
+            #if(${pageConfig.pc}||!${articleHo})
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">${flyContext.pin}</a>
+
+                    <div class="dropdown-menu">
+                        ##                    <a class="dropdown-item"   href="/index/index.do">$!{userPageConfig.title}</a>
+                        ##                    <a class="dropdown-item" href="/article/articles.do?buId=articlesQueryParent">专辑</a>
+                        ##                    <a class="dropdown-item" href="/article/articles.do?buId=articlesQueryAlone">独文</a>
+                        <a class="dropdown-item" href="/userConfig/toBrowserSet.do">浏览设置</a>
+                        <a class="dropdown-item" href="/userConfig/toPersonalSet.do">个人设置</a>
+                        <a class="dropdown-item" href="/backAdmin/backSite.do">数据备份</a>
+                        <a class="dropdown-item" href="/report/viewReport.do">报表分析</a>
+                        <a class="dropdown-item" href="/browser/list.do">文件管理</a>
+                        <a class="dropdown-item" href="/article/viewManual.do?id=-1">使用说明</a>
+                        <a class="dropdown-item" href="/login/loginOut.do">注销</a>
+                    </div>
+                </li>
+            #end
+        </ul>
+    #end
+
+</header>
+
+#if(${pageConfig.fullScreen})
+<script>
+    $("#topDiv").hide();
+</script>
+#end
+

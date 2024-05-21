@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="GBK"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>fly</display-name>
+
+    <welcome-file-list>
+        <welcome-file>index.htm</welcome-file>
+    </welcome-file-list>
+
+    <!--处理编码转换request.setCharacterEncoding(this.encoding);response.setCharacterEncoding(this.encoding);-->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--登录拦截，跳转登录页面-->
+    <filter>
+        <filter-name>urlFilter</filter-name>
+        <filter-class>fnote.user.web.filter.NoteLoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>urlFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- load spring -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/spring-config-all.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>spring.profiles.active</param-name>
+        <param-value>dev_online_data</param-value>
+<!--     online,  dev,dev_online_data -->
+    </context-param>
+
+
+    <!--负责责处理由 JavaBean Introspector 功能而引起的缓存泄露-->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
+
+    <!--处理下载的Servlet-->
+    <servlet>
+        <servlet-name>downloadServlet</servlet-name>
+        <servlet-class>fnote.filebrowser.web.servlet.NoteDownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>downloadServlet</servlet-name>
+        <url-pattern>/download</url-pattern>
+    </servlet-mapping>
+<!--    <servlet>-->
+<!--        <servlet-name>downloadServletOpen</servlet-name>-->
+<!--        <servlet-class>fnote.filebrowser.web.servlet.DownloadServletOpen</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>downloadServletOpen</servlet-name>-->
+<!--        <url-pattern>/downloadOpen</url-pattern>-->
+<!--    </servlet-mapping>-->
+    <servlet>
+        <servlet-name>viewFileServlet</servlet-name>
+        <servlet-class>fnote.filebrowser.web.servlet.NoteViewFileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewFileServlet</servlet-name>
+        <url-pattern>/viewFile</url-pattern>
+    </servlet-mapping>
+<!--    <servlet>-->
+<!--        <servlet-name>viewPubFileServlet</servlet-name>-->
+<!--        <servlet-class>browser.web.servlet.ViewPubFileServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>viewPubFileServlet</servlet-name>-->
+<!--        <url-pattern>/viewPubFile</url-pattern>-->
+<!--    </servlet-mapping>-->
+    <!-- load springMvc -->
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/applicationContext-spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>flyExporter</servlet-name>
+        <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>flyExporter</servlet-name>
+        <url-pattern>/remoting/FlyWsService</url-pattern>
+    </servlet-mapping>
+
+    <!-- 使用tomcat容器的默认Servlet处理静态资源请求-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.css</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.gif</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.png</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.jpg</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.zip</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.js</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.htm</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.html</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.woff</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.ttf</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.log</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.ico</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>default</servlet-name>-->
+    <!--<url-pattern>*.manifest</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<mime-mapping>-->
+    <!--<extension>manifest</extension>-->
+    <!--<mime-type>text/cache-manifest</mime-type>-->
+    <!--</mime-mapping>-->
+
+
+</web-app>

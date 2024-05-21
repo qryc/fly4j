@@ -1,0 +1,30 @@
+<div class="entry-header">
+    $!dateFormatUtils.displayMilliSeconds($!{ttlMilliSeconds})
+</div>
+<h1>
+    $!publishedArticle.title
+</h1>
+
+
+$!publishedArticle.content
+
+<script type="text/javascript">
+    function AddImgClickEvent() {
+        var objs = document.getElementsByTagName("img");
+        for (var i = 0; i < objs.length; i++) {
+            objs[i].onclick = function () {
+                window.open(this.src);
+            }
+            objs[i].style.cursor = "pointer";
+            if (objs[i].width > 800) {
+                objs[i].height = 800 / objs[i].width * objs[i].height;
+                objs[i].width = 800;
+
+            }
+        }
+    }
+
+    AddImgClickEvent();
+
+</script>
+

@@ -1,0 +1,169 @@
+<script src="https://cdn.tiny.cloud/1/jfzvca1ssh9rjcoqoe1vg6oi7rmgo2ha26b3swwlsr5sks29/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script language="javascript">
+    //验证审核意见
+    function check() {
+        var title = $("#title").val();
+        if (title == '') {
+            alert("标题不能为空!");
+            return false;
+        }
+        return document.forms[0].submit();
+    }
+    function ajaxOrNormalSubmit() {
+        #if($!clientConfig.getExtBooleanValue("ajaxSave"))
+            ajaxSave();
+        #else
+            check()
+        #end
+    }
+    function ajaxSave() {
+        tinyMCE.triggerSave();
+        jQuery.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "/articleMaintain/ajaxSaveRichText.do",
+            data: $('#editRichTextForm').serialize(),
+            success: function (str) {
+                alert(str);
+            },
+            error: function (XMLHttpResponse) {
+                alert("出错")
+            }
+        });
+    }
+
+    // setInterval("ajaxSave()", 5 * 1000);
+    function example_image_upload_handler (blobInfo, success, failure, progress) {
+        var xhr, formData;
+
+        xhr = new XMLHttpRequest();
+        xhr.withCredentials = false;
+        xhr.open('POST', '/browser/uploadImag.do');
+
+        xhr.upload.onprogress = function (e) {
+            progress(e.loaded / e.total * 100);
+        };
+
+        xhr.onload = function() {
+            var json;
+
+            if (xhr.status === 403) {
+                failure('HTTP Error: ' + xhr.status, { remove: true });
+                return;
+            }
+
+            if (xhr.status < 200 || xhr.status >= 300) {
+                failure('HTTP Error: ' + xhr.status);
+                return;
+            }
+
+            json = JSON.parse(xhr.responseText);
+
+            if (!json || typeof json.location != 'string') {
+                failure('Invalid JSON: ' + xhr.responseText);
+                return;
+            }
+
+            success(json.location);
+        };
+
+        xhr.onerror = function () {
+            failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+        };
+
+        formData = new FormData();
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+        xhr.send(formData);
+    }
+
+
+</script>
+<form id="editRichTextForm" action="/articleMaintain/editRichText.do" method="post" onsubmit="return check();">
+    <div class="entry-header">
+        <a href="javascript:void(0)" onclick="ajaxOrNormalSubmit()" target="_self">提交变动</a>
+        <a href="/netdisk/filesupload.jsp?blogId=$!{cplArticle.id}" title="上传文件" target="_blank">上传文件</a>
+        <span id="ajaxSaveSpan"></span>$!{uploadBlogId} &nbsp;<span id="ajaxSaveSpan2"></span><span
+            id="write_hint"></span>
+    </div>
+    <input type="hidden" name="noteFileStr" value="$!{cplArticle.noteFileStr}"/>
+    <input type="hidden" name="edithome" value="$!{edithome}"/>
+
+    <div>
+        <br>
+        <input name="title" type="text" maxlength="150" id="title" value="$!{ArticleContent.title()}"
+               onblur="keyword();" style="width:50%;border: none">
+    </div>
+    <div>
+        <!--
+         $("#ajaxSaveSpan").html(str);
+                $("#ajaxSaveSpan2").html(str);
+                $("#ajaxSaveSpan3").html(str);
+                  $("#ajaxSaveSpan").html("出错");
+                $("#ajaxSaveSpan2").html("出错");
+                $("#ajaxSaveSpan3").html("出错");
+                .mce-container {
+        border: 0px !important;
+    }
+          tinymce.init({
+                selector: '#content',
+                images_upload_handler: example_image_upload_handler
+            });
+         inline: true,
+       plugins: ['table link quickbars codesample', 'image'],
+                toolbar: 'undo redo | link image | code',
+        -->
+
+        <textarea style="width:100%;border: none" rows="30" name="content" id="content"
+                  class="mceEditor">$!{ArticleContent.content()}</textarea>
+        <script type="text/javascript">
+            tinymce.init({
+                selector: 'textarea#content',
+                menubar: $!{clientConfig.showEditorMenu},
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount', 'codesample'
+                ],
+                toolbar: 'undo redo | blocks | image | link | codesample | table  | ' +
+                        'bold italic backcolor | alignleft aligncenter  | ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'preview | code | fullscreen | removeformat | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+            });
+        </script>
+    </div>
+
+    <span id="ajaxSaveSpan3"></span>
+</form>
+#if(${fileInfos})
+<table>
+    #foreach($fileInfo in $fileInfos)
+        <tr>
+            <td>
+                <a href="/pic/$!{fileInfo.fileRelativePath}"
+                   target="_blank">文件:$!{fileInfo.fileRelativePath}</a>
+                --$!{fileInfo.displaySize}
+            </td>
+            <td>
+
+                #if(${fileInfo.pic})
+                    <img src="/pic/$!{fileInfo.fileRelativePath}" width="600"
+                         alt="$!{fileInfo.fileRelativePath}"
+                         title="$!{fileInfo.fileRelativePath}"/>
+                #else
+                    不是图片
+                #end
+            </td>
+            <td>
+                <a href="/file/del?fileStr=$!{fileInfo.fileRelativePath}"
+                   target="_blank">删除$!{fileInfo.fileRelativePath}</a>
+            </td>
+        </tr>
+    #end
+</table>
+#end
+<script language="javascript">
+    // keyword();
+</script>

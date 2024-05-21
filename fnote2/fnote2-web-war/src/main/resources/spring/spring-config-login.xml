@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd"
+       default-autowire="byName">
+    <bean id="loginConfig" class="fnote.user.domain.service.LoginService$LoginConfig">
+        <property name="loginCookie" value="ik"/>
+        <property name="loginCookieMaxAge" value="10000000"/>
+
+        <property name="loginAuthKey" value="12345678"/>
+        <property name="loginUrl" value="login/toLogin.do?ReturnUrl="/>
+        <!--1.永远不必须登录才能访问，优先级最高，只能授权没有风险的-->
+        <property name="neverNoNeedLoginUrls">
+            <set>
+                <value>/login/toLogin</value>
+                <value>/login/login</value>
+                <value>/login/sendDynPwd</value>
+                <value>/deploy/</value>
+                <value>/prompt/promptMsg</value>
+                <value>/style/</value>
+                <value>/icon/</value>
+                <value>/favicon.ico</value>
+                <value>/favicon</value>
+                <value>/apple-touch-icon</value>
+                <value>/open/</value>
+                <value>/published/</value>
+                <value>/downloadOpen</value>
+                <value>/echo</value>
+                <value>/remoting/FlyWsService</value>
+                <value>/viewPubFile</value>
+                <value>/viewFile</value>
+            </set>
+        </property>
+        <property name="charsetName" value="UTF-8"></property>
+    </bean>
+    <bean id="loginService" class="qryc.user.QrycLoginService">
+        <property name="onLine" value="${onLine}"></property>
+        <property name="userRepository" ref="userRepositoryFile"/>
+        <property name="loginConfig" ref="loginConfig"/>
+        <property name="blackIpService">
+            <bean class="fnote.user.domain.service.BlackIpServiceImpl">
+                <property name="blackIpsCache">
+                    <bean class="fly4j.common.cache.impl.FlyCacheJVM"></bean>
+                </property>
+            </bean>
+        </property>
+        <property name="dynPwdService">
+            <bean class="fnote.user.domain.service.DynPwdService"></bean>
+        </property>
+        <property name="userSessionService">
+            <bean class="fnote.user.domain.service.UserSessionServiceImpl">
+                <property name="useSession" value="${useSession}"></property>
+                <property name="userSessionCache_sid">
+                    <bean class="fly4j.common.cache.impl.FlyCacheJVM"></bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,95 @@
+<!--
+${flyContext}
+end flyContext
+${pageConfig}
+${clientConfig}
+debug
+$!{moreInfo}
+
+
+iknowinfo:
+$!{iknowInfo}
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+    <script type="text/javascript" src="/netdisk/js/fileBrowser.js">
+    </script>
+    <title>${browserResult.currDir}
+    </title>
+    <style type="text/css">
+            #if(!${pageConfig.pc})
+            #mainDiv {
+                margin: 2px;
+                padding: 0px;
+                /*子Div使用Float后如何撑开父Div*/
+                overflow: hidden;
+                border-radius: 0px;
+                border: none;
+            }
+            #end
+    </style>
+    <script language="javascript">
+        function copyText(str) {
+
+            var hiddenInput = document.createElement('input');
+            hiddenInput.value = str;
+            document.body.appendChild(hiddenInput);
+            hiddenInput.select(); // 选择对象
+            document.execCommand("Copy"); // 执行浏览器复制命令
+            hiddenInput.className = 'oInput';
+            hiddenInput.style.display = 'none';
+            alert('复制成功');
+        }
+
+        function submitBrowser(actionUrl) {
+            var browserForm = document.getElementById("browserForm");
+            browserForm.action = actionUrl;
+            return browserForm.submit();
+        }
+
+        function submitFileOperation(opType) {
+            var browserForm = document.getElementById("browserForm");
+            var inputValue = $("#inputValue").val();
+            if (inputValue == '') {
+                alert("输入不能为空!");
+                return false;
+            }
+            browserForm.action = "/browser/" + opType + ".do?inputValue=" + inputValue + "&currDir=$!urlEncoder.encode(${browserResult.currDirStr})&sortMode=${browserResult.sortMode4Pre}";
+            browserForm.submit();
+        }
+
+        function submitFileOperationNoInput(opType) {
+            var browserForm = document.getElementById("browserForm");
+            browserForm.action = "/browser/" + opType + ".do?currDir=$!urlEncoder.encode(${browserResult.currDirStr})&sortMode=${browserResult.sortMode4Pre}";
+            browserForm.submit();
+        }
+    </script>
+
+</head>
+<body>
+
+<div id="mainDiv">
+
+    #if(!${clientConfig.fullScreen})
+        <table style="border-color: transparent" width="100%">
+            <tr>
+                <td style="border-color: transparent;vertical-align:top;word-wrap:break-word;font-size: 0.8em;" width="300px">
+                    #parse("/WEB-INF/vm/common/dtree.vm")
+                </td>
+                <td style="vertical-align:top;border-color: transparent">
+                    #parse("/WEB-INF/vm/netdisk/browser_1.vm")
+                     #parse("/WEB-INF/vm/netdisk/uploadImg.vm")
+                </td>
+            </tr>
+        </table>
+    #else
+        #parse("/WEB-INF/vm/netdisk/browser_1.vm")
+        #parse("/WEB-INF/vm/netdisk/uploadImg.vm")
+    #end
+    #parse("/WEB-INF/vm/common/bottom.vm")
+
+</body>
+</html>

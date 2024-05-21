@@ -1,0 +1,50 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+    <link href="/style/${flyContext.viewConfig.viewArticleCss}" rel="stylesheet" type="text/css"/>
+    #if(${cplArticle.extId} == 841||${cplArticle.extId} == 625)
+        <link href="/style/tableContent.css" rel="stylesheet" type="text/css"/>
+    #end
+</head>
+<body>
+
+<main id="mainDiv">
+    #parse("/WEB-INF/vm/common/menu-$!{clientConfig.vm}.vm")
+    <div class="entry-header">
+        <a href="/article/viewArticle.do?noteFileStr=$!alterBlogParam.noteFileStr" target="_self">查看</a>
+        <a href="javascript:check()" target="_self">提交变动</a>
+    </div>
+    <!--强制换行 -->
+    <div style="clear: both"></div>
+    <span id="noSaveSpan"></span>
+    #if(!${clientConfig.fullScreen})
+        <table style="border-color: transparent;table-layout: fixed;" width="100%">
+            <tr>
+                <td style="vertical-align:top;border-color: transparent">
+                    #parse("/WEB-INF/vm/article/editMdArticle_ck.vm")
+                </td>
+                <td style="border-color: transparent;vertical-align:top;word-wrap:break-word;font-size: 0.8em;"
+                    width="250px">
+                    <br/> <br/> <br/> <br/>
+                    #parse("/WEB-INF/vm/common/dtree.vm")
+                </td>
+
+            </tr>
+        </table>
+    #else
+        #parse("/WEB-INF/vm/article/editMdArticle_ck.vm")
+    #end
+</main>
+</body>
+</html>
+<script type="text/javascript">
+
+        #if(!${clientConfig.fullScreen})
+
+        d.openAll();
+        #end
+</script>
+
+

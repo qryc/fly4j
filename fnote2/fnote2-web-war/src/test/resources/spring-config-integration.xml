@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
+    <!--    <context:property-placeholder location="classpath:properties.test/fly.properties"/>-->
+    <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.test/fly.properties"/>
+
+
+    <!-- 通用配置  -->
+    <import resource="classpath:spring/spring-config-repository.xml"/>
+
+    <!--用户配置-->
+    <bean id="userRepositoryFile" class="fnote.infrastructure.impl.file.UserRepositoryFile">
+        <property name="pathService" ref="pathService"></property>
+        <property name="userInfoCryptPwd" value="${deployConfig.userInfoCryptPwd}"></property>
+        <property name="defaultUserArticlePwd" value="${defaultUserArticlePwd}"></property>
+    </bean>
+    <bean id="userService" class="fnote.user.domain.service.UserServiceImpl">
+        <property name="userRepository" ref="userRepositoryFile"></property>
+    </bean>
+
+    <import resource="classpath:spring/spring-config-article-maintain.xml"/>
+    <import resource="classpath:spring/spring-config-article-query-list.xml"/>
+    <import resource="classpath:spring/spring-config-article-query-single.xml"/>
+    <import resource="classpath:spring/spring-config-deploy.xml"/>
+    <import resource="classpath:spring/spring-config-menu.xml"/>
+
+</beans>
+

@@ -1,0 +1,57 @@
+#if(!${hiddenMenu})
+<div id="topDiv" class="titleFont">
+    <div class="row">
+        #if(${flyContext.login})
+            <div class="pull-left">
+               <ul class="nav titleFont">
+                   <li class="nav-item">
+                         <a class="nav-link" href="/articleMaintain/toAddBlog.do">»加</a></li>
+                   <li class="nav-item">
+                         <a class="nav-link" href="/article/articles.do?buId=lastEdit" title="修改过的博客">»近</a>
+                    </li>
+
+                    #if(${articleView})
+                        <li class="nav-item">
+                             <a class="nav-link" href="/article/viewArticle.do?id=$!articleView.id&append=true"
+                               target="_self">»追</a>
+                        </li>
+                        #if(${articleView.mdEditor})
+                            <li class="nav-item">
+                                 <a class="nav-link" href="/articleMaintain/toEditArticle.do?id=$!articleView.id">»修</a>
+                            </li>
+                        #end
+                    #end
+                    <li class="dropdown"><input type="text" name="searchTitle" id="searchTitle"
+                                                value="$!{searchTitle}" size="6" onblur="globalSearch()"></li>
+                </ul>
+            </div>
+        #end
+    </div>
+    <!--
+<div style="text-align: left;">
+
+    #if(${flyContext.login})
+         <a class="nav-link" href="/articleMaintain/toAddBlog.do">»加</a>
+         <a class="nav-link" href="/article/articles.do?buId=lastEdit" title="修改过的博客">»近</a>
+        #if(${articleHo})
+             <a class="nav-link" href="/article/viewArticle.do?id=$!articleHo.id&append=true" target="_self">»追</a>
+            #if(${articleHo.mdEditor})
+                 <a class="nav-link" href="/articleMaintain/toEditArticle.do?id=$!articleHo.id">»修</a>
+            #end
+        #end
+
+        <input type="text" name="searchTitle" id="searchTitle"
+               value="$!{searchTitle}" size="6" onblur="globalSearch()">
+
+
+    #end
+</div>
+ -->
+</div>
+#end
+
+#if(${pageConfig.fullScreen})
+<script>
+    $("#topDiv").hide();
+</script>
+#end

@@ -1,0 +1,63 @@
+<script language="javascript">
+    //验证审核意见
+    function check() {
+        var mdContent = document.getElementById("mdContent").value;
+        if (mdContent == '') {
+            alert("内容不能为空!");
+            return false;
+        }
+        return document.forms[0].submit();
+    }
+
+    function ajaxSave() {
+        jQuery.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "/articleMaintain/ajaxSave.do",
+            data: $('#addBlogForm').serialize(),
+            success: function (str) {
+                // alert(str);
+            },
+            error: function (XMLHttpResponse) {
+                alert("error");
+            }
+        });
+    }
+
+    // setInterval("ajaxSave()", 5 * 1000);
+</script>
+#if(${add})
+目录（空代表默认目录）： $!{rootPath}
+#end
+<form name="addBlogForm" id="addBlogForm" action="/articleMaintain/addBlog4Md.do" method="post"
+      onsubmit="return check();">
+
+    <input type="hidden" name="noteFileStr" value="$!alterBlogParam.noteFileStr"/>
+    <input type="hidden" name="edithome" value="$!edithome"/>
+    #if(${pageConfig.pc})
+        <textarea class="mdTextArea" rows="100" name="mdContent"
+                  id="mdContent">$!alterBlogParam.mdContent</textarea>
+    #else
+        <textarea class="mdTextAreaMobile" rows="25" name="mdContent"
+                  id="mdContent">$!alterBlogParam.mdContent</textarea>
+    #end
+</form>
+<script>
+    var mulcontentTip = "${addArticleManual}";
+    var t = document.getElementById('mdContent');
+    if (t.innerHTML == '') {
+        t.innerHTML = mulcontentTip;
+    }
+
+    t.onfocus = function () {
+        if (this.innerHTML == mulcontentTip) {
+            this.innerHTML = '';
+        }
+    };
+
+    t.onblur = function () {
+        if (this.innerHTML == '') {
+            this.innerHTML = mulcontentTip;
+        }
+    };
+</script>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+    <bean id="menuService" class="fnote.menu.MenuService">
+        <property name="contextVariables">
+            <list>
+                <value>noteFileStr</value>
+            </list>
+        </property>
+        <property name="menuItems">
+            <list>
+                <bean class="fnote.menu.MenuItem" p:title="网站安装向导" p:href="/deploy/toInit.do" p:roles="USER,ADMIN" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="添加" p:roles="USER" p:position="menu,siteMap">
+                    <property name="href" value="/articleMaintain/toAddBlog.do"></property>
+                    <!-- 暂不支持条件表达式，使用代码方式，等于配置：    <property name="elValidate" value="device==PC || null == id"/> -->
+                    <property name="elValidate">
+                        <bean class="fnote.web.controller.AddArticleMenuValidate"/>
+                    </property>
+                </bean>
+                <bean class="fnote.menu.MenuItem" p:title="追加" p:roles="USER" p:position="menu,siteMap">
+                    <property name="href" value="/article/viewArticle.do?noteFileStr=$noteFileStr&amp;append=true"></property>
+                    <property name="elValidate">
+                        <bean class="fnote.web.controller.AppendMenuValidate"/>
+                    </property>
+                </bean>
+                <bean class="fnote.menu.MenuItem" p:title="近期" p:href="/article/articles.do?buId=lastEdit" p:roles="USER" p:position="menu,siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="用户管理" p:href="/user/listUser.do" p:roles="ADMIN" p:position="menu,siteMap"/>
+
+                <bean class="fnote.menu.MenuItem" p:title="浏览设置" p:href="/userConfig/toBrowserSet.do" p:roles="USER" p:position="down,siteMap"/>
+
+                <bean class="fnote.menu.MenuItem" p:title="个人设置" p:href="/userConfig/toPersonalSet.do" p:roles="USER" p:position="down,siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="数据备份" p:href="/backAdmin/backSite.do" p:roles="USER" p:position="down,siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="报表分析" p:href="/report/viewReport.do" p:roles="USER" p:position="down,siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="文件管理" p:href="/browser/list.do" p:roles="USER,ADMIN" p:position="down,siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="使用说明" p:href="/article/viewManual.do?id=-1" p:roles="USER" p:position="down,siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="注销" p:href="/login/loginOut.do" p:roles="USER,ADMIN" p:position="down,siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="查看ip黑名单" p:href="/jsp/ipBlackUser.jsp" p:roles="ADMIN" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="检查运行环境" p:href="/config/info.do" p:roles="ADMIN" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="查看时间日志" p:href="/log/timeLog.log" p:roles="ADMIN" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="检查文件差异" p:href="/jsp/check.jsp" p:roles="USER,ADMIN" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="生成资料清单" p:href="/jsp/checkVersion.jsp" p:roles="USER,ADMIN" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="Git" p:href="/jsp/git.jsp" p:roles="USER,ADMIN" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="所有图片" p:href="/browser/listPic.do" p:roles="USER,ADMIN" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="目录tree" p:href="/article/catalogTree.do?buId=lastEdit" p:roles="USER" p:position="siteMap"/>
+
+            </list>
+
+        </property>
+    </bean>
+</beans>

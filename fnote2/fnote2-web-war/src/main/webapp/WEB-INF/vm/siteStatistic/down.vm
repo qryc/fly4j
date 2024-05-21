@@ -1,0 +1,14 @@
+<!-- 引入 echarts.js -->
+<a  class="btn btn-outline-secondary" href="/backAdmin/backSite.do?gen=true">查看备份列表</a>
+<a  class="btn btn-outline-secondary" href="/backAdmin/backSite.do?gen=true">整站备份&发送邮件</a>
+<br/>
+#foreach($downFileName in $backDownInfo.downFileNames)
+<!--
+<a href="/down/${downFileName.fileName}">server下载$!{downFileName.fileName}</a><br />
+-->
+<a href="/download?relativePath=${downFileName.relativePathStr}">下载$!{downFileName.fileName}
+    &nbsp;($!{downFileName.extMap.lastModified})</a><br/>
+#end
+<br>
+
+

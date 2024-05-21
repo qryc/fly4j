@@ -1,0 +1,10 @@
+<ul style="padding: 0px">
+    #foreach($article in $!list)
+        <li class="repo-list-item">
+            <div class="entry-header">
+                $!{article.articleOperations} &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <span>$!{article.hrefTitle}</span>
+        </li>
+    #end
+</ul>

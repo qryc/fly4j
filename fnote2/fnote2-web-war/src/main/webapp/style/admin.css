@@ -1,0 +1,153 @@
+/* 普通样式，写在前面，为了覆盖，链接
+=============================================================================*/
+.blueHref a:link, .blueHref a:visited, .blueHref a:active {
+    color: #0366d6;
+    text-decoration: none;
+    background: inherit;
+}
+
+.blueHref a:hover {
+    /*color: #CC0066;*/
+    /*text-decoration: underline;*/
+    /*background-color: #F5F5F5;*/
+    cursor: pointer;
+}
+
+body {
+    font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 18px;
+    background: #FFFFFF;
+    color: #222222;
+}
+
+/*菜单标题*/
+.titleFont {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
+    font-size: 1.2em;
+}
+
+.titleFont a:hover, .titleFont a:link, .titleFont a:visited, .titleFont a:active {
+    color: #222222;
+}
+
+.graySecondFont {
+    color: #a8a8a7;
+    font-style: italic;
+}
+
+.graySecondFont a:hover, .graySecondFont a:link, .graySecondFont a:visited, .graySecondFont a:active {
+    color: #a8a8a7;
+    font-style: italic;
+}
+
+
+/* li列表页
+=============================================================================*/
+.repo-list-item {
+    border-bottom: 1px solid #eee;
+    list-style: none;
+    position: relative;
+    padding: 0.8em 0;
+    font-size: 1.2em;
+}
+
+.bb-1 {
+    border-bottom: 1px solid #eee;
+}
+
+/* CODE
+=============================================================================*/
+pre, code, tt {
+    font-size: 12px;
+    font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+    margin: 0 0px;
+    padding: 0px 0px;
+    white-space: nowrap;
+    border: 1px solid #eaeaea;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+}
+
+pre > code {
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    border: none;
+    background: transparent;
+}
+
+pre {
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    line-height: normal;
+    overflow: auto;
+    padding: 6px 10px;
+    border-radius: 3px;
+}
+
+pre code, pre tt {
+    background-color: transparent;
+    border: none;
+}
+
+/*标题样式*/
+.entry-header-left {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
+    color: #a8a8a7;
+    font-size: 0.8em;
+    font-style: italic;
+    float: left;
+}
+
+/*主菜单*/
+
+.topDiv {
+    float: left;
+}
+
+/*右漂移子菜单*/
+.entry-header, .entry-header-child {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
+    color: #a8a8a7;
+    font-size: 1em;
+    font-style: italic;
+    float: right;
+    margin-right: 10%;
+}
+
+.entry-header a, .entry-header-child a {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
+    color: #6a737d;
+    margin: 0 2px;
+}
+
+.entry-header-child {
+    font-size: 1em;
+}
+input,
+textarea,
+select,
+option,
+button {
+    font-size: 0.8em;
+}
+
+/* md编辑显示，以后去掉
+=============================================================================*/
+.mdTextArea {
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    line-height: 1.8;
+    font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+.mdTextAreaMobile {
+    width: 100%;
+    font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+

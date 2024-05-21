@@ -1,0 +1,58 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+
+</head>
+<body>
+
+<main id="mainDiv">
+    #parse("/WEB-INF/vm/common/menu.vm")
+    <!--强制换行 -->
+    <div style="clear: both"></div>
+    <div class="entry-header">
+        $!{menuTopRight}
+    </div>
+
+                        <script type="text/javascript">
+
+                            d = new dTree('d');
+                                #foreach($d in $dtreeObjs)
+                                d.add($!{d.id},$!{d.pid}, '$!{d.name}', '$!{d.url}', '$!{d.name}', '$!{d.target}', '$!{d.icon}', '$!{d.iconOpen}', $!{d.open});
+                                #end
+
+                            document.write(d);
+
+                        </script>
+
+
+
+</main>
+</body>
+</html>
+<script type="text/javascript">
+
+    const app = {
+        data() {
+            return {
+                menu: '',
+                articles: ''
+            }
+        },
+        mounted() {
+            axios.get('/menu/menuJson.do')
+                    .then(response => {
+                        this.menu = response.data;
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+        }
+    }
+    Vue.createApp(app).mount('#mainDiv')
+</script>
+
+
+ 
+

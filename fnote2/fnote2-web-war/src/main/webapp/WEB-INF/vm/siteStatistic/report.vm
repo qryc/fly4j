@@ -1,0 +1,27 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+</head>
+<body>
+
+<main id="mainDiv">
+    #parse("/WEB-INF/vm/common/menu-$!{clientConfig.vm}.vm")
+
+    <div class="d-flex flex-wrap">
+        #parse("/WEB-INF/vm/siteStatistic/report-maturity.vm")
+    #parse("/WEB-INF/vm/siteStatistic/report-articleSize.vm")
+    #parse("/WEB-INF/vm/siteStatistic/report-article-year-create.vm")
+    #parse("/WEB-INF/vm/siteStatistic/report-article-year-modify.vm")
+    #parse("/WEB-INF/vm/siteStatistic/report-article-length.vm")
+    #parse("/WEB-INF/vm/siteStatistic/report-FileSize.vm")
+    #parse("/WEB-INF/vm/siteStatistic/report-FileNum.vm")
+
+    </div>
+</main>
+</body>
+</html>
+

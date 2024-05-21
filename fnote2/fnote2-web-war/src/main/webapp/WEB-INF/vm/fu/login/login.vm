@@ -1,0 +1,57 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+</head>
+<body>
+
+<main id="mainDiv">
+    <!--手机端单独加载jqury,手机端大部分页面不加载jquery-->
+    <script language="javascript">
+        function sendDynPwd() {
+            fetch('${flyContext.requestConfig().domainUrl}login/sendDynPwd.do?' + 'pin=' + document.getElementById('pin').value, {
+                method: 'GET', credentials: 'include'
+            }).then(res => res.text()).then(res => alert(res)).catch(e => console.log("Oops, error", e));
+        }
+    </script>
+
+    <form name="loginForm" id="loginForm" action="/login/login.do" method="post">
+        <input type="text" class="form-control mb-3" id="pin" name="pin" placeholder="输入用户名">
+        <button type="button" class="btn btn-outline-secondary mb-3" onclick="sendDynPwd()"> 发送密码</button>
+        <input type="password" class="form-control mb-3" id="password" name="password" placeholder="请输入注册邮箱收到的密码">
+
+        <input type="submit" value="登录" class="btn btn-outline-secondary">
+        <!--
+        <label for="pin">用户名</label>
+        <div class="row">
+            <div class="col-lg-2">
+                <input type="text" class="form-control" id="pin" name="pin" placeholder="输入用户名">
+            </div>
+            <div class="col-lg-2">
+                <button type="button" class="btn btn-default" onclick="sendDynPwd()"> 发送密码</button>
+            </div>
+        </div>
+        <label for="password">密码</label>
+        <div class="row">
+            <div class="col-lg-2">
+                <input type="password" class="form-control" id="password" name="password" placeholder="先发送密码">
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-lg-2">
+
+                <input type="submit" value="登录" class="btn btn-default">
+            </div>
+        </div>
+        -->
+    </form>
+</main>
+    #parse("/WEB-INF/vm/common/bottom.vm")
+</body>
+</html>
+
+
+

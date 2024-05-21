@@ -1,0 +1,21 @@
+<!--正常头-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/netdisk/common/head.vm")
+</head>
+<body>
+    #if(${pageConfig.mobileSite})
+    <div style="margin: 2px">
+        $screen_content
+    </div>
+
+    #else
+    <main id="mainDiv">
+        $screen_content
+    </main>
+    #end
+    #parse("/WEB-INF/vm/netdisk/common/bottom.vm")
+</body>
+</html>
+

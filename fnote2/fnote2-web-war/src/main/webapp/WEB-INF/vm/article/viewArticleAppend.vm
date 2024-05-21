@@ -1,0 +1,11 @@
+#if(${append}=="true")
+<form name="appendForm" id="appendForm"
+      action="/articleMaintain/append.do" method="post" onsubmit="return check();">
+    <input type="hidden" name="noteFileStr" value="$!noteFileStr"/>
+    <textarea id="appendPre" name="appendPre" cols="30" rows="3">
+
+</textarea>
+    <br/>
+    <input name="button5" type="submit" id="button5" value="追加" onclick="check();"/>
+</form>
+#end

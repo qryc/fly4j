@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+    <bean id="flyConfig" class="fnote.domain.config.FlyConfig">
+        <constructor-arg name="profile" value="${profile}"></constructor-arg>
+        <constructor-arg name="onLine" value="${onLine}"></constructor-arg>
+        <constructor-arg name="defaultUserZipPwd" value="${defaultUserZipPwd}"></constructor-arg>
+        <constructor-arg name="workSpaceList">
+            <list>
+                <bean class="farticle.domain.entity.WorkSpace" p:name="gitHub" p:workType="file"/>
+                <bean class="farticle.domain.entity.WorkSpace" p:name="person" p:workType="fly"/>
+                <bean class="farticle.domain.entity.WorkSpace" p:name="company" p:workType="fly"/>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="pathService" class="qryc.user.QrycStorePathService">
+        <property name="userRootPath" value="${userRootPath}"></property>
+        <property name="tempRootPath" value="${tempRootPath}"></property>
+        <property name="customPathMap">
+            <map>
+                <entry key="DocPublic" value="${DocPublic}"/>
+                <entry key="DocPrivate" value="${DocPrivate}"/>
+                <entry key="PicBed" value="${PicBed}"/>
+                <entry key="logs" value="${logs}"/>
+            </map>
+        </property>
+        <property name="storeDirStrMap">
+            <map>
+                <entry key="back" value="zipData"/>
+                <entry key="user" value="userInfo"/>
+                <entry key="article" value="notes"/>
+                <entry key="draft" value="draft"/>
+            </map>
+        </property>
+
+    </bean>
+    <bean id="userRepositoryFile" class="fnote.infrastructure.impl.file.UserRepositoryFile">
+        <property name="pathService" ref="pathService"></property>
+        <property name="userInfoCryptPwd" value="${deployConfig.userInfoCryptPwd}"></property>
+        <property name="defaultUserArticlePwd" value="${defaultUserArticlePwd}"></property>
+    </bean>
+
+    <bean id="articleRepositoryFile" name="articleNoteRepositoryFile"
+          class="fnote.infrastructure.impl.file.ArticleNoteRepositoryFile">
+        <property name="pathService" ref="pathService"></property>
+    </bean>
+    <bean id="dtreeUtil" class="farticle.domain.view.TreeService">
+        <property name="articleTreeMap">
+            <map>
+                <entry key="viewArticle">
+                    <list>
+                        <bean class="qryc.article.AlbumTree">
+                        </bean>
+<!--                        配置不展示outline-->
+<!--                        <bean class="farticle.domain.view.ArticleOutlineTree">-->
+<!--                            <property name="articleLoad" ref="articleLoad"></property>-->
+<!--                        </bean>-->
+
+                    </list>
+                </entry>
+                <entry key="childArticleLine">
+                    <list>
+                        <bean class="farticle.domain.view.ArticleOutlineChildTree">
+                            <property name="articleLoad" ref="articleLoad"></property>
+                        </bean>
+
+                    </list>
+                </entry>
+            </map>
+        </property>
+        <property name="predicateMap">
+            <map>
+                <entry key="filePredicate4Browser">
+                        <bean class="farticle.domain.view.FilePredicate4Browser">
+                        </bean>
+                </entry>
+                <entry key="treeFilePredicate">
+                    <bean class="farticle.domain.view.TreeFilePredicate">
+                    </bean>
+                </entry>
+            </map>
+        </property>
+        <property name="pathService" ref="pathService"></property>
+        <property name="articleLoad" ref="articleLoad"></property>
+        <property name="treeConfigMap">
+            <map>
+                <entry key="articles">
+                    <bean class="farticle.domain.view.TreeConfig"
+                          p:target="_blank"
+                          p:addOutLine="false"
+                          p:addParent="false"
+                          p:delEmpty="false"
+                          p:folderUrl="/article/articles.do?buId=lastEdit&amp;rootPath="
+                          p:fileUrl="/article/viewArticle.do?noteFileStr="/>
+                </entry>
+                <entry key="viewArticle">
+                    <bean class="farticle.domain.view.TreeConfig"
+                          p:target="_self"
+                          p:addOutLine="false"
+                          p:addParent="false"
+                          p:delEmpty="true"
+                          p:folderUrl="/article/articles.do?buId=lastEdit&amp;rootPath="
+                          p:fileUrl="/article/viewArticle.do?noteFileStr="/>
+                </entry>
+                <entry key="editArticle">
+                    <bean class="farticle.domain.view.TreeConfig"
+                          p:target=""
+                          p:addOutLine="false"
+                          p:addParent="false"
+                          p:delEmpty="false"
+                          p:folderUrl=""
+                          p:fileUrl="/articleMaintain/toEditArticle.do?edithome=list&amp;noteFileStr="/>
+                </entry>
+                <entry key="browser">
+                    <bean class="farticle.domain.view.TreeConfig"
+                          p:target=""
+                          p:addOutLine="false"
+                          p:addParent="false"
+                          p:delEmpty="false"
+                          p:folderUrl="/browser/list.do?sort=1&amp;currDir="
+                          p:fileUrl="/viewFile?absolutePath="/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>
+

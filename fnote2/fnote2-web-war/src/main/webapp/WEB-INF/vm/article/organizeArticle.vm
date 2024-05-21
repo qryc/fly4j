@@ -1,0 +1,161 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+    <script language="javascript">
+        //验证审核意见
+        function check() {
+            var title = $("#title").val();
+            if (title == '') {
+                alert("标题不能为空!");
+                return false;
+            }
+            return document.forms[0].submit();
+        }
+
+    </script>
+</head>
+<body>
+
+<main id="mainDiv">
+    #parse("/WEB-INF/vm/common/menu-$!{clientConfig.vm}.vm")
+    <div class="entry-header">
+        <a href="javascript:check()" target="_self">提交变动</a>
+    </div>
+    <!--强制换行 -->
+    <div style="clear: both"></div>
+    <form action="/articleMaintain/organizeArticle.do" method="post" onsubmit="return check();">
+
+        <input type="hidden" name="noteFileStr" value="$!cplArticle.encodeNoteFileStr"/>
+        <input type="hidden" name="edithome" value="$!edithome"/>
+        <table>
+            <tr>
+                <td> 文章标题：</td>
+                <td><span class="label label-default">$!ArticleContent.title</span></td>
+            </tr>
+            <tr>
+                <td> 成熟度：</td>
+                <td>
+                    <select class="form-control" name="maturity" id="maturity">
+                        <option value="0" selected="true">孵化中</option>
+                        <option value="60">成熟</option>
+                        <option value="100">已稳定100</option>
+                        <option value="999">公开发表</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>文件文本格式</td>
+                <td>
+                    <label class="radio-inline">
+                        <input type="radio" name="textType" id="editor1" value="0" checked> html
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="textType" id="editor2" value="1">Markdown
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td> 编辑器（支持html和MD）</td>
+                <td>
+                    <label class="radio-inline">
+                        <input type="radio" name="mdEditor" id="mdEditor2" value="1"> 文本编辑器(适用所有格式)
+                    </label>
+
+                    <label class="radio-inline">
+                        <input type="radio" name="mdEditor" id="mdEditor3" value="2"> MD可视编辑器
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="mdEditor" id="mdEditor3" value="tinyMce"> tinyMCE富文本
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="mdEditor" id="mdEditor3" value="ckEditor"> ckEditor富文本
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td> 编辑模式</td>
+                <td>
+                    <label class="radio-inline">
+                        <input type="radio" name="editMode" value="0" checked>全编辑
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="editMode" value="1">只允许追加
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="editMode" value="2">封版只读
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td> 排序号</td>
+                <td>
+                    <input type="text" class="form-control" id="orderNum" name="orderNum" value="$!organize.orderNum">
+                </td>
+            </tr>
+            <tr>
+                <td>加密</td>
+                <td>
+                    <input type="radio" name="open" value="0" checked="true">公开加密
+
+                    <input type="radio" name="open" value="1">私有
+                    <input type="radio" name="open" value="2">加密
+                    <input type="radio" name="open" value="3">自定义加密
+                    <input type="radio" name="open" value="4">真正的不加密
+                    <input type="text" name="mima" value="" size="6">
+                </td>
+            </tr>
+            <tr>
+                <td>所属工作空间</td>
+                <td>
+                    <label class="radio-inline">
+                        <input type="radio" name="workspace" id="workspace1" value="company"> 公司空间
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="workspace" id="workspace2" value="person"> 个人空间
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>置顶</td>
+                <td>
+                    <label class="radio-inline">
+                        <input type="radio" name="topping" id="topping1" value="false" checked> 不置顶
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="topping" id="topping2" value="true"> 置顶
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>加入保险柜</td>
+                <td>
+                    <label class="radio-inline">
+                        <input type="radio" name="insurance" id="insurance1" value="false" checked> 不加入保险
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="insurance" id="insurance2" value="true"> 放入保险柜
+                    </label>
+                </td>
+            </tr>
+        </table>
+
+
+    </form>
+    <script language="javascript">
+        $("input[type=radio][name=textType][value=$!organize.textType]").attr("checked", true);
+        $("input[type=radio][name=editMode][value=$!organize.editMode]").attr("checked", true);
+        $("input[type=radio][name=open][value=$!organize.open]").attr("checked", true);
+        $("input[type=radio][name=workspace][value=$!organize.workspace]").attr("checked", true);
+        $("input[type=radio][name=mdEditor][value=$!organize.mdEditor]").attr("checked", true);
+        $("input[type=radio][name=insurance][value=$!organize.insurance]").attr("checked", true);
+        $("input[type=radio][name=topping][value=$!organize.topping]").attr("checked", true);
+
+        $("#maturity").val("$!organize.maturity");
+    </script>
+    <a class="nav-link" href="/articleMaintain/toViewSourceCode.do?noteFileStr=$!cplArticle.encodeNoteFileStr">替换图床</a>
+</main>
+</body>
+</html>
+

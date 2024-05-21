@@ -1,0 +1,9 @@
+<div id="content">
+    #if(${pageConfig.pc})
+        <textarea class="mdTextArea" rows="100" name="mdContent"
+                  id="mdContent">$!{text}</textarea>
+    #else
+        <textarea class="mdTextAreaMobile" rows="25" name="mdContent"
+                  id="mdContent">$!{text}</textarea>
+    #end
+</div>

@@ -1,0 +1,106 @@
+<style>
+    DIV#editable {
+        width: 400px;
+        height: 300px;
+        border: 1px dashed blue;
+    }
+</style>
+<script type="text/javascript">
+    var createStandardXHR = function () {
+        try {
+            return new window.XMLHttpRequest();
+        } catch (e) {
+            return false;
+        }
+    };
+    var createActiveXHR = function () {
+        try {
+            return new window.ActiveXObject("Microsoft.XMLHTTP");
+        } catch (e) {
+            return false;
+        }
+    };
+
+    var xhr;
+
+    function createXHR() {
+        var temp = createStandardXHR() || createActiveXHR();
+        if (window.XDomainRequest === undefined) {
+            return temp;
+        } else {
+            return new XDomainRequest();
+        }
+    }
+
+    function uploadImg(obj) {
+        xhr = createXHR();
+        var fd = new FormData();
+        fd.append("image", obj, "clipBoardDefault.png");
+        xhr.open('POST', '/browser/uploadImag.do?currDir=$!urlEncoder.encode(${browserResult.currDirStr})', true);
+        //2.设置回调函数
+        xhr.onreadystatechange = callBackImag;
+        xhr.send(fd);
+    }
+    function callBackImag(){
+        window.location.reload();
+    }
+    function paste_img(e) {
+        if (e.clipboardData.items) {
+            ele = e.clipboardData.items
+            for (var i = 0; i < ele.length; ++i) {
+                //输出元素的位置，种类，
+                console.info(i + ele[i].kind + ele[i].type);
+                if (ele[i].kind == 'file' && ele[i].type.indexOf('image/') !== -1) {
+                    //返回一个文件对象
+                    var blob = ele[i].getAsFile();
+
+                    //这两个查不出区别
+                    window.URL = window.URL || window.webkitURL;
+
+                    //创建一个代表对象的url，类似<img src="blob:null/62c75a84-ae51-41d2-a6f6-983446bc23d0">
+                    var blobUrl = window.URL.createObjectURL(blob);
+                    console.log(blob);
+                    //创建一个html的img元素
+                    var new_img = document.createElement('img');
+                    //设置地址url<img src="blob:null/62c75a84-ae51-41d2-a6f6-983446bc23d0">
+                    new_img.setAttribute('src', blobUrl);
+
+                    //图片加入编辑框展示
+                    document.getElementById('editable').appendChild(new_img);
+
+                    //上传图片
+                    uploadImg(blob);
+
+                }
+
+                //为文字时。文字时还区分文本和hmtl，返回字符串getAsString 的时候，需要一个回调函数。
+                if (ele[i].kind == 'string' && ele[i].type.indexOf('plain') != -1 && ele.length < 2) {
+                    ele[i].getAsString(function (s) {
+                        console.info(s);
+                        var temp = document.getElementById('editable').innerHTML;
+                        document.getElementById('editable').innerHTML = temp + s;
+                    });
+                }
+                if (ele[i].kind == 'string' && ele[i].type.indexOf('html') != -1) {
+                    ele[i].getAsString(function (s) {
+                        console.info(s);
+                        var temp = document.getElementById('editable').innerHTML;
+                        document.getElementById('editable').innerHTML = temp + s;
+                    });
+                }
+
+            }
+        } else {
+            alert('non-chrome');
+        }
+    }
+
+
+</script>
+<h2>test image paste in browser</h2>
+<div id="non-editable" style="width:250px; height:100px; border:none; overflow:hidden;">
+    <p>copy the following img, then paste it into the area below</p>
+</div>
+<div id="editable" contenteditable="true" style="width:250px; height:100px;  overflow:auto;" onpaste="paste_img(event)">
+
+</div>

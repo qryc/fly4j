@@ -1,0 +1,63 @@
+<!--
+${flyContext}
+end flyContext
+${pageConfig}
+${clientConfig}
+debug
+$!{moreInfo}
+
+
+iknowinfo:
+$!{iknowInfo}
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    #parse("/WEB-INF/vm/netdisk/common/head.vm")
+    <script type="text/javascript" src="/netdisk/js/fileBrowser.js">
+    </script>
+    <title>${browserResult.currDir}
+    </title>
+    <style type="text/css">
+            #if(!${pageConfig.pc})
+            #mainDiv {
+                margin: 2px;
+                padding: 0px;
+                /*子Div使用Float后如何撑开父Div*/
+                overflow: hidden;
+                border-radius: 0px;
+                border: none;
+            }
+            #end
+    </style>
+
+</head>
+<body>
+
+<div id="mainDiv">
+    #foreach($image in $images)
+        $image
+    #end
+</div>
+    #parse("/WEB-INF/vm/netdisk/common/bottom.vm")
+</body>
+</html>
+<script type="text/javascript">
+    function AddImgClickEvent() {
+        var objs = document.getElementsByTagName("img");
+        for (var i = 0; i < objs.length; i++) {
+            objs[i].onclick = function () {
+                window.open(this.src);
+            }
+            objs[i].style.cursor = "pointer";
+            if (objs[i].width > 800) {
+                objs[i].height = 800 / objs[i].width * objs[i].height;
+                objs[i].width = 800;
+
+            }
+        }
+    }
+
+    AddImgClickEvent();
+</script>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+    <bean id="fileAndDirPredicate" class="fly4j.common.file.FileAndDirPredicate">
+        <constructor-arg name="acceptDirOrFileNames">
+            <set>
+                <value>.idea</value>
+                <value>target</value>
+                <value>.DS_Store</value>
+                <value>.git</value>
+            </set>
+        </constructor-arg>
+        <constructor-arg name="acceptExtensions">
+            <set>
+                <value>iml</value>
+                <value>md5</value>
+            </set>
+        </constructor-arg>
+    </bean>
+    <bean id="userDataBackService" class="flynote.application.ops.back.UserDataBackServiceImpl">
+        <property name="fileAndDirPredicate" ref="fileAndDirPredicate"></property>
+        <property name="userRepository" ref="userRepositoryFile"></property>
+        <property name="mailUtil2" ref="mailUtil2"></property>
+        <property name="pathService" ref="pathService"></property>
+    </bean>
+    <bean id="backUserDataJob" class="flynote.application.ops.back.job.BackUserDataJob" init-method="startJob">
+        <property name="mailUtil2" ref="mailUtil2"></property>
+        <property name="monitorFilePath" value="${monitorFilePath}"></property>
+        <property name="openBack" value="true"></property>
+        <property name="backSiteHour" value="20"></property>
+        <property name="backJobCache">
+            <bean class="fly4j.common.cache.impl.FlyCacheJVM"></bean>
+        </property>
+        <property name="userDataBackService" ref="userDataBackService"></property>
+        <property name="userRepository" ref="userRepositoryFile"></property>
+    </bean>
+
+</beans>
+

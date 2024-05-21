@@ -1,0 +1,6 @@
+#if(${simplePage})
+    #parse("/WEB-INF/vm/fu/layout/publishedLayout.vm")
+#else
+    $screen_content
+#end
+

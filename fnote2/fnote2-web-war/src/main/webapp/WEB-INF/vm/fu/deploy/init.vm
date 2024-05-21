@@ -1,0 +1,34 @@
+<script language="javascript">
+    function useDefault() {
+        document.getElementById("defaultCryptPass").value = "$!defaultCryptPwd";
+        document.getElementById("fileuploadMaxSize").value = "5242880";
+
+    }
+</script>
+<h2>网站安装向导-第一步：设置网站配置</h2>
+<form name="deployForm" id="deployForm" action="/deploy/installFlySite.do" method="post">
+    <label for="email">管理员邮箱</label>
+    <input type="text" class="form-control" id="email" name="email" value="$!email" placeholder="输入管理员邮箱">
+    <label for="defaultCryptPass">defaultCryptPass(不可变更，请牢记，密码用于加密用户信息)</label>
+    <input type="text" class="form-control" id="defaultCryptPass" name="defaultCryptPass"
+           value="$!flyConfig.defaultCryptPass">
+    <label for="domain">fileuploadMaxSize</label>
+    <input type="text" class="form-control" id="fileuploadMaxSize" name="fileuploadMaxSize"
+           value="$!flyConfig.fileuploadMaxSize">
+    <br/>
+    <h3>smtp and ssl,如果未设置不能使用动态密码，不能发送用户备份文件</h3>
+    <label for="sysEmail">smtp服务器,例如 smtp.126.com</label>
+    <input type="text" class="form-control" id="hostName" name="mailConfigModel.hostName" value="$!flyConfig.mailConfigModel.hostName" placeholder="输入系统邮箱smtp服务器">
+    <label for="sysEmail">系统邮件发送邮箱，例如 xxxx@126.com</label>
+    <input type="text" class="form-control" id="fromEmail" name="mailConfigModel.fromEmail" value="$!flyConfig.mailConfigModel.fromEmail" placeholder="输入系统邮件发送邮箱">
+    <label for="sysEmail">邮箱用户名</label>
+    <input type="text" class="form-control" id="userName" name="mailConfigModel.userName" value="$!flyConfig.mailConfigModel.userName" placeholder="邮箱用户名">
+    <label for="sysEmail">邮箱授权密码</label>
+    <input type="text" class="form-control" id="password" name="mailConfigModel.password" value="$!flyConfig.mailConfigModel.password" placeholder="邮箱授权密码">
+    <br/>
+    <button type="button" class="btn btn-outline-secondary" onclick="useDefault()"> 使用默认值</button>
+    <input type="submit" value="安装网站" class="btn btn-outline-secondary ">
+
+</form>
+<h2>网站安装向导-第二步： <a href="/login/toLogin.do">使用管理员登录</a>，设置用户</h2>
+

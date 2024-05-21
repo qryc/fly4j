@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+      http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+       default-autowire="byName">
+    <context:component-scan base-package="fnote.web.controller"/>
+    <context:component-scan base-package="fnote.filebrowser.web.controller"/>
+    <context:component-scan base-package="fnote.deploy.controller"/>
+    <context:component-scan base-package="fnote.article.web.controller"/>
+    <!--
+    <context:annotation-config />   -->
+    <mvc:annotation-driven/>
+    <mvc:interceptors>
+        <bean class="fnote.web.common.SpringMvcInterceptor">
+        </bean>
+    </mvc:interceptors>
+
+    <bean id="flyExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="1"/>
+        <property name="maxPoolSize" value="1"/>
+        <property name="queueCapacity" value="3000"/>
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy"/>
+        </property>
+    </bean>
+    <!-- 配置volocity引擎 -->
+    <bean id="velocityConfig"
+          class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="."/>
+        <property name="configLocation" value="classpath:velocity.properties"/>
+        <property name="velocityProperties">
+            <props>
+
+                <prop key="input.encoding">UTF-8</prop>
+                <!-- 指定模板引擎进行模板处理的编码 -->
+                <prop key="output.encoding">UTF-8</prop>
+                <!-- 指定输出流的编码 -->
+                <prop key="contentType">text/html;charset=UTF-8</prop>
+                <!-- contentType -->
+            </props>
+        </property>
+    </bean>
+    <!-- 配置试图展示 -->
+    <bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="cache" value="true"></property>
+        <!-- 视图的后缀 -->
+        <property name="suffix" value=".vm"/>
+        <!-- 视图的存放路径 -->
+        <property name="prefix" value="/WEB-INF/vm/"/>
+        <property name="layoutUrl" value="/WEB-INF/vm/fu/layout/default.vm"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="dateToolAttribute" value="dateTool"/>
+        <property name="numberToolAttribute" value="numberTool"/>
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <!-- redirectHttp10Compatible:解决https环境下使用redirect重定向地址变为http的协议，无法访问服务的问题
+                   设置为false,即关闭了对http1.0协议的兼容支持  -->
+        <property name="redirectHttp10Compatible" value="false"/>
+    </bean>
+    <!--上下文门面-->
+    <bean id="flyContextFacade" class="fnote.domain.config.FlyContextFacade">
+        <property name="userService" ref="userService"/>
+        <property name="loginService" ref="loginService"/>
+    </bean>
+
+    <beans profile="online">
+        <!--        <context:property-placeholder location="classpath:properties.online/fly.properties"/>-->
+        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.online/fly.properties"/>
+
+    </beans>
+    <beans profile="dev">
+        <!--        <context:property-placeholder location="classpath:properties.dev/fly.properties"/>-->
+        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.dev/fly.properties"/>
+    </beans>
+    <beans profile="dev_online_data">
+        <!--        <context:property-placeholder location="classpath:properties.dev_online_data/fly.properties"/>-->
+        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.dev_online_data/fly.properties"/>
+    </beans>
+</beans>

@@ -1,0 +1,50 @@
+<style type="text/css">
+        #if(!${pageConfig.pc})
+        .nav-link {
+            display: block;
+            padding: 0.5rem 0.4rem;
+        }
+        #end
+
+
+</style>
+<!--class="nav bar topDiv"-->
+<!--menu:${menu}-->
+
+<header id="topDiv" class="topDiv">
+    <ul class="nav titleFont">
+
+        <li class="nav-item">
+            <input type="text" name="searchTitle" id="searchTitle"
+                   value="$!{searchTitle}" size="6" onblur="globalSearch()"
+                   onkeydown="if(event.keyCode==13){globalSearch();}">
+        </li>
+        #foreach($item in ${menu.menuItems})
+            <li class="nav-item">
+                <a class="nav-link" href="${item.href}"> $!{item.title}</a>
+            </li>
+        #end
+
+        #if(${menu.showDownMenu})
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                   href="#">${flyContext.pin}$!{flyContext.loginUser.otherLabel}</a>
+                <div class="dropdown-menu">
+                    #foreach($item in ${menu.downMenuItems})
+                        <a class="dropdown-item" href="item.href"> $!{item.title}</a>
+                    #end
+                </div>
+            </li>
+        #end
+    </ul>
+    <!-- 文章操作按钮-->
+
+</header>
+
+#if(${currLocation}=='viewArticle' && ${pageConfig.pc})
+<script>
+    $("#topDiv").hide();
+</script>
+#end
+<!--强制换行,不然菜单可能点了没有反应 -->
+<div style="clear: both"></div>

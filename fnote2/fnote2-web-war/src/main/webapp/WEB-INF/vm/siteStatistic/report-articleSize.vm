@@ -1,0 +1,39 @@
+<div id="myChartArticleSize" style="width: 300px;height:300px;"></div>
+
+
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChartArticleSize = echarts.init(document.getElementById('myChartArticleSize'));
+
+    myChartArticleSize.setOption({
+        title: {
+            text: '专辑分析'
+        },
+        xAxis: {
+            data: [$!{articleSizeGram.x}]
+        },
+        yAxis: {},
+        series: [{
+            name: '数量',
+            type: 'bar',
+            data: [$!{articleSizeGram.y}],
+            itemStyle: {        //上方显示数值
+                normal: {
+                    label: {
+                        show: true, //开启显示
+                        position: 'top', //在上方显示
+                        textStyle: { //数值样式
+                            color: 'black',
+                            fontSize: 16
+                        }
+                    }
+                }
+            }
+        }]
+    })
+    myChartArticleSize.on('click',function(e){
+        if(e.name=="文章"){
+            window.open("/article/articles.do?buId=lastEdit");
+        }
+    });
+</script>

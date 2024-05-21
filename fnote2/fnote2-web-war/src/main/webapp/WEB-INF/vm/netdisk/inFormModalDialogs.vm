@@ -1,0 +1,25 @@
+
+<!--重命名文件夹模态框 -->
+<div class="modal fade" id="renameDirModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">重命名文件</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                名称 <input class="textfield mr-1" type="text" onKeypress="event.cancelBubble=true;" id="newName"
+                          name="newName">
+            </div>
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button class="btn btn-primary" name="Submit"
+                        onclick="submitBrowser('/browser/rename.do')">重命名文件
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

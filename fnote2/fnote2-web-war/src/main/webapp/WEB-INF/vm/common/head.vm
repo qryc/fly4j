@@ -1,0 +1,122 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="0"/>
+<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="cache-control" content="no-cache, must-revalidate"/>
+<meta http-equiv="expires" content="0"/>
+<link href="/icon/favicon.ico" rel="icon" type="image/x-icon"/>
+<link rel="apple-touch-icon" type="image/png" href="/icon/apple-touch-icon.png"/>
+<link rel="icon" type="image/png" href="/icon/favicon-32x32.png" sizes="32x32"/>
+<link rel="icon" type="image/png" href="/icon/favicon-16x16.png" sizes="16x16"/>
+
+<link href="/style/admin.css" rel="stylesheet" type="text/css"/>
+
+<!-- 新 Bootstrap4 核心 CSS 文件 -->
+##<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="StyleSheet" href="/js/bootstrap/bootstrap.min.css" type="text/css"/>
+
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+##<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+
+
+<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+##<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/popper.min.js"></script>
+
+
+<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+##<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+
+
+##<script src="https://cdn.staticfile.org/vue/3.0.5/vue.global.js"></script>
+<script type="text/javascript" src="/js/vue/vue.global.js"></script>
+
+##<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script type="text/javascript" src="/js/axios/axios.min.js"></script>
+
+<meta name="viewport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0,
+                                     user-scalable=no">
+
+
+<!-- script -->
+<script language="javascript">
+    function globalSearch() {
+        var title = $("#searchTitle").val();
+        window.location.href = "/article/articles.do?buId=globalSearch&title=" + title;
+    }
+    function setFullScreenKey() {
+        $(document).keyup(function (event) {
+            if (event.keyCode == 27) {
+                jQuery.ajax({
+                    type: "POST",
+                    dataType: "text",
+                    url: "/userConfig/writeFullScreenReverseCookies.do",
+                    data: {},
+                    success: function (str) {
+                        if (str == 'true') {
+                            window.location.reload();
+                            //全屏
+                           // $("#topDiv").hide();//display:block, 不占位
+                            // document.getElementById( "mainDiv" ).style.border = "1px solid LightGrey";
+                        } else {
+                            window.location.reload();
+                           // $("#topDiv").show();
+                            // document.getElementById( "mainDiv" ).style.border = "";
+                        }
+                    },
+                    error: function (XMLHttpResponse) {
+                        alert("出错");
+                    }
+                });
+
+
+            }
+        });
+    }
+
+    // ESC控制退出全屏控制
+        #if(${flyContext.login}&&!${pageConfig.mobileSite})
+        setFullScreenKey();
+        #end
+</script>
+
+<!-- 动态CSS -->
+<style type="text/css">
+
+
+    #mainDiv {
+
+        margin: 0 $!{clientConfig.getExtStringValue("mainDivMargin")}%;
+        padding: 0% 2% 2% 2%;
+        /*子Div使用Float后如何撑开父Div*/
+        overflow: scroll;
+        /*border-radius: 25px;*/
+        /*新样式不再有明显的界限，如果需要就使用暗示隔离，和房子装修有些相似*/
+        /*border: 1px solid LightGrey;*/
+    }
+
+    body {
+        padding: 2px;
+        font-size: ${clientConfig.fontEm}em;
+    }
+        #if(${pageConfig.mobileSite})
+        #mainDiv {
+            margin: 2px;
+            padding: 0px;
+            /*子Div使用Float后如何撑开父Div*/
+            overflow: hidden;
+            /*border-radius: 25px;*/
+            /*新样式不再有明显的界限，如果需要就使用暗示隔离，和房子装修有些相似*/
+            /*border: 1px solid LightGrey;*/
+        }
+
+        #else
+
+        #end
+</style>
+<link rel="StyleSheet" href="/js/dtree/dtree.css" type="text/css"/>
+<script type="text/javascript" src="/js/dtree/dtree.js"></script>

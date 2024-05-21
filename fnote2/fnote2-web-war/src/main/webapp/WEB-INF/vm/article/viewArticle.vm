@@ -1,0 +1,106 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title id="title">
+    </title>
+    #parse("/WEB-INF/vm/common/head.vm")
+    <link href="/style/${flyContext.viewConfig.viewArticleCss}" rel="stylesheet" type="text/css"/>
+    <script language="javascript">
+        //验证审核意见
+        function check() {
+            var appendPre = $("#appendPre").val();
+            if (appendPre == '') {
+                alert("追加内容不能为空!");
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+    #if(${cplArticle.extId} == 841||${cplArticle.extId} == 625)
+        <link href="/style/tableContent.css" rel="stylesheet" type="text/css"/>
+    #end
+</head>
+<body>
+
+<main id="mainDiv">
+    <div id="articleVue">
+        #parse("/WEB-INF/vm/common/menu.vm")
+
+        #if(!${clientConfig.fullScreen})
+            <table style="border-color: transparent;table-layout: fixed;margin: 0 0;" width="100%">
+                <tr>
+                    <td style="vertical-align:top;border-color: transparent">
+                        #parse("/WEB-INF/vm/article/viewArticle_1.vm")
+                    </td>
+                    <td style="border-color: transparent;vertical-align:top;word-wrap:break-word;font-size: 0.8em; margin: 0 0;"
+                        width="250px">
+
+                        <br/> <br/> <br/> <br/>
+                        <div class="graySecondFont">
+                            $!{articleInfoVo.articleViewMenu}
+                        </div>
+                        #parse("/WEB-INF/vm/common/dtree.vm")
+                    </td>
+
+
+                </tr>
+            </table>
+        #else
+            <div class="entry-header">
+                $!{articleInfoVo.articleViewMenu}
+            </div>
+            #parse("/WEB-INF/vm/article/viewArticle_1.vm")
+        #end
+
+    </div>
+
+
+    <script type="text/javascript">
+            #if(!${clientConfig.fullScreen})
+
+            d.openAll();
+            #end
+
+        function AddImgClickEvent() {
+            var objs = document.getElementsByTagName("img");
+            for (var i = 0; i < objs.length; i++) {
+                objs[i].onclick = function () {
+                    window.open(this.src);
+                }
+                objs[i].style.cursor = "pointer";
+                if (objs[i].width > 800) {
+                    objs[i].height = 800 / objs[i].width * objs[i].height;
+                    objs[i].width = 800;
+
+                }
+            }
+        }
+
+        AddImgClickEvent();
+
+        const app = {
+            data() {
+                return {
+                    articleView: '',
+                    menu: ''
+                }
+            },
+            mounted() {
+                axios.get('/menu/menuJson.do?noteFileStr=$!noteFileStr')
+                        .then(response => {
+                            this.menu = response.data;
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+            }
+        }
+
+        Vue.createApp(app).mount('#articleVue')
+    </script>
+</main>
+</body>
+</html>
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+    <!--组件列表 start-->
+
+    <!--组件列表 end-->
+
+    <!--组件拼装-->
+    <bean id="articleQuery" class="flynote.article.query.impl.ArticleQueryImpl">
+        <property name="pathService" ref="pathService"></property>
+        <property name="articleRepository" ref="articleRepositoryFile"></property>
+        <property name="cplArticleFilterMap">
+            <map>
+                <entry key="lastEdit">
+                    <list>
+                        <bean class="farticle.domain.extension.impl.query.single.InsuranceFilter" p:showInsurance="false"/>
+                        <bean class="farticle.domain.extension.impl.query.single.WorkSpaceFilter"/>
+                        <bean class="farticle.domain.extension.impl.query.single.DecryptFilter"/>
+                    </list>
+                </entry>
+                <entry key="globalSearch">
+                    <list>
+                        <bean class="farticle.domain.extension.impl.query.single.DecryptFilter"/>
+                        <bean class="farticle.domain.extension.impl.query.single.WordSearchFilter"/>
+                        <bean class="farticle.domain.extension.impl.query.single.InsuranceFilter" p:showInsurance="true"/>
+                        <bean class="farticle.domain.extension.impl.query.single.WorkSpaceFilter"/>
+                    </list>
+                </entry>
+                <!--  数据分析使用-->
+                <entry key="articlesQueryAll">
+                    <list>
+                        <bean class="farticle.domain.extension.impl.query.single.DecryptFilter"/>
+                    </list>
+                </entry>
+            </map>
+        </property>
+        <property name="cplArticlesFilterMap">
+            <map>
+                <entry key="lastEdit">
+                    <list>
+                        <bean class="farticle.domain.extension.impl.query.multi.SortByTimeFilter"/>
+                        <bean class="farticle.domain.extension.impl.query.multi.LimitFilter" p:size="100"/>
+                    </list>
+                </entry>
+                <entry key="globalSearch">
+                    <list>
+                        <bean class="farticle.domain.extension.impl.query.multi.SortByOrdernumFilter"/>
+                    </list>
+                </entry>
+                <!--  数据分析使用-->
+                <entry key="published">
+                    <list>
+                        <bean class="farticle.domain.extension.impl.query.multi.SortByTimeFilter"/>
+                    </list>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+
+    <bean id="siteStatisticService" class="flynote.application.analysis.SiteStatisticService">
+        <property name="articleRepository" ref="articleRepositoryFile"></property>
+        <property name="articleQuery" ref="articleQuery"/>
+    </bean>
+
+</beans>
+

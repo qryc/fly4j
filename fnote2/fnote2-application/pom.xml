@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>fnote2</artifactId>
+        <groupId>qryc</groupId>
+        <version>0.0.8f-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <version>0.0.8f-SNAPSHOT</version>
+    <artifactId>fnote2-application</artifactId>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>qryc</groupId>
+            <artifactId>fnote2-common</artifactId>
+            <version>${flynote.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>qryc</groupId>
+            <artifactId>backtool-service</artifactId>
+            <version>${backtool.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>qryc</groupId>
+            <artifactId>fnote2-domain-service</artifactId>
+            <version>0.0.9-SNAPSHOT</version>
+        </dependency>
+        <!--web start-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>2.3.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--web end-->
+
+
+    </dependencies>
+
+</project>

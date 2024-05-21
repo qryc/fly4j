@@ -1,0 +1,89 @@
+#parse("/WEB-INF/vm/common/debug.vm")
+<!DOCTYPE HTML>
+<html>
+<head>
+    #parse("/WEB-INF/vm/common/head.vm")
+    <script language="javascript">
+        function fillEditInput(pin, email) {
+            $("#pin").val(pin);
+            $("#email").val(email);
+            $("#opration").val("edit");
+        }
+    </script>
+</head>
+<body>
+
+<main id="mainDiv">
+    <div id="articleVue">
+        #parse("/WEB-INF/vm/common/menu.vm")
+    </div>
+
+    <div>
+        <div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>pin</td>
+                    <td>email</td>
+                    <td>开放</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach($userinfo in $users)
+                    <tr>
+                        <td>
+                            $userinfo.pin
+                        </td>
+                        <td>
+                            $!{userinfo.userConfig.email}
+                        </td>
+                        <td>$!{userinfo.pin}</td>
+                        <td><a href="javascript:fillEditInput('$userinfo.pin','$userinfo.userConfig.email')">Edit</a>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <form action="/user/addOrEditUser.do" method="post">
+        <div class="form-group">
+            <label for="usr"> 操作 :</label>
+            <input class="form-control" type="text" name="opration" id="opration" value="add" readonly>
+        </div>
+        <div class="form-group">
+            <label for="usr">用户名:</label>
+            <input class="form-control" name="pin" type="text" id="pin">
+        </div>
+        <div class="form-group">
+            <label for="usr">邮箱 :</label>
+            <input class="form-control" name="email" type="text" id="email">
+        </div>
+        <input type="submit" value="提交"/><br>
+    </form>
+</main>
+</body>
+</html>
+<script type="text/javascript">
+
+    const app = {
+        data() {
+            return {
+                menu: ''
+            }
+        },
+        mounted() {
+            axios.get('/menu/menuJson.do')
+                    .then(response => {
+                        this.menu = response.data;
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+        }
+    }
+    Vue.createApp(app).mount('#articleVue')
+</script>

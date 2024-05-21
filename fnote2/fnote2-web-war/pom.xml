@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <parent>
+        <groupId>qryc</groupId>
+        <artifactId>fnote2</artifactId>
+        <version>0.0.8f-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>qryc</groupId>
+    <artifactId>fnote2-web-war</artifactId>
+    <version>0.0.8f-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>qryc</groupId>
+            <artifactId>fnote2-application</artifactId>
+            <version>${flynote.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>qryc</groupId>
+            <artifactId>qryc-knowledge-plugin</artifactId>
+            <version>0.0.8f-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>qryc</groupId>
+            <artifactId>fnote2-infrastructure-impl</artifactId>
+            <version>${flynote.version}</version>
+        </dependency>
+
+        <!-- Fly技术框架统一依赖 start-->
+
+
+        <dependency>
+            <groupId>qryc</groupId>
+            <artifactId>spring5-velocity</artifactId>
+            <version>${spring5-velocity.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpcomponents.version}</version>
+        </dependency>
+
+        <!--web start-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>${jsp-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--web end-->
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+<!--                        compile package-->
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!--
+                                <copy todir="${basedir}/target/fnote2-deploy-0.0.8f-SNAPSHOT/WEB-INF/vm/netdisk/" overwrite="true">
+                                    <fileset dir="${basedir}/../fnote2-fbrowser-deploy/src/main/webapp/WEB-INF/vm/netdisk">
+                                    </fileset>
+                                </copy>
+                                <copy todir="${basedir}/target/fnote2-deploy-0.0.8f-SNAPSHOT/" overwrite="true">
+                                    <fileset dir="${basedir}/../fnote2-fbrowser-deploy/src/main/webapp/netdisk">
+                                    </fileset>
+                                </copy>
+                                -->
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>online</id>
+            <properties>
+                <spring.profile.toActive>dev</spring.profile.toActive>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <spring.profile.toActive>dev</spring.profile.toActive>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <spring.profile.toActive>test</spring.profile.toActive>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>
