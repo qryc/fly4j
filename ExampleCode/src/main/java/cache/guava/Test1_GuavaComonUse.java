@@ -22,12 +22,16 @@ public class Test1_GuavaComonUse {
     public static void main(String[] args) throws Exception {
         //创建一个1000长度的缓存，10毫秒失效
         Cache<String, Stu> cache = CacheBuilder
-                .newBuilder().maximumSize(1000).expireAfterWrite(10, TimeUnit.MILLISECONDS)
+                .newBuilder().maximumSize(1000).recordStats().expireAfterWrite(10, TimeUnit.MILLISECONDS)
                 .build();
         //放入一个数据，key为1
         cache.put("1", new Stu("name1"));
+        System.out.println(cache.size());
+        System.out.println(cache.stats());
         //放入后直接取，有值
         System.out.println("放入之后getIfPresent：" + cache.getIfPresent("1"));
+        System.out.println(cache.size());
+        System.out.println(cache.stats());
         Thread.sleep(11);
         //休息11秒再取，已经失效，无值
         System.out.println("休息11毫秒，失效后getIfPresent：" + cache.getIfPresent("1"));
