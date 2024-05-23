@@ -31,7 +31,7 @@
                    href="#">${flyContext.pin}$!{flyContext.loginUser.otherLabel}</a>
                 <div class="dropdown-menu">
                     #foreach($item in ${menu.downMenuItems})
-                        <a class="dropdown-item" href="item.href"> $!{item.title}</a>
+                        <a class="dropdown-item" href="$!{item.href}"> $!{item.title}</a>
                     #end
                 </div>
             </li>
