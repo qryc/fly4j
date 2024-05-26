@@ -41,7 +41,7 @@
 
     <beans profile="online">
 <!--        <context:property-placeholder location="classpath:properties.online/fly.properties"/>-->
-        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.online/fly.properties"/>
+        <context:property-placeholder location="file:/root/FlyData2023/config/properties.online/fly.properties"/>
 
     </beans>
     <beans profile="dev">
