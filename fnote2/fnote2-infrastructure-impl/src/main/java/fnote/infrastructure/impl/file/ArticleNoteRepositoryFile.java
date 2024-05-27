@@ -55,8 +55,12 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
     }
 
 
-    private Path getDraftFilePath(String pin, String filename) {
-        return pathService.getTempURootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
+    private Path getDraftFilePath(String pin, String filename, Long id) {
+        if (null != id) {
+            return pathService.getTempURootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
+        } else {
+            return pathService.getTempURootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
+        }
     }
 
 
@@ -162,7 +166,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
         RepositoryException.wrapper(() -> {
             var path = Path.of(idPin.getNoteFileStr());
-            draft(idPin.getPin(), path.toFile());
+            draft(idPin.getPin(), path.toFile(), null);
             Files.deleteIfExists(path);
         });
 
@@ -172,9 +176,9 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         return fileName.startsWith("") && fileName.endsWith("");
     }
 
-    public void draft(String pin, File file) throws Exception {
+    public void draft(String pin, File file, Long id) throws Exception {
         if (StringUtils.isNotBlank(pin)) {
-            Path draftPath = getDraftFilePath(pin, file.getName());
+            Path draftPath = getDraftFilePath(pin, file.getName(), id);
             if (Files.notExists(draftPath.getParent()))
                 Files.createDirectories(draftPath.getParent());
             Files.writeString(draftPath, Files.readString(file.toPath()));
@@ -192,7 +196,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             File file = path.toFile();
 
 //            写入草搞
-            draft(cplArticle.getPin(), file);
+            draft(cplArticle.getPin(), file, cplArticle.getExtId());
 
             //再次匹配ID，防止误修改
             String articleJson = getArticleJson(cplArticle);
