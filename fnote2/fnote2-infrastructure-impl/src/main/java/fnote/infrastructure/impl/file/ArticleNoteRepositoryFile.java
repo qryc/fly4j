@@ -9,7 +9,6 @@ import fnote.domain.config.FlyContext;
 import fnote.user.domain.entity.BaseDomain;
 import fnote.user.domain.entity.IdPin;
 import fnote.common.StorePathService;
-import fnote.user.domain.entity.LoginUser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,9 +56,9 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
     private Path getDraftFilePath(String pin, String filename, Long id) {
         if (null != id) {
-            return pathService.getTempURootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
+            return pathService.getUTempRootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
         } else {
-            return pathService.getTempURootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
+            return pathService.getUTempRootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
         }
     }
 

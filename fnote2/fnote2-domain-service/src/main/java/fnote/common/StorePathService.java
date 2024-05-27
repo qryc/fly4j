@@ -2,9 +2,7 @@ package fnote.common;
 
 
 import fnote.domain.config.FlyContext;
-import fnote.user.domain.entity.LoginUser;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -37,34 +35,37 @@ public abstract class StorePathService {
 
     }
 
+    public Path getRootPtah(String storeName) {
+        return userRootPath;
+    }
+
+    public Path getTempRootPtah(String storeName) {
+        return tempRootPath;
+    }
+
     public Path getURootPath(String pin) {
         return userRootPath.resolve(pin);
     }
 
-    public Path getTempURootPath(String pin) {
+    public Path getUTempRootPath(String pin) {
         return tempRootPath.resolve(pin);
     }
 
-    public Path getRootPtah(String storeName) {
-        if (PATH_ARTICLE.equals(storeName) || PATH_USER.equals(storeName)) {
-            return userRootPath;
-        } else if (PATH_BACK.equals(storeName) || "draft".equals(storeName)) {
-            return tempRootPath;
-        } else {
-            throw new UnsupportedOperationException("directDir getUDirPath:" + storeName);
-        }
-    }
-
-    public Path getURootPath(String storeName, String pin) {
-        return getRootPtah(storeName).resolve(pin);
-    }
 
     public Path getUDirPath(String storeName, String pin) {
         String storeDirStr = storeDirStrMap.get(storeName);
         if (StringUtils.isBlank(storeDirStr)) {
             throw new UnsupportedOperationException("directDir getUDirPath");
         } else {
-            return getURootPath(storeName, pin).resolve(storeDirStr);
+            return getURootPath(pin).resolve(storeDirStr);
+        }
+    }
+    public Path getUTempDirPath(String storeName, String pin) {
+        String storeDirStr = storeDirStrMap.get(storeName);
+        if (StringUtils.isBlank(storeDirStr)) {
+            throw new UnsupportedOperationException("directDir getUDirPath");
+        } else {
+            return getUTempRootPath(pin).resolve(storeDirStr);
         }
     }
 
@@ -97,9 +98,6 @@ public abstract class StorePathService {
         return getAllArticleDirPaths(pin, userLabel).get(0).resolve("default");
     }
 
-    public Path getArticleDraftPath(String pin, String userLabel) {
-        return getAllArticleDirPaths(pin, userLabel).get(0).resolve("draft");
-    }
 
     public List<Path> getUserDiskDirPaths(FlyContext flyContext) {
         if (flyContext.isAdmin()) {
