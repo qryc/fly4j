@@ -20,29 +20,27 @@ import java.util.regex.Pattern;
 public class PicBedFilter implements ArticleViewFilter {
     private StorePathService pathService;
     private Map<String, String> orignToReplese4Local = new HashMap<>();
+    private boolean replace2Local = false;
 
     public PicBedFilter() {
-//        orignToReplese4Local.put("http://fly4j.cn/", "http://localhost:8080/");
+        orignToReplese4Local.put("http://fly4j.cn/", "http://localhost:8080/");
     }
 
     @Override
     public void filter(ArticleView articleView, FlyContext flyContext) {
-        //替换图床
-//        Path gitPath = this.getStoreDirPath("git", null).resolve("pic");
-//        //已经转移到LoginFilter
-////        content = content.replaceAll("/Volumes/HomeWork/doc/pic/", "/viewFile?absolutePath=" + URLEncoder.encode(gitPath.toString(), StandardCharsets.UTF_8) + "/");
-//        return content.replaceAll("https://raw.githubusercontent.com/qryc/pic/master/", "/viewFile?absolutePath=" + URLEncoder.encode(gitPath.toString(), StandardCharsets.UTF_8) + "/");
         String content = articleView.getHtml();
-        if (!FlyConfig.onLine) {
+
+        //替换本地图片
+        if (!FlyConfig.onLine && replace2Local) {
             for (Map.Entry<String, String> orignToRepleseEntry : orignToReplese4Local.entrySet()) {
                 content = content.replaceAll(orignToRepleseEntry.getKey(), orignToRepleseEntry.getValue());
             }
         }
-        String pattern = "<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
 
+        //替换为绝对路径
+        String pattern = "<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
         Pattern imgPattern = Pattern.compile(pattern);
         Matcher matcher = imgPattern.matcher(articleView.getHtml());
-
         while (matcher.find()) {
             String src = matcher.group(1);
 //            System.out.println("src: " + URLDecoder.decode(src, StandardCharsets.UTF_8));
@@ -70,34 +68,6 @@ public class PicBedFilter implements ArticleViewFilter {
         }
     }
 
-    //解决跨域问题
-    public String replease4View(String content) {
-        Path gitPath = pathService.getUDirPath("git", null).resolve("pic");
-        //已经转移到LoginFilter
-//        content = content.replaceAll("/Volumes/HomeWork/doc/pic/", "/viewFile?absolutePath=" + URLEncoder.encode(gitPath.toString(), StandardCharsets.UTF_8) + "/");
-        return content.replaceAll("https://raw.githubusercontent.com/qryc/pic/master/", "/viewFile?absolutePath=" + URLEncoder.encode(gitPath.toString(), StandardCharsets.UTF_8) + "/");
-    }
-
-    //解决编辑跨域问题，兼容一段老逻辑
-    public String replease4Edit(String content) {
-        Path gitPath = pathService.getUDirPath("git", null).resolve("pic");
-        return content.replaceAll("https://raw.githubusercontent.com/qryc/pic/master/", "/Volumes/HomeWork/doc/pic/");
-    }
-
-    //filter可以解决编辑器的显示问题，无法解决跨域问题
-    public String replease4Filter(String reqURI) {
-        String rewriteUrl = replease4FilterInner(reqURI, "/Volumes/HomeWork/doc/pic/");
-        return rewriteUrl;
-    }
-
-    private String replease4FilterInner(String reqURI, String picPre) {
-        if (reqURI.startsWith(picPre)) {
-            String absolutePath = pathService.getUDirPath("git", null).resolve("pic").resolve(reqURI.substring(picPre.length())).toString();
-            String rewriteUrl = "/viewFile?absolutePath=" + URLEncoder.encode(absolutePath, StandardCharsets.UTF_8);
-            return rewriteUrl;
-        }
-        return null;
-    }
 
     public void setPathService(StorePathService pathService) {
         this.pathService = pathService;

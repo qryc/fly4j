@@ -65,25 +65,6 @@ public class NoteViewFileServlet extends HttpServlet {
                 }
             }
         }
-        //未登录
-        else {
-            /**相对路径*/
-
-            if (StringUtils.isNotBlank(relativePath) && (relativePath.contains("/picture/") || relativePath.contains("/PicBed/"))) {
-                try {
-                    Path filePath = pathService.getURootPath(StorePathService.PATH_CUSTOM, request.getParameter("viewPin")).resolve(URLDecoder.decode(relativePath, StandardCharsets.UTF_8));
-                    if (Files.notExists(filePath)) {
-                        filePath = pathService.getURootPath(StorePathService.PATH_ARTICLE, request.getParameter("viewPin")).resolve(URLDecoder.decode(relativePath, StandardCharsets.UTF_8));
-                    }
-                    filter(response, relativePath, filePath);
-                    FileDown.viewFile(response, filePath.toFile());
-                } catch (BreakException e) {
-                }
-            }
-
-        }
-
-
     }
 
     protected Path getDiskRootPath(HttpServletRequest request, HttpServletResponse response) throws IOException, BreakException {

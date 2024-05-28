@@ -60,14 +60,6 @@ public abstract class StorePathService {
             return getURootPath(pin).resolve(storeDirStr);
         }
     }
-    public Path getUTempDirPath(String storeName, String pin) {
-        String storeDirStr = storeDirStrMap.get(storeName);
-        if (StringUtils.isBlank(storeDirStr)) {
-            throw new UnsupportedOperationException("directDir getUDirPath");
-        } else {
-            return getUTempRootPath(pin).resolve(storeDirStr);
-        }
-    }
 
 
     public boolean isInStoreDir(Path absolutePath) {

@@ -66,7 +66,7 @@ public class UserRepositoryFile implements UserRepository {
     @Override
     public void delUser(String pin) throws RepositoryException {
         RepositoryException.wrapper(() -> {
-            FileUtils.deleteDirectory(pathService.getURootPath(StorePathService.PATH_USER, pin).toFile());
+            FileUtils.deleteDirectory(pathService.getURootPath(pin).toFile());
         });
 
     }
@@ -177,8 +177,8 @@ public class UserRepositoryFile implements UserRepository {
     @Override
     public void createUserDirs(String pin) throws IOException {
         //创建用户的数据目录
-        if (Files.notExists(pathService.getURootPath(StorePathService.PATH_USER, pin)))
-            Files.createDirectories(pathService.getURootPath(StorePathService.PATH_USER, pin));
+        if (Files.notExists(pathService.getURootPath(pin)))
+            Files.createDirectories(pathService.getURootPath(pin));
 //        //创建用户备份路径目录
 //        if (Files.notExists(FlyConfig.getUserDir4Back(pin)))
 //            Files.createDirectories(FlyConfig.getUserDir4Back(pin));

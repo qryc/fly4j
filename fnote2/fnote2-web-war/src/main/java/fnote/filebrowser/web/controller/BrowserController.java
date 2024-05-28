@@ -110,7 +110,7 @@ public class BrowserController {
 //        if ("company".equals(flyContext.clientConfig().getExtStringValue("workspace"))) {
 //            return pathService.getUserDirPath(FlyConst.PATH_ARTICLE,flyContext.getPin()).resolve("pubDir");
 //        }
-        return pathService.getURootPath(StorePathService.PATH_ARTICLE, flyContext.getPin());
+        return pathService.getURootPath(flyContext.getPin());
     }
 
 
@@ -343,10 +343,10 @@ public class BrowserController {
             return Path.of(System.getProperty("user.home"));
         }
         Path currDirPath = getCurrDirPath(request, resp);
-        if (currDirPath != null && currDirPath.toString().contains("FlyCustom")) {
-            return pathService.getURootPath(StorePathService.PATH_CUSTOM, flyContext.getPin());
-        }
-        return pathService.getURootPath(StorePathService.PATH_ARTICLE, flyContext.getPin());
+//        if (currDirPath != null && currDirPath.toString().contains("FlyCustom")) {
+//            return pathService.getURootPath(StorePathService.PATH_CUSTOM, flyContext.getPin());
+//        }
+        return pathService.getURootPath( flyContext.getPin());
     }
 
 }

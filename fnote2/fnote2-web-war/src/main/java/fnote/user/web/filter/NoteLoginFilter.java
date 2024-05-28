@@ -100,8 +100,6 @@ public class NoteLoginFilter implements Filter {
     protected boolean afterFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, LoginUser loginUser) throws IOException,
             ServletException {
         //spring-bean
-
-
         LoginConfig loginConfig = SpringContextHolder.getBean("loginConfig");
         LimitRate limitRate = SpringContextHolder.getBean("loginLimitRate");
 
@@ -113,10 +111,6 @@ public class NoteLoginFilter implements Filter {
         var reqURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
 //        log.info("reqURI:" + reqURI);
 
-        //图片路径跳转重定向,识别git下的图片/article/FlyPic/，并重定向
-        //From: /article/FlyPic/mac-627/image1.png
-        //to:   /viewFile?relativePath=backData/pic/mac-627/image1.png
-        if (repleasePic(request, response)) return true;
 
         /**不需要权限验证的页面，比如网站入口，直接放行*/
         for (var noNeedLoginUrl : loginConfig.getNeverNoNeedLoginUrls()) {
@@ -138,20 +132,6 @@ public class NoteLoginFilter implements Filter {
         }
 
 
-        /**改变图片url处理到图片下载链接，跳转到下载的servlet地址*/
-        if (reqURI.startsWith("/pic/")) {
-            String rewriteUrl = "/viewFile?filepath=" + reqURI;
-            request.getRequestDispatcher(rewriteUrl).forward(request, response);
-            log.info("pic-redirect--- " + rewriteUrl);
-            return true;
-        }
-        //图床图片处理
-        if (reqURI.startsWith("/PicBed/")) {
-            String rewriteUrl = "/viewFile?relativePath=" + reqURI.replaceAll("/PicBed/", "");
-            request.getRequestDispatcher(rewriteUrl).forward(request, response);
-            log.info("PicBed-redirect--- " + rewriteUrl);
-            return true;
-        }
         if (reqURI.startsWith("/article/pic/")) {
             String rewriteUrl = "/viewFile?relativePath=" + reqURI.replaceAll("/article/", "");
             request.getRequestDispatcher(rewriteUrl).forward(request, response);
@@ -162,10 +142,8 @@ public class NoteLoginFilter implements Filter {
         if (reqURI.startsWith("/articleMaintain/pic/")) {
 //            System.out.println(PicCache.rel2abPathMap);
             String rewriteUrl = "/viewFile?absolutePath=" + PicCache.getAbsPath(reqURI.replaceAll("/articleMaintain/", ""));
-            System.out.println("222" + rewriteUrl);
             request.getRequestDispatcher(rewriteUrl).forward(request, response);
             log.info("articleMaintain-pic-redirect--- " + rewriteUrl);
-            System.out.println("333" + reqURI.startsWith("/articleMaintain/pic/"));
             return true;
         }
         // 用户挂接Doc，pic 绝对路径
@@ -176,30 +154,9 @@ public class NoteLoginFilter implements Filter {
 
             return true;
         }
-        /**
-         *  https://xxx.com/article/pic-knowledge%20/knowlege.svg
-         * reqURI:/article/pic-knowledge%20/knowlege.svg
-         */
-        if (reqURI.startsWith("/article/") && reqURI.endsWith(".svg")) {
-            String rewriteUrl = "/viewFile?filepath=" + reqURI.replaceAll("article", "pic-pub");
-            request.getRequestDispatcher(rewriteUrl).forward(request, response);
-            return true;
-        }
         return false;
     }
 
-
-    //把picPre替换为Fly下的Git路径
-    private static boolean repleasePic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var reqURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
-        StorePathService pathService = SpringContextHolder.getBean("pathService");
-//        String rewriteUrl = PicBedFilter.replease4Filter(reqURI);
-//        if (null != rewriteUrl) {
-//            request.getRequestDispatcher(rewriteUrl).forward(request, response);
-//            return true;
-//        }
-        return false;
-    }
 
 
     /**
