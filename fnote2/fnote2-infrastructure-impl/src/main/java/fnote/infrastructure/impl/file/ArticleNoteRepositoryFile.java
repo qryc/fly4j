@@ -71,7 +71,8 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         String fileName = cplArticle.getArticleContent().title()
                 .replaceAll("\\*", "").replaceAll("\\\\", "").replaceAll("_", "")
                 .replaceAll("#", "")
-                .replaceAll(" ", "").trim();
+//                .replaceAll(" ", "")
+                .trim();
         if (cplArticle.getArticleContent().authEnum().equals(ArticleAuthEnum.REAL_OPEN)) {
             return fileName + ".f.md";
         } else {
