@@ -131,13 +131,6 @@ public class CplArticle extends BaseDomain<CplArticle> implements Cloneable {
     public void organizeArticle(final ArticleOrganize organizeParam, final IdPin idPin) {
         FlyPreconditions.requireNotEmpty(idPin.getNoteFileStr(), "update article id can't be null");
         this.setModifyTime(new Date());
-        //兼容修改用户
-        if (this.getPin().equals("guanpanpan")) {
-            this.setPin("qryc");
-        }
-        if (!this.getPin().equals(idPin.getPin())) {
-            throw new IllegalArgumentException("user is not article owner");
-        }
         this.articleOrganize = organizeParam;
     }
 

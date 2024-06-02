@@ -122,7 +122,7 @@ public class ArticleController extends MenuController {
             context.put("title", title);
             context.put("currLocation", "lastEditArticles");
             context.put("iknowInfo", TrackContext.getTrackInfo());
-            context.put("menu", getMenu(req, flyContext));
+            setMenu(req, context, flyContext);
         } catch (RepositoryException e) {
             log.error("articles error!", e);
             throw e;
@@ -131,6 +131,8 @@ public class ArticleController extends MenuController {
 
         return "article/articleList";
     }
+
+
 
     /**
      * 查看最近修改的博客列表
@@ -250,7 +252,7 @@ public class ArticleController extends MenuController {
             context.put("currLocation", "viewArticle");
             context.put("f_option", "view");
             context.put("iknowInfo", TrackContext.getTrackInfo());
-            context.put("menu", getMenu(req, flyContext));
+            setMenu(req, context, flyContext);
         } catch (Exception e) {
             log.error("viewArticle", e);
             throw e;

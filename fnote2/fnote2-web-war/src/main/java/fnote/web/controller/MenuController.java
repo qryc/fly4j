@@ -35,7 +35,9 @@ public class MenuController {
 
     @Resource
     private MenuService menuService;
-
+    public void setMenu(HttpServletRequest req, ModelMap context, FlyContext flyContext) {
+        context.put("menu", getMenu(req, flyContext));
+    }
 
 //    @RequestMapping(value = "menuJson.do")
 //    @ResponseBody

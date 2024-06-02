@@ -24,32 +24,14 @@
         #parse("/WEB-INF/vm/common/menu.vm")
         <div class="titleFont">
             <ul class="titleFont">
-                <li v-for="item in menu.sitemapItems">
-                    <a class="nav-link" v-bind:href="item.href"> {{ item.title }}</a>
-                </li>
+                #foreach($item in ${menu.downMenuItems})
+                    <li >
+                        <a class="nav-link" h href="$!{item.href}"> $!{item.title}</a>
+                    </li>
+                #end
             </ul>
         </div>
     </div>
 </main>
 </body>
 </html>
-<script type="text/javascript">
-
-    const app = {
-        data() {
-            return {
-                menu: ''
-            }
-        },
-        mounted() {
-            axios.get('/menu/menuJson.do')
-                    .then(response => {
-                        this.menu = response.data;
-                    })
-                    .catch(function (error) { // 请求失败处理
-                        console.log(error);
-                    });
-        }
-    }
-    Vue.createApp(app).mount('#articleVue')
-</script>

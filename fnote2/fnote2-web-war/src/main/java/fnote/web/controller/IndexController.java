@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller // 用于标识是处理器类
 @RequestMapping("/index") // 请求到处理器功能方法的映射规则
-public class IndexController {
+public class IndexController extends MenuController {
 
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
     @Resource
@@ -40,6 +40,7 @@ public class IndexController {
 //        if (StringUtils.isNotBlank(userHomePage)) {
 //            return "redirect:/" + userHomePage;
 //        }
+        setMenu(req, modelMap, flyContext);
 
         return "redirect:/userConfig/toBrowserSet.do";
     }
@@ -49,7 +50,10 @@ public class IndexController {
      */
     @RequestMapping(value = "webSiteMap.do")
     public String webSiteMap(HttpServletRequest req,
-                             HttpServletResponse resp, ModelMap modelMap) {
+                             HttpServletResponse resp, ModelMap modelMap) throws RepositoryException {
+        FlyContext flyContext = flyContextFacade.getFlyContext(req, resp);
+        setMenu(req, modelMap, flyContext);
+
         return "fu/menu/webSiteMap";
     }
 
