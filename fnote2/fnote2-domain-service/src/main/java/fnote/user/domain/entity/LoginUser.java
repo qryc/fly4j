@@ -16,18 +16,11 @@ import fnote.user.domain.service.UserService;
 public class LoginUser {
     private String pin;
     private String sid;
-    private String otherLabel;
     public LoginUser() {
     }
     public LoginUser(String pin, String sid) {
         this.pin = pin;
         this.sid = sid;
-    }
-
-    public LoginUser(String pin, String sid, String otherLabel) {
-        this.pin = pin;
-        this.sid = sid;
-        this.otherLabel = otherLabel;
     }
 
     @JsonIgnore
@@ -66,13 +59,6 @@ public class LoginUser {
         this.sid = sid;
     }
 
-    public String getOtherLabel() {
-        return otherLabel;
-    }
-
-    public void setOtherLabel(String otherLabel) {
-        this.otherLabel = otherLabel;
-    }
 }
 
 

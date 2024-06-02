@@ -82,12 +82,12 @@ public abstract class StorePathService {
     /**
      * 文章路径，或者自定义，或内定
      */
-    public List<Path> getAllArticleDirPaths(String pin, String userLabel) {
+    public List<Path> getAllArticleDirPaths(String pin) {
         return Stream.of(this.getUDirPath(PATH_ARTICLE, pin)).toList();
     }
 
     public Path getArticleDefaultPath(String pin, String userLabel) {
-        return getAllArticleDirPaths(pin, userLabel).get(0).resolve("default");
+        return getAllArticleDirPaths(pin).get(0).resolve("default");
     }
 
 

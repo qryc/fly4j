@@ -22,7 +22,7 @@ public class ArticleLoadImpl implements ArticleLoad {
 
     @Override
     public List<Path> getAllArticleDirPaths(FlyContext flyContext) {
-        return pathService.getAllArticleDirPaths(flyContext.getPin(), flyContext.loginUser().getOtherLabel());
+        return pathService.getAllArticleDirPaths(flyContext.getPin());
     }
 
 

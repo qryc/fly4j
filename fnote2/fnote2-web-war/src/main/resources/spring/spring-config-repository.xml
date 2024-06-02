@@ -16,7 +16,7 @@
             </list>
         </constructor-arg>
     </bean>
-    <bean id="pathService" class="qryc.user.QrycStorePathService" init-method="init">
+    <bean id="pathService" class="qryc.user.CustomPathService" init-method="init">
         <property name="userRootPath" value="${userRootPath}"></property>
         <property name="tempRootPath" value="${tempRootPath}"></property>
         <property name="customPathMap">

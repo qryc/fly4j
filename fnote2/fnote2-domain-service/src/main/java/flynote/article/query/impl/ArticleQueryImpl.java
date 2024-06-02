@@ -94,7 +94,7 @@ public class ArticleQueryImpl implements ArticleQuery {
             paths.add(Path.of(queryParam.getRootPath()));
         } else {
             //查询用户默认目录文章
-            for (Path path : pathService.getAllArticleDirPaths(queryParam.getFlyContext().getPin(), queryParam.getFlyContext().getLoginUser().getOtherLabel())) {
+            for (Path path : pathService.getAllArticleDirPaths(queryParam.getFlyContext().getPin())) {
                 paths.add(path);
             }
         }
