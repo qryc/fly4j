@@ -33,7 +33,7 @@
         </property>
         <property name="charsetName" value="UTF-8"></property>
     </bean>
-    <bean id="loginService" class="qryc.user.QrycLoginService">
+    <bean id="loginService" class="fnote.user.domain.service.LoginService">
         <property name="onLine" value="${onLine}"></property>
         <property name="userRepository" ref="userRepositoryFile"/>
         <property name="loginConfig" ref="loginConfig"/>
