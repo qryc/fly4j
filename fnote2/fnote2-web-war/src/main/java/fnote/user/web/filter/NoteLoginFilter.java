@@ -59,7 +59,6 @@ public class NoteLoginFilter implements Filter {
         // 得到登录用户，并设置到Request域，可以全局使用
         LoginUser loginUser = loginService.getLoginUserByCookieCheckedSession(request);
         if (null != loginUser) {
-            System.out.println(loginUser);
             request.setAttribute("loginUser", loginUser);
             request.setAttribute("pin", loginUser.pin());
         }

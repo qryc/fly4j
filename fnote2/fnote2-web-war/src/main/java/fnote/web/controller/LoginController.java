@@ -57,8 +57,6 @@ public class LoginController {
         } else {
             loginUser = logionResult.loginUser;
         }
-        System.out.println("write" + loginUser);
-
         // 登录成功写cookies
         loginService.addLoginCookies(req, resp, loginUser);
 
@@ -90,8 +88,6 @@ public class LoginController {
         LoginUser loginUser = loginService.getLoginUserByCookieCheckedSession(req);
         if (null != loginUser) {
             loginUser.switchUser();
-            System.out.println("switchUser" + loginUser);
-
             // 登录成功写cookies
             loginService.addLoginCookies(req, resp, loginUser);
         }
