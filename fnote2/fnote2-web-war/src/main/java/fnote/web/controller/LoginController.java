@@ -5,6 +5,7 @@ import fly4j.common.http.WebUtil;
 import fly4j.common.http.ajax.FetchSend;
 import fly4j.common.util.ExceptionUtil;
 import fly4j.common.util.HtmlEscape;
+import fnote.user.domain.entity.LoginUser;
 import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.domain.entity.UserInfo;
 import fnote.user.domain.entity.LoginResultEnum;
@@ -49,9 +50,17 @@ public class LoginController {
         if (!logionResult.isSuccess()) {
             return FlyWebUtil.getSendRedirectMsgPageSpringMvc(logionResult.viewMsg);
         }
+        //合并多用户loginUser
+        LoginUser loginUser = loginService.getLoginUserByCookieCheckedSession(req);
+        if (null != loginUser) {
+            loginUser.addLoginUser(logionResult.loginUser);
+        } else {
+            loginUser = logionResult.loginUser;
+        }
+        System.out.println("write" + loginUser);
 
         // 登录成功写cookies
-        loginService.addLoginCookies(req, resp, logionResult);
+        loginService.addLoginCookies(req, resp, loginUser);
 
 
         // 跳转成功页，写returnUrl用于登录后的跳转，跳转登录页之前写入
@@ -69,9 +78,25 @@ public class LoginController {
         var flyUserInfo = (UserInfo) userRepository.getUserinfo(logionResult.loginUser.pin());
         String userHomePage = flyUserInfo.getUserConfig().homePage;
 
-        return "redirect:/userConfig/toBrowserSet.do";
+        return "redirect:/article/articles.do?buId=lastEdit";
     }
 
+    /**
+     * 博客所有者管理登录
+     */
+    @RequestMapping(value = "switchUser.do")
+    public String switchUser(HttpServletRequest req, HttpServletResponse resp, ModelMap context) throws Exception {
+        //合并多用户loginUser
+        LoginUser loginUser = loginService.getLoginUserByCookieCheckedSession(req);
+        if (null != loginUser) {
+            loginUser.switchUser();
+            System.out.println("switchUser" + loginUser);
+
+            // 登录成功写cookies
+            loginService.addLoginCookies(req, resp, loginUser);
+        }
+        return "redirect:/article/articles.do?buId=lastEdit";
+    }
 
     /**
      * 注销

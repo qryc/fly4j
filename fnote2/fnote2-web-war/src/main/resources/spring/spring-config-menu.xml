@@ -26,6 +26,8 @@
                         <bean class="fnote.web.controller.AppendMenuValidate"/>
                     </property>
                 </bean>
+
+
                 <bean class="fnote.menu.MenuItem" p:title="近期" p:href="/article/articles.do?buId=lastEdit" p:roles="USER" p:position="menu,siteMap"/>
                 <bean class="fnote.menu.MenuItem" p:title="用户管理" p:href="/user/listUser.do" p:roles="ADMIN" p:position="menu,siteMap"/>
 
@@ -45,6 +47,8 @@
                 <bean class="fnote.menu.MenuItem" p:title="Git" p:href="/jsp/git.jsp" p:roles="USER,ADMIN" p:position="siteMap"/>
                 <bean class="fnote.menu.MenuItem" p:title="所有图片" p:href="/browser/listPic.do" p:roles="USER,ADMIN" p:position="siteMap"/>
                 <bean class="fnote.menu.MenuItem" p:title="目录tree" p:href="/article/catalogTree.do?buId=lastEdit" p:roles="USER" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="登陆" p:href="/login/toLogin.do" p:roles="USER" p:position="siteMap"/>
+                <bean class="fnote.menu.MenuItem" p:title="切换用户" p:href="/login/switchUser.do" p:roles="USER" p:position="down,siteMap"/>
 
             </list>
 

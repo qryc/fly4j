@@ -184,8 +184,8 @@ public class LoginService {
 
     }
 
-    public void addLoginCookies(HttpServletRequest req, HttpServletResponse resp, LoginResultEnum logionResult) {
-        String cookiesStr = AESUtil.encryptStr2HexStr(JsonUtils.writeValueAsString(logionResult.loginUser), loginConfig.getLoginAuthKey());
+    public void addLoginCookies(HttpServletRequest req, HttpServletResponse resp, LoginUser loginUser) {
+        String cookiesStr = AESUtil.encryptStr2HexStr(JsonUtils.writeValueAsString(loginUser), loginConfig.getLoginAuthKey());
         CookiesUtil.addHttpOnlyCookie(req, resp, loginConfig.getLoginCookie(),
                 cookiesStr, loginConfig.getLoginCookieMaxAge());
     }

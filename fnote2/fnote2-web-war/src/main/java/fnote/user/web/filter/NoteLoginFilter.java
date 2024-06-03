@@ -56,11 +56,10 @@ public class NoteLoginFilter implements Filter {
         log.debug("doFilter reqURI:" + reqURI);
 
         if (beforeBeforeFilter(request, response)) return;
-//        System.out.println("request.getRequestURI():"+request.getRequestURI());
-//        System.out.println("request.getRequestURL():"+request.getRequestURL());
         // 得到登录用户，并设置到Request域，可以全局使用
         LoginUser loginUser = loginService.getLoginUserByCookieCheckedSession(request);
         if (null != loginUser) {
+            System.out.println(loginUser);
             request.setAttribute("loginUser", loginUser);
             request.setAttribute("pin", loginUser.pin());
         }

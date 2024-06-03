@@ -3,6 +3,11 @@ package fnote.user.domain.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fnote.user.domain.service.UserService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 用户的登录信息，保存到cookie中
  * 用户角色：
@@ -14,13 +19,45 @@ import fnote.user.domain.service.UserService;
  * Created by qryc on 2016/8/6.
  */
 public class LoginUser {
+
     private String pin;
     private String sid;
+    //切换用户使用
+    private Map<String, String> pin_sidMap = new HashMap<>();
+
     public LoginUser() {
     }
+
     public LoginUser(String pin, String sid) {
         this.pin = pin;
         this.sid = sid;
+    }
+
+    public LoginUser addLoginUser(LoginUser loginUser) {
+        pin_sidMap.put(loginUser.pin, loginUser.sid);
+        pin = loginUser.pin;
+        sid = loginUser.sid;
+        return this;
+    }
+
+    public LoginUser switchUser() {
+        for (Map.Entry<String, String> entry : pin_sidMap.entrySet()) {
+            if (!entry.getKey().equals(pin)) {
+                pin = entry.getKey();
+                sid = entry.getValue();
+                break;
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginUser{" +
+                "pin='" + pin + '\'' +
+                ", sid='" + sid + '\'' +
+                ", pin_sidMap=" + pin_sidMap +
+                '}';
     }
 
     @JsonIgnore
@@ -37,9 +74,11 @@ public class LoginUser {
     public enum Role {
         ADMIN, USER
     }
+
     public String pin() {
         return pin;
     }
+
     public String getPin() {
         return pin;
     }
@@ -51,6 +90,7 @@ public class LoginUser {
     public String getSid() {
         return sid;
     }
+
     public String sid() {
         return sid;
     }
@@ -59,6 +99,13 @@ public class LoginUser {
         this.sid = sid;
     }
 
+    public Map<String, String> getPin_sidMap() {
+        return pin_sidMap;
+    }
+
+    public void setPin_sidMap(Map<String, String> pin_sidMap) {
+        this.pin_sidMap = pin_sidMap;
+    }
 }
 
 

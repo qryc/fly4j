@@ -24,7 +24,7 @@
         #parse("/WEB-INF/vm/common/menu.vm")
         <div class="titleFont">
             <ul class="titleFont">
-                #foreach($item in ${menu.downMenuItems})
+                #foreach($item in ${menu.sitemapItems})
                     <li >
                         <a class="nav-link" h href="$!{item.href}"> $!{item.title}</a>
                     </li>
