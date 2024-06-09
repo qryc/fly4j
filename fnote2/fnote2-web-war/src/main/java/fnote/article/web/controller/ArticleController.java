@@ -11,6 +11,7 @@ import fly4j.common.http.WebUtil;
 import fly4j.common.track.TrackContext;
 import fly4j.common.util.RandomUtil;
 import farticle.domain.consts.FlyConst;
+import flynote.applicaion.service.TreeCache;
 import fnote.domain.config.*;
 import flynote.application.manual.ManualService;
 import fnote.article.maintain.DraftService;
@@ -69,9 +70,7 @@ public class ArticleController extends MenuController {
     private TreeService dtreeUtil;
 
     public static String tokenName = "mima";
-    public static Cache<String, List<DtreeObj>> treeCache = CacheBuilder
-            .newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
-            .build();
+
 
     /**
      * 查看最近修改的博客列表
@@ -102,12 +101,11 @@ public class ArticleController extends MenuController {
             context.put("list", list);
 
             /**导航树*/
-            String treeKey = flyContext.getPin() + "dtreeObjs";
-            List<DtreeObj> dtreeObjs = treeCache.getIfPresent(treeKey);
+            List<DtreeObj> dtreeObjs = TreeCache.getDtreeObjs(flyContext.getPin());
             if (null == dtreeObjs) {
                 log.info("dtreeObjs get from File");
                 dtreeObjs = dtreeUtil.getDtreeObjs4Articles(flyContext);
-                treeCache.put(treeKey, dtreeObjs);
+                TreeCache.putDtreeObjs(flyContext.getPin(), dtreeObjs);
             } else {
                 log.info("dtreeObjs get from cache");
 
@@ -131,7 +129,6 @@ public class ArticleController extends MenuController {
 
         return "article/articleList";
     }
-
 
 
     /**

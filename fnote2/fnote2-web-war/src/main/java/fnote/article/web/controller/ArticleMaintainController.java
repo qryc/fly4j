@@ -263,7 +263,7 @@ public class ArticleMaintainController extends MenuController {
 
         // 如果是修改，加载修改内容
         noteFileStr = URLDecoder.decode(noteFileStr, StandardCharsets.UTF_8);
-        var cplArticle = articleMaintain.getCplArticleDecrypt(IdPin.of(flyContext.getPin(), noteFileStr), flyContext.userConfig().getMima());
+        CplArticle cplArticle = articleMaintain.getCplArticleDecrypt(IdPin.of(flyContext.getPin(), noteFileStr), flyContext.userConfig().getMima());
 
         //设置用户当前工作空间
         File file = new File(noteFileStr);
