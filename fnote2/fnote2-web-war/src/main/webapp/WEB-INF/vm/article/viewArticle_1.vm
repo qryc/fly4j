@@ -4,9 +4,17 @@
 #parse("/WEB-INF/vm/article/viewArticleAppend.vm")
 
 <h1 style="margin: 0 0;">${articleInfoVo.titleHtml}</h1>
+#if(${viewCode})
+    <pre>
+        ${articleInfoVo.html}
+    </pre>
+#else
 <div>
     ${articleInfoVo.html}
 </div>
+#end
+
+
 
 <div class="entry-header">
     创建于(${articleInfoVo.createTimeStr} )

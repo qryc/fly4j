@@ -343,9 +343,9 @@ public class BrowserController {
             return Path.of(System.getProperty("user.home"));
         }
         Path currDirPath = getCurrDirPath(request, resp);
-//        if (currDirPath != null && currDirPath.toString().contains("FlyCustom")) {
+//     `   if (currDirPath != null && currDirPath.toString().contains("FlyCustom")) {
 //            return pathService.getURootPath(StorePathService.PATH_CUSTOM, flyContext.getPin());
-//        }
+//        }`
         return pathService.getURootPath( flyContext.getPin());
     }
 

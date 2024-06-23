@@ -2,6 +2,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title id="title">
+       f
+    </title>
     #parse("/WEB-INF/vm/common/head.vm")
 
 </head>

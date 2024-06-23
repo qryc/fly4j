@@ -196,6 +196,9 @@ public class ArticleController extends MenuController {
             if (StringUtils.isNotBlank(noteFileStr)) {
                 var filePathDecode = URLDecoder.decode(noteFileStr, StandardCharsets.UTF_8);
                 articleView = articleViewQuery.getArticleViewWithFilter(IdPin.of(flyContext.getPin(), filePathDecode), flyContext);
+                if (noteFileStr.endsWith("java")) {
+                    context.put("viewCode", true);
+                }
             } else {
                 articleView = articleViewQuery.getArticleViewByIdWithFilter(flyContext, Long.parseLong(id));
             }
@@ -205,6 +208,9 @@ public class ArticleController extends MenuController {
 
             /** 构造页面展示对象 */
             ArticleInfoVo articleInfoVo = ArticleInfoVo.buildArticleInfoVo(articleView, articleViewMenu, flyContext);
+            if (noteFileStr.endsWith("java")) {
+                articleInfoVo.setHtml(articleView.getCplArticle().getArticleContentStr());
+            }
             context.put("articleInfoVo", articleInfoVo);
 
 

@@ -30,7 +30,8 @@ class TreeFilePredicate implements FileFilter {
                 return true;
             }
         } else {
-            if (cfile.getName().endsWith(".md") || cfile.getName().endsWith("flyNote") || cfile.getName().endsWith("txt")) {
+            if (cfile.getName().endsWith(".md") || cfile.getName().endsWith("flyNote") || cfile.getName().endsWith("txt")
+                    || cfile.getName().endsWith("java")|| cfile.getName().endsWith("xml")|| cfile.getName().endsWith("properties")) {
                 return true;
             } else {
                 return false;

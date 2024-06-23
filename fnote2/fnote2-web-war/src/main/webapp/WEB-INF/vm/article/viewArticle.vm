@@ -3,6 +3,7 @@
 <html>
 <head>
     <title id="title">
+       f
     </title>
     #parse("/WEB-INF/vm/common/head.vm")
     <link href="/style/${flyContext.viewConfig.viewArticleCss}" rel="stylesheet" type="text/css"/>
