@@ -208,7 +208,7 @@ public class ArticleController extends MenuController {
 
             /** 构造页面展示对象 */
             ArticleInfoVo articleInfoVo = ArticleInfoVo.buildArticleInfoVo(articleView, articleViewMenu, flyContext);
-            if (noteFileStr.endsWith("java")) {
+            if (StringUtils.isNotBlank(noteFileStr) && noteFileStr.endsWith("java")) {
                 articleInfoVo.setHtml(articleView.getCplArticle().getArticleContentStr());
             }
             context.put("articleInfoVo", articleInfoVo);
