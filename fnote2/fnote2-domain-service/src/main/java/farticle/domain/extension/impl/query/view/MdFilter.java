@@ -39,23 +39,23 @@ public class MdFilter implements ArticleViewFilter {
         var id = 1;
         for (String lineStr : mdStr.split(StringUtils.LF)) {
             //替换为href
-            if (lineStr.startsWith("######")) {
+            if (lineStr.startsWith("###### ")) {
 
-            } else if (lineStr.startsWith("#####")) {
-
-
-            } else if (lineStr.startsWith("####")) {
+            } else if (lineStr.startsWith("##### ")) {
 
 
-            } else if (lineStr.startsWith("###")) {
+            } else if (lineStr.startsWith("#### ")) {
+
+
+            } else if (lineStr.startsWith("### ")) {
                 stringBuilder.append("<h3 id='section-").append(id).append("'>").append(lineStr.replaceAll("###", "").trim()).append("</h3>").append(StringUtils.LF).append(StringUtils.LF);
                 id++;
                 continue;
-            } else if (lineStr.startsWith("##")) {
+            } else if (lineStr.startsWith("## ")) {
                 stringBuilder.append("<h2 id='section-").append(id).append("'>").append(lineStr.replaceAll("##", "").trim()).append("</h2>").append(StringUtils.LF).append(StringUtils.LF);
                 id++;
                 continue;
-            } else if (lineStr.startsWith("#")) {
+            } else if (lineStr.startsWith("# ")) {
                 stringBuilder.append("<h2 id='section-").append(id).append("'>").append(lineStr.replaceAll("#", "").trim()).append("</h2>").append(StringUtils.LF).append(StringUtils.LF);
                 id++;
                 continue;
