@@ -332,5 +332,13 @@ public class FileUtil {
         }
     }
 
+    public static String getNameWithoutSuffix(File file) {
+        int lastDotIndex = file.getName().lastIndexOf(".");
+        if (-1 == lastDotIndex) {
+            return file.getName();
+        } else {
+            return file.getName().substring(0, lastDotIndex);
+        }
+    }
 
 }

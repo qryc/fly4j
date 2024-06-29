@@ -80,6 +80,18 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         }
     }
 
+    private String getUpdateFileName(CplArticle cplArticle, File file) {
+        String fileName = FileUtil.getNameWithoutSuffix(file);
+        if (file.getName().endsWith(".f.md")) {
+            fileName = file.getName().substring(0, file.getName().length() - 5);
+        }
+        if (cplArticle.getArticleContent().authEnum().equals(ArticleAuthEnum.REAL_OPEN)) {
+            return fileName + ".f.md";
+        } else {
+            return fileName + ".flyNote";
+        }
+    }
+
     @Override
     public List<CplArticle> findCplArticlesByPin(String pin, Path rootPath, Function<CplArticle, CplArticle> function) throws RepositoryException {
         var articles = new ArrayList<CplArticle>();
@@ -200,7 +212,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
             //再次匹配ID，防止误修改
             String articleJson = getArticleJson(cplArticle);
-            String newStoreFileName = getFileName(cplArticle);
+            String newStoreFileName = getUpdateFileName(cplArticle, file);
             //文件名不变，直接覆盖写文件
             if (newStoreFileName.equals(file.getName())) {
                 Files.writeString(file.toPath(), articleJson);

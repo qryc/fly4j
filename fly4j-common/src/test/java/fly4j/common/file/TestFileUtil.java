@@ -72,7 +72,7 @@ public class TestFileUtil {
 //        FileUtil.rename(new File("D:\\ssssss\\b.jpg"),"c");
 //        testFilePath();
 
-        testFileName();
+//        testFileName();
 
 
     }
@@ -185,7 +185,8 @@ public class TestFileUtil {
         System.out.println(msg);
     }
 
-    private static void testFileName() {
+    @Test
+    public void testFileName() {
         //fly\pin  warnig:会丢失 blogs,因为不知道结尾是文件，还是文件夹
         System.out.println(FilenameUtils.getPathNoEndSeparator("D:\\fly\\pin\\blogs"));
         //D:\fly\pin
@@ -196,6 +197,10 @@ public class TestFileUtil {
         System.out.println(FilenameUtils.getBaseName("D:\\fly\\pin\\blogs\\"));
         //pin warnig:会丢失 blogs
         System.out.println(FilenameUtils.getBaseName(FilenameUtils.getPathNoEndSeparator("D:\\fly\\pin\\blogs")));
+
+        File file = new File("/testFly/abc.txt");
+        Assert.assertEquals("txt", FileUtil.getSuffix(file));
+        Assert.assertEquals("abc", FileUtil.getNameWithoutSuffix(file));
     }
 
     @After
