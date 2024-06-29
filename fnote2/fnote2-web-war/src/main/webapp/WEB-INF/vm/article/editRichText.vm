@@ -2,8 +2,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>
-        $!{ArticleContent.title()}
+    <title id="title">
+##        $!{ArticleContent.title()}
+        f
     </title>
     #parse("/WEB-INF/vm/common/head.vm")
 

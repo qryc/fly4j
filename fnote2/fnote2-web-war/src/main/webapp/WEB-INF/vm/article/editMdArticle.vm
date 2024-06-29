@@ -2,6 +2,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <title id="title">
+        f
+    </title>
     #parse("/WEB-INF/vm/common/head.vm")
     #if(${cplArticle.extId} == 841||${cplArticle.extId} == 625)
         <link href="/style/tableContent.css" rel="stylesheet" type="text/css"/>
