@@ -8,11 +8,13 @@ import fnote.user.domain.entity.BaseDomain;
 import fnote.user.domain.entity.IdPin;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 public class CplArticle extends BaseDomain<CplArticle> implements Cloneable {
+    private File file;
     private ArticleContent articleContent;
     private ArticleOrganize articleOrganize;
     //flyNote,md
@@ -207,5 +209,13 @@ public class CplArticle extends BaseDomain<CplArticle> implements Cloneable {
 
     public String getType() {
         return type;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public File getFile() {
+        return file;
     }
 }

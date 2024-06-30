@@ -31,6 +31,9 @@ public class ArticleView4List {
     public ArticleView4List(CplArticle cplArticle, FlyContext flyContext) {
         ArticleContent content = cplArticle.getArticleContent();
         content.setTitle(content.title().replaceAll("#", "").trim());
+        if (cplArticle.getFile() != null) {
+            content.setTitle(cplArticle.getFile().getName());
+        }
         this.cplArticle = cplArticle;
         this.flyContext = flyContext;
     }
@@ -99,8 +102,10 @@ public class ArticleView4List {
         var title = cplArticle.getArticleContent().title();
         var href = "";
         switch (cplArticle.getArticleContent().authEnum()) {
-            case ENCRYPT_PUB, PRI, ENCRYPT_PRI -> href = HREF_PRI_FORMAT_RED.formatted(URLEncoder.encode(cplArticle.getNoteFileStr(), StandardCharsets.UTF_8), title);
-            case OPEN, REAL_OPEN -> href = HREF_FORMAT.formatted(URLEncoder.encode(cplArticle.getNoteFileStr(), StandardCharsets.UTF_8), title);
+            case ENCRYPT_PUB, PRI, ENCRYPT_PRI ->
+                    href = HREF_PRI_FORMAT_RED.formatted(URLEncoder.encode(cplArticle.getNoteFileStr(), StandardCharsets.UTF_8), title);
+            case OPEN, REAL_OPEN ->
+                    href = HREF_FORMAT.formatted(URLEncoder.encode(cplArticle.getNoteFileStr(), StandardCharsets.UTF_8), title);
         }
 
         return href;

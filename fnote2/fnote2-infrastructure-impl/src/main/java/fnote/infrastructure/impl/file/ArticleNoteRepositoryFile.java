@@ -281,6 +281,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
             var articleDo = JsonUtils.readValue(str, ArticleDo.class);
             var cplArticle = articleDo.buildCplArticle(path);
+            cplArticle.setFile(file);
             return cplArticle;
         }
 
@@ -309,6 +310,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 //                }
 //                cplArticle.setArticleContent(cplArticle.getArticleContent().of(title, content));
 //            }
+            cplArticle.setFile(file);
             return cplArticle;
 
         }
@@ -333,6 +335,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             if (file.getName().endsWith(".md")) {
                 articleOrganize.setMdEditor(ArticleOrganize.ORGANIZE_MDEDITOR_CK);
             }
+            cplArticle.setFile(file);
             return cplArticle;
         }
         throw new RuntimeException("不支持的文件格式");
