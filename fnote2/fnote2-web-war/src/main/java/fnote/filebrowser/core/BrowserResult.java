@@ -1,7 +1,6 @@
 package fnote.filebrowser.core;
 
 
-import java.net.URLEncoder;
 import java.nio.file.Path;
 
 public class BrowserResult {

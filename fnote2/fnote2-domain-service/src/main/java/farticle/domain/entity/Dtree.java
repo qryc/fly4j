@@ -2,7 +2,6 @@ package farticle.domain.entity;
 
 import farticle.domain.view.FileFilter;
 import fnote.domain.config.FlyContext;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 
 public class Dtree {
     static final Logger log = LoggerFactory.getLogger(Dtree.class);

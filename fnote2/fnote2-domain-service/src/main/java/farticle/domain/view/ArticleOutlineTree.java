@@ -1,6 +1,5 @@
 package farticle.domain.view;
 
-import farticle.domain.entity.ArticleOrganize;
 import farticle.domain.entity.CplArticle;
 import farticle.domain.entity.Dtree;
 import farticle.domain.entity.DtreeObj;

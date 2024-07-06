@@ -8,8 +8,6 @@ import farticle.domain.extension.query.CplArticleFilter;
 import fly4j.common.util.RepositoryException;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.function.BiFunction;
-
 /**
  * 工作空间文章过滤
  */

@@ -1,8 +1,8 @@
 package fnote.article.share;
 
-import fnote.user.domain.entity.IdPin;
-import fly4j.common.util.RepositoryException;
 import farticle.domain.entity.WorkSpaceParam;
+import fly4j.common.util.RepositoryException;
+import fnote.user.domain.entity.IdPin;
 
 public interface AuthShareService {
     void shareArticle(Long id, String pin, String encryptPwd, WorkSpaceParam workSpaceParam) throws RepositoryException;

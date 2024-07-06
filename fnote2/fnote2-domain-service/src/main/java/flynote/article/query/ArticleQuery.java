@@ -1,9 +1,8 @@
 package flynote.article.query;
 
 import farticle.domain.extension.query.ArticleQueryParam;
-import fly4j.common.util.RepositoryException;
-import fnote.domain.config.FlyContext;
 import farticle.domain.view.ArticleView4List;
+import fly4j.common.util.RepositoryException;
 
 import java.util.List;
 

@@ -1,8 +1,5 @@
 package flynote.article.app.articleview;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import farticle.domain.extension.query.ArticleViewFilter;
 import farticle.domain.view.ArticleView;
 import farticle.domain.view.ArticleViewQuery;
@@ -12,7 +9,6 @@ import fnote.domain.config.FlyContext;
 import fnote.user.domain.entity.IdPin;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by qryc on 2021/10/6

@@ -1,14 +1,14 @@
 package fnote.web.controller;
 
+import fly4j.common.http.WebUtil;
+import fly4j.common.util.FlyPreconditions;
+import fly4j.common.util.RepositoryException;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;
 import fnote.user.domain.entity.AlterUserParam;
-import fnote.user.domain.service.UserService;
-import fly4j.common.util.RepositoryException;
-import fly4j.common.util.FlyPreconditions;
-import fly4j.common.http.WebUtil;
-import fnote.user.domain.service.LoginService;
 import fnote.user.domain.infrastructure.UserRepository;
+import fnote.user.domain.service.LoginService;
+import fnote.user.domain.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

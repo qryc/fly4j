@@ -1,16 +1,5 @@
 package fly4b.article.test;
 
-import fnote.article.share.AuthShareServiceImpl;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.annotation.Resource;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 /**
  * Created by qryc on 2017/10/2.
  */

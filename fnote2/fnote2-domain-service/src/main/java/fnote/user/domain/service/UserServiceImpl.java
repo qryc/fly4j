@@ -1,9 +1,8 @@
 package fnote.user.domain.service;
 
-import fnote.user.domain.entity.LoginUser;
-import fnote.user.domain.entity.UserInfo;
 import fly4j.common.util.RepositoryException;
 import fnote.user.domain.entity.UserConfig;
+import fnote.user.domain.entity.UserInfo;
 import fnote.user.domain.infrastructure.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

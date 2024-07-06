@@ -1,12 +1,12 @@
 package fnote.deploy.service;
 
-import fnote.user.domain.service.DeployService;
-import fnote.user.domain.entity.UserInfo;
-import fnote.user.domain.service.UserService;
 import fly4j.common.util.RepositoryException;
 import fly4j.common.util.StringConst;
-import fnote.user.domain.infrastructure.UserRepository;
 import fnote.common.StorePathService;
+import fnote.user.domain.entity.UserInfo;
+import fnote.user.domain.infrastructure.UserRepository;
+import fnote.user.domain.service.DeployService;
+import fnote.user.domain.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

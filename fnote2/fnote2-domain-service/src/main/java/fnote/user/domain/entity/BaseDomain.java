@@ -2,11 +2,9 @@ package fnote.user.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by qryc on 2017/2/23.

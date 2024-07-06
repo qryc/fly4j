@@ -1,13 +1,10 @@
 package fly4b.user.test;
 
-import farticle.domain.entity.MdArticleParam;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author qryc

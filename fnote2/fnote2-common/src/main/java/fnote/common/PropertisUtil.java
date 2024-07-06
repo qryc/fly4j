@@ -1,7 +1,5 @@
 package fnote.common;
 
-import java.nio.file.Path;
-
 public class PropertisUtil {
     public static String adjustPath(String rootPtahStr) {
         if (rootPtahStr.contains("user.home")) {

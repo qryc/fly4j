@@ -6,7 +6,6 @@ import farticle.domain.entity.Dtree;
 import farticle.domain.entity.DtreeObj;
 import flynote.article.query.ArticleLoad;
 import fnote.domain.config.FlyContext;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 

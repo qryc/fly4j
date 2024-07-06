@@ -1,6 +1,5 @@
 package fnote.web.controller;
 
-import fnote.common.StorePathService;
 import fnote.menu.MenuService;
 
 public class AppendMenuValidate implements MenuService.ELValidate {

@@ -1,9 +1,8 @@
 package fnote.web.controller;
 
+import fly4j.common.util.RepositoryException;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;
-import fly4j.common.util.RepositoryException;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

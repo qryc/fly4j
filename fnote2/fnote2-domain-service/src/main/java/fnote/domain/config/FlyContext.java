@@ -1,7 +1,7 @@
 package fnote.domain.config;
 
-import fnote.user.domain.entity.UserConfig;
 import fnote.user.domain.entity.LoginUser;
+import fnote.user.domain.entity.UserConfig;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;

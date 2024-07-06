@@ -4,7 +4,6 @@ import farticle.domain.consts.FlyConst;
 import farticle.domain.entity.ArticleOrganize;
 import farticle.domain.extension.query.ArticleViewFilter;
 import farticle.domain.view.ArticleView;
-import fnote.domain.config.FlyConfig;
 import fnote.domain.config.FlyContext;
 
 public class WorkSpaceViewFilter implements ArticleViewFilter {

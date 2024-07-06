@@ -1,8 +1,6 @@
 package fly4b.article.test;
 
 import farticle.domain.entity.*;
-
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

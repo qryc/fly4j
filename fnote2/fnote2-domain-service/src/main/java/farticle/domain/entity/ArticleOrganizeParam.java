@@ -1,10 +1,5 @@
 package farticle.domain.entity;
 
-import fly4j.common.domain.IExtMap;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class ArticleOrganizeParam {
     private ArticleOrganize articleOrganize = new ArticleOrganize();
     private int open;

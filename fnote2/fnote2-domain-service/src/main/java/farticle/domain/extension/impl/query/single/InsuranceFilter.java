@@ -5,8 +5,6 @@ import farticle.domain.extension.query.ArticleQueryParam;
 import farticle.domain.extension.query.CplArticleFilter;
 import fly4j.common.util.RepositoryException;
 
-import java.util.function.BiFunction;
-
 /**
  * 过滤保险柜博客
  */

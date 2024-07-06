@@ -1,9 +1,9 @@
 package fnote.domain.config;
 
 import fly4j.common.util.RepositoryException;
+import fnote.user.domain.entity.LoginUser;
 import fnote.user.domain.entity.UserConfig;
 import fnote.user.domain.service.LoginService;
-import fnote.user.domain.entity.LoginUser;
 import fnote.user.domain.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;

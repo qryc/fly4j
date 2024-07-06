@@ -4,16 +4,12 @@ import fly4j.common.http.WebUtil;
 import fly4j.common.util.RepositoryException;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;
-import fnote.domain.config.LogConst;
 import fnote.menu.Menu;
 import fnote.menu.MenuService;
 import fnote.user.domain.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

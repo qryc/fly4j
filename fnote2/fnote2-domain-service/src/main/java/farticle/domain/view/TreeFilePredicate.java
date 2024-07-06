@@ -6,7 +6,6 @@ import farticle.domain.entity.ArticleOrganize;
 import fnote.domain.config.FlyContext;
 
 import java.io.File;
-import java.util.function.Predicate;
 
 class TreeFilePredicate implements FileFilter {
     FlyContext flyContext;

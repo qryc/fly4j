@@ -3,7 +3,6 @@ package farticle.domain.extension.impl.query.view;
 import farticle.domain.extension.query.ArticleViewFilter;
 import farticle.domain.view.ArticleView;
 import farticle.domain.view.CommonMdDecorator;
-import farticle.domain.view.TreeService;
 import fnote.domain.config.FlyContext;
 import org.apache.commons.lang3.StringUtils;
 

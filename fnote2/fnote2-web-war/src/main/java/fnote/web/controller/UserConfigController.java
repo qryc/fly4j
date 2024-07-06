@@ -1,21 +1,21 @@
 package fnote.web.controller;
 
+import farticle.domain.view.TreeService;
 import fly4j.common.http.ajax.FetchSend;
 import fly4j.common.mail.MailUtil2;
 import fly4j.common.util.ExceptionUtil;
+import fly4j.common.util.RepositoryException;
 import fnote.common.StorePathService;
 import fnote.domain.config.ClientConfig;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;
 import fnote.domain.config.PageConfigUtil;
-import farticle.domain.view.TreeService;
 import fnote.user.domain.entity.LoginUser;
+import fnote.user.domain.entity.UserConfig;
 import fnote.user.domain.entity.UserInfo;
+import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.domain.service.LoginService;
 import fnote.user.domain.service.UserService;
-import fnote.user.domain.infrastructure.UserRepository;
-import fly4j.common.util.RepositoryException;
-import fnote.user.domain.entity.UserConfig;
 import fnote.web.common.FlyWebUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

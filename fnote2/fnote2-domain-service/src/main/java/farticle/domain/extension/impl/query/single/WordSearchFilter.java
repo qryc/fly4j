@@ -6,8 +6,6 @@ import farticle.domain.extension.query.ArticleQueryParam;
 import farticle.domain.extension.query.CplArticleFilter;
 import fly4j.common.util.RepositoryException;
 
-import java.util.function.BiFunction;
-
 public class WordSearchFilter implements CplArticleFilter {
     @Override
     public CplArticle filter(CplArticle cplArticle, ArticleQueryParam param) throws RepositoryException {

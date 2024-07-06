@@ -1,11 +1,11 @@
 package fnote.article.test.integration;
 
-import farticle.domain.entity.*;
-import flynote.article.app.articleview.ArticleViewQueryImpl;
-import flynote.application.manual.ManualService;
-import fnote.article.maintain.ArticleMaintain;
-import flynote.article.query.ArticleLoad;
+import farticle.domain.entity.MdArticleParam;
 import farticle.domain.infrastructure.ArticleRepository;
+import flynote.application.manual.ManualService;
+import flynote.article.app.articleview.ArticleViewQueryImpl;
+import flynote.article.query.ArticleLoad;
+import fnote.article.maintain.ArticleMaintain;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -13,9 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author qryc

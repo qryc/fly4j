@@ -1,7 +1,6 @@
 package fnote.user.domain.entity;
 
 
-import java.nio.file.Path;
 import java.util.Objects;
 
 /**

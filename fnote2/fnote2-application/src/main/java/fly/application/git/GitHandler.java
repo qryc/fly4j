@@ -4,7 +4,6 @@ import farticle.domain.entity.ArticleEventObj;
 import fly4j.common.event.AlterEvent;
 import fly4j.common.event.EventHandler;
 import flynote.applicaion.service.TreeCache;
-import fnote.domain.config.FlyConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

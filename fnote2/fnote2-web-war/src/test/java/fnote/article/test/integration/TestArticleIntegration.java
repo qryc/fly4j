@@ -1,17 +1,15 @@
 package fnote.article.test.integration;
 
 import farticle.domain.infrastructure.ArticleRepository;
+import fnote.common.StorePathService;
+import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.domain.service.DeployService;
 import fnote.user.domain.service.UserService;
-import fnote.user.domain.infrastructure.UserRepository;
-import fnote.common.StorePathService;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 
 import javax.annotation.Resource;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author qryc

@@ -1,8 +1,8 @@
 package fnote.article.test.integration;
 
 import flynote.article.app.articleview.ArticleViewQueryImpl;
-import fnote.article.maintain.ArticleMaintain;
 import flynote.article.query.ArticleQuery;
+import fnote.article.maintain.ArticleMaintain;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -10,8 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author qryc

@@ -1,8 +1,6 @@
 package flynote.article.query.impl;
 
-import farticle.domain.entity.CplArticle;
 import farticle.domain.infrastructure.ArticleRepository;
-import fly4j.common.util.RepositoryException;
 import flynote.article.query.ArticleLoad;
 import fnote.common.StorePathService;
 import fnote.domain.config.FlyContext;

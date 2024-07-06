@@ -1,13 +1,11 @@
 package fnote.article.web.controller;
 
-import farticle.domain.entity.CplArticle;
 import fly4j.common.file.FileUtil;
 import fly4j.common.util.ExceptionUtil;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
 public class PicCache {
     public static Map<String, String> rel2abPathMap = new HashMap<>();

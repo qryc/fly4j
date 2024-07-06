@@ -1,12 +1,8 @@
 package fnote.article.maintain;
 
-import farticle.domain.entity.ArticleOrganizeParam;
-import farticle.domain.entity.CplArticle;
-import farticle.domain.entity.MdArticleParam;
-import farticle.domain.entity.RichArticleParam;
+import farticle.domain.entity.*;
 import fly4j.common.util.RepositoryException;
 import fnote.user.domain.entity.IdPin;
-import farticle.domain.entity.WorkSpaceParam;
 
 /**
  * 此处的标准：不可分割的领域操作认为是领域服务，在此基础上添加的权限认证等认为是应用服务，如果应用服务过于简单，会直接写到Conrler

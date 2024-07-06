@@ -3,7 +3,6 @@ package farticle.domain.view;
 import fnote.domain.config.FlyContext;
 
 import java.io.File;
-import java.util.function.Predicate;
 
 public class FilePredicate4Browser implements FileFilter {
     @Override

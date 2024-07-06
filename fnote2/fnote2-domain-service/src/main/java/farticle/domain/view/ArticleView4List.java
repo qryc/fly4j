@@ -2,8 +2,8 @@ package farticle.domain.view;
 
 import farticle.domain.entity.ArticleContent;
 import farticle.domain.entity.ArticleOrganize;
-import fly4j.common.util.DateUtil;
 import farticle.domain.entity.CplArticle;
+import fly4j.common.util.DateUtil;
 import fnote.domain.config.FlyContext;
 
 import java.net.URLEncoder;

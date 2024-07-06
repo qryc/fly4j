@@ -2,8 +2,6 @@ package farticle.domain.entity;
 
 import fnote.user.domain.entity.IdPin;
 
-import java.nio.file.Path;
-
 /**
  * Created by qryc on 2021/10/7
  */

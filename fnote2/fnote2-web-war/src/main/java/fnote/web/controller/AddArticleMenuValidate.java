@@ -1,7 +1,5 @@
 package fnote.web.controller;
 
-import farticle.domain.consts.FlyConst;
-import fnote.common.StorePathService;
 import fnote.menu.MenuService;
 
 public class AddArticleMenuValidate implements MenuService.ELValidate {

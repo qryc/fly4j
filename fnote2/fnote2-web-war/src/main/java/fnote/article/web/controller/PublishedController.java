@@ -1,8 +1,8 @@
 package fnote.article.web.controller;
 
+import fly4j.common.http.CookiesUtil;
 import fnote.article.share.AuthShareServiceImpl;
 import fnote.web.common.FlyWebUtil;
-import fly4j.common.http.CookiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
 import static fly4j.common.http.CookiesUtil.*;

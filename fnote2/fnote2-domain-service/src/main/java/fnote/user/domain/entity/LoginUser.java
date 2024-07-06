@@ -3,9 +3,7 @@ package fnote.user.domain.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fnote.user.domain.service.UserService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
