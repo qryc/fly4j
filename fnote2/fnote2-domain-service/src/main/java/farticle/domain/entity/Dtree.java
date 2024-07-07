@@ -125,15 +125,15 @@ public class Dtree {
         }
         //得到子文件
         List<File> fileList = Arrays.asList(files);
-        //排序子文件，文件夹靠前，文件名排序
+        //排序子文件，文件夹靠前，文件名排序;20240707改文件靠前
         Collections.sort(fileList, new Comparator<File>() {
             @Override
             public int compare(File o1, File o2) {
 
                 if (o1.isDirectory() && o2.isFile())
-                    return -1;
-                if (o1.isFile() && o2.isDirectory())
                     return 1;
+                if (o1.isFile() && o2.isDirectory())
+                    return -1;
                 int s1 = isSpe(o1.getName());
                 int s2 = isSpe(o2.getName());
                 if (s1 != -1 && s2 != -1) {

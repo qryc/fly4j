@@ -3,7 +3,7 @@
 <html>
 <head>
     <title id="title">
-       f
+        f
     </title>
     #parse("/WEB-INF/vm/common/head.vm")
 
@@ -21,9 +21,7 @@
     #if(!${clientConfig.fullScreen})
         <table style="border-color: transparent;table-layout: fixed;" width="100%">
             <tr>
-                <td style="vertical-align:top">
-                    #parse("/WEB-INF/vm/article/articleList_1.vm")
-                </td>
+
                 <td style="vertical-align:top;word-wrap:break-word;font-size: 0.8em;" width="250px">
                     <div class="dtree">
                         <script type="text/javascript">
@@ -42,7 +40,9 @@
                     <a href="/article/articles.do?buId=lastEdit&rootPath=$!{item.value}"> $!{item.key}</a> <br/>
 
                 </td>
-
+                <td style="vertical-align:top">
+                    #parse("/WEB-INF/vm/article/articleList_1.vm")
+                </td>
 
             </tr>
         </table>
