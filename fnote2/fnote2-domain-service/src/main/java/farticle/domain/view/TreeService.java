@@ -134,7 +134,6 @@ public class TreeService {
         return dtree.getDtreeObjs();
     }
 
-
     public void setPathService(StorePathService pathService) {
         this.pathService = pathService;
     }

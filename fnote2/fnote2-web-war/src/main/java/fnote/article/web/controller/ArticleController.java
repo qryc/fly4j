@@ -127,6 +127,47 @@ public class ArticleController extends MenuController {
         return "article/articleList";
     }
 
+    public String genPdf(HttpServletRequest req, HttpServletResponse resp, ModelMap context) throws RepositoryException {
+        try {
+            /**获取入参**/
+            String buId = req.getParameter("buId");
+            String title = req.getParameter("title");
+            String rootPath = req.getParameter("rootPath");
+            Integer maturity = WebUtil.getParameterInt(req, "maturity", null);
+
+            /** 网站地图隐藏入口，并且输入为空，跳转网站地图页面 */
+            if (FlyConst.SCENE_GLOBAL_SEARCH.equals(buId)
+                    && StringUtils.isBlank(title)) {
+                return "redirect:/index/webSiteMap.do";
+            }
+
+            /** 构造文章查询参数 */
+            FlyContext flyContext = flyContextFacade.getFlyContext(req, resp);
+            ArticleQueryParam queryParam = QueryBuilder.newBuilder().flyContext(flyContext).buId(buId)
+                    .rootPath(rootPath).showMaturity(maturity).searchTitle(title).buildArticleQuery();
+
+
+            /**导航树*/
+            log.info("dtreeObjs get from File");
+            dtreeUtil.getDtreeObjs4Articles(flyContext);
+
+            /**设置用户当前工作空间*/
+            flyContext.setCurrentWorkRootPath(rootPath);
+
+            /** 设置回传参数 */
+            context.put("buId", buId);
+            context.put("title", title);
+            context.put("currLocation", "lastEditArticles");
+            context.put("iknowInfo", TrackContext.getTrackInfo());
+            setMenu(req, context, flyContext);
+        } catch (RepositoryException e) {
+            log.error("articles error!", e);
+            throw e;
+        }
+
+
+        return "article/articleList";
+    }
 
     /**
      * 查看最近修改的博客列表

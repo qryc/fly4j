@@ -78,31 +78,7 @@ public class Dtree {
         return dtreeObjs.get(0);
     }
 
-    private static Map<String, Integer> sortMap = new HashMap<>();
 
-    {
-        sortMap.put("第一章", 1);
-        sortMap.put("第二章", 2);
-        sortMap.put("第三章", 3);
-        sortMap.put("第四章", 4);
-        sortMap.put("第五章", 5);
-        sortMap.put("第六章", 6);
-        sortMap.put("第七章", 7);
-        sortMap.put("第八章", 8);
-        sortMap.put("第九章", 9);
-        sortMap.put("第十章", 10);
-        sortMap.put("第十一章", 11);
-
-    }
-
-    public int isSpe(String name) {
-        for (Map.Entry<String, Integer> entry : sortMap.entrySet()) {
-            if (name.startsWith(entry.getKey())) {
-                return entry.getValue();
-            }
-        }
-        return -1;
-    }
 
     public int addFoldersWithChildren(File file, int parentTreeTd, BiConsumer<DtreeObj, File> floderConsumer, BiConsumer<DtreeObj, File> fileConsumer, FileFilter filePredicate, boolean delEmpty, FlyContext flyContext) {
         AtomicInteger count = new AtomicInteger(0);
@@ -126,22 +102,7 @@ public class Dtree {
         //得到子文件
         List<File> fileList = Arrays.asList(files);
         //排序子文件，文件夹靠前，文件名排序;20240707改文件靠前
-        Collections.sort(fileList, new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-
-                if (o1.isDirectory() && o2.isFile())
-                    return 1;
-                if (o1.isFile() && o2.isDirectory())
-                    return -1;
-                int s1 = isSpe(o1.getName());
-                int s2 = isSpe(o2.getName());
-                if (s1 != -1 && s2 != -1) {
-                    return s1 - s2;
-                }
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
+        Collections.sort(fileList, new DtreeComparator());
         //遍历子文件
         for (File cfile : fileList) {
             //忽略隐藏文件
