@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class BackUserDataJob {
     private static final Log log = LogFactory.getLog(BackUserDataJob.class);
     private static final Logger backLogger = LoggerFactory.getLogger(LogConst.FILE_BACK);
-    private boolean openBack = true;
+    private boolean openBack = false;
     private int backSiteHour = 18;
     private UserDataBackService userDataBackService;
     private UserRepository userRepository;

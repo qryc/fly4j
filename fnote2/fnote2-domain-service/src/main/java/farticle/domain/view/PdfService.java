@@ -2,16 +2,14 @@ package farticle.domain.view;
 
 import farticle.domain.entity.DtreeComparator;
 import fly4j.common.file.FileUtil;
+import fly4j.common.util.DateUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class PdfService {
     static File outputDir = new File("/Users/gw/QRYC/KnPdf/");
@@ -77,8 +75,19 @@ public class PdfService {
                 if (cfile.getName().endsWith(".md")) {
                     String name = cfile.getName();
 //                    String name = cfile.getName().substring(0, cfile.getName().length() - 3);
-                    pdfStrBuilder.append("# ").append(name).append(StringUtils.LF);
-                    pdfStrBuilder.append(FileUtils.readFileToString(cfile, StandardCharsets.UTF_8)).append(StringUtils.LF);
+                    pdfStrBuilder.append("## ").append(name).append(StringUtils.LF);
+                    String content = FileUtils.readFileToString(cfile, StandardCharsets.UTF_8);
+                    //降级处理，文件夹1级，标题二级别，内容从三级别开始。
+                    content = content.replaceAll("##### ", "######--");
+                    content = content.replaceAll("#### ", "#####--");
+                    content = content.replaceAll("### ", "####--");
+                    content = content.replaceAll("## ", "###--");
+                    content = content.replaceAll("# ", "###--");
+                    content = content.replaceAll("######--", "###### ");
+                    content = content.replaceAll("#####--", "###### ");
+                    content = content.replaceAll("####--", "##### ");
+                    content = content.replaceAll("###--", "#### ");
+                    pdfStrBuilder.append(content).append(StringUtils.LF);
                 }
 
             }
@@ -87,7 +96,7 @@ public class PdfService {
 
 
     public static void write2Pdf(String str) throws IOException {
-        File pdfFile = new File("/Users/gw/QRYC/KnPdf/test.md");
+        File pdfFile = new File("/Users/gw/QRYC/KnPdf/Kn" + DateUtil.getDayStr(new Date()) + ".md");
         FileUtils.writeStringToFile(pdfFile, str, StandardCharsets.UTF_8);
 
 
