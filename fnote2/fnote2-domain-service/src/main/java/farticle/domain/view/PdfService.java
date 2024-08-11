@@ -22,9 +22,9 @@ public class PdfService {
         File file = new File("/Volumes/HomeWork/2-article/DocPublic/0 我的知识库PDF-");
         StringBuilder pdfStr = new StringBuilder();
         addFoldersWithChildren2Pdf(file, pdfStr);
-        write2Pdf(pdfStr.toString());
+        File pdfFile = write2Pdf(pdfStr.toString());
 //        System.out.println(pdfStr.toString().substring(0, 1000));
-        System.out.println("gen end");
+        System.out.println("gen end" + pdfFile.getAbsolutePath());
 
     }
 
@@ -75,9 +75,13 @@ public class PdfService {
                 if (cfile.getName().endsWith(".md")) {
                     String name = cfile.getName();
 //                    String name = cfile.getName().substring(0, cfile.getName().length() - 3);
+                    //文件名称二级目录
                     pdfStrBuilder.append("## ").append(name).append(StringUtils.LF);
+                    /**
+                     * 文件内容处理，降级处理，文件夹1级，标题二级别，内容从三级别开始。
+                     * 至少是3级
+                     */
                     String content = FileUtils.readFileToString(cfile, StandardCharsets.UTF_8);
-                    //降级处理，文件夹1级，标题二级别，内容从三级别开始。
                     content = content.replaceAll("##### ", "######--");
                     content = content.replaceAll("#### ", "#####--");
                     content = content.replaceAll("### ", "####--");
@@ -95,9 +99,10 @@ public class PdfService {
     }
 
 
-    public static void write2Pdf(String str) throws IOException {
+    public static File write2Pdf(String str) throws IOException {
         File pdfFile = new File("/Users/gw/QRYC/KnPdf/Kn" + DateUtil.getDayStr(new Date()) + ".md");
         FileUtils.writeStringToFile(pdfFile, str, StandardCharsets.UTF_8);
+        return pdfFile;
 
 
     }

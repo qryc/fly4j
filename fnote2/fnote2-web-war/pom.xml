@@ -78,7 +78,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <tasks>
+<!--                            <tasks>-->
                                 <!--
                                 <copy todir="${basedir}/target/fnote2-deploy-0.0.8f-SNAPSHOT/WEB-INF/vm/netdisk/" overwrite="true">
                                     <fileset dir="${basedir}/../fnote2-fbrowser-deploy/src/main/webapp/WEB-INF/vm/netdisk">
@@ -89,7 +89,7 @@
                                     </fileset>
                                 </copy>
                                 -->
-                            </tasks>
+<!--                            </tasks>-->
                         </configuration>
                     </execution>
                 </executions>
