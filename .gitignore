@@ -11,3 +11,4 @@ lib
 *.jar
 backToolFx.json
 versionDate
+.venv
