@@ -28,13 +28,13 @@ public class FlyPreconditions {
         return obj;
     }
 
-    public static void checkArgumentFalse(boolean expression, String errorMsg) {
+    public static void checkStateTrue(boolean expression, String errorMsg) {
         if (!expression) {
             throw new IllegalArgumentException(errorMsg);
         }
     }
 
-    public static void checkStateTrue(boolean expression, String errorMsg) {
+    public static void checkStateFalse(boolean expression, String errorMsg) {
         if (expression) {
             throw new IllegalStateException(errorMsg);
         }
