@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Objects;
 
 public class FlyPreconditions {
+    private static final String DEFAULT_ERROR_MESSAGE = "Object must not be null or empty";
+
     public static <T> T requireNotEmpty(T obj, String message) {
         Objects.requireNonNull(obj, message);
         if (obj instanceof String && StringUtils.isBlank((String) obj)) {
@@ -14,7 +16,7 @@ public class FlyPreconditions {
     }
 
     public static <T> T requireNotEmpty(T obj) {
-        return requireNotEmpty(obj, "Object must not be null or empty");
+        return requireNotEmpty(obj, DEFAULT_ERROR_MESSAGE);
     }
 
     public static void requireArgument(boolean expression, String errorMsg) {
