@@ -50,7 +50,7 @@ import static fnote.web.common.FlyWebUtil.SMVC_REDIRECT_URL;
 @Controller
 @RequestMapping("/article")
 public class ArticleController extends MenuController {
-    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
+    private static final Logger log = LoggerFactory.getLogger(ArticleController.class);
     @Resource
     private ArticleQuery articleQuery;
     @Resource
@@ -66,7 +66,7 @@ public class ArticleController extends MenuController {
     @Resource
     private TreeService dtreeUtil;
 
-    public static String tokenName = "mima";
+    private static String tokenName = "mima";
 
 
     /**
@@ -105,7 +105,6 @@ public class ArticleController extends MenuController {
                 TreeCache.putDtreeObjs(flyContext.getPin(), dtreeObjs);
             } else {
                 log.info("dtreeObjs get from cache");
-
             }
             context.put("dtreeObjs", dtreeObjs);
 
@@ -127,6 +126,7 @@ public class ArticleController extends MenuController {
         return "article/articleList";
     }
 
+    @GetMapping(value = "genPdf.do")
     public String genPdf(HttpServletRequest req, HttpServletResponse resp, ModelMap context) throws RepositoryException {
         try {
             /**获取入参**/
@@ -161,7 +161,7 @@ public class ArticleController extends MenuController {
             context.put("iknowInfo", TrackContext.getTrackInfo());
             setMenu(req, context, flyContext);
         } catch (RepositoryException e) {
-            log.error("articles error!", e);
+            log.error("genPdf error!", e);
             throw e;
         }
 
@@ -197,7 +197,7 @@ public class ArticleController extends MenuController {
             context.put("currLocation", "catalogTree");
             context.put("iknowInfo", TrackContext.getTrackInfo());
         } catch (RepositoryException e) {
-            log.error("articles error!", e);
+            log.error("catalogTree error!", e);
             throw e;
         }
 
