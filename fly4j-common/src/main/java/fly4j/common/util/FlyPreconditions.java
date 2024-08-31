@@ -2,11 +2,11 @@ package fly4j.common.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
+
 public class FlyPreconditions {
     public static <T> T requireNotEmpty(T obj, String message) {
-        if (obj == null) {
-            throw new NullPointerException(message);
-        }
+        Objects.requireNonNull(obj, message);
         if (obj instanceof String && StringUtils.isBlank((String) obj)) {
             throw new IllegalArgumentException(message);
         }
@@ -17,27 +17,31 @@ public class FlyPreconditions {
         return requireNotEmpty(obj, "Object must not be null or empty");
     }
 
-    public static void requireArgumentFalse(boolean expression, String errorMsg) {
-        if (expression) {
+    public static void requireArgument(boolean expression, String errorMsg) {
+        if (!expression) {
             throw new IllegalArgumentException(errorMsg);
         }
     }
 
+    public static void requireArgumentFalse(boolean expression, String errorMsg) {
+        requireArgument(!expression, errorMsg);
+    }
+
     public static void requireArgumentTrue(boolean expression, String errorMsg) {
+        requireArgument(expression, errorMsg);
+    }
+
+    public static void checkState(boolean expression, String errorMsg) {
         if (!expression) {
-            throw new IllegalArgumentException(errorMsg);
+            throw new IllegalStateException(errorMsg);
         }
     }
 
     public static void checkStateTrue(boolean expression, String errorMsg) {
-        if (!expression) {
-            throw new IllegalStateException(errorMsg);
-        }
+        checkState(expression, errorMsg);
     }
 
     public static void checkStateFalse(boolean expression, String errorMsg) {
-        if (expression) {
-            throw new IllegalStateException(errorMsg);
-        }
+        checkState(!expression, errorMsg);
     }
 }
