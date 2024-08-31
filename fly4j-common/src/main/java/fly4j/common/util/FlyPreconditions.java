@@ -4,8 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
-public class FlyPreconditions {
+public final class FlyPreconditions {
     private static final String DEFAULT_ERROR_MESSAGE = "Object must not be null or empty";
+
+    private FlyPreconditions() {
+        // Prevent instantiation
+    }
 
     public static <T> T requireNotEmpty(T obj, String message) {
         Objects.requireNonNull(obj, message);
