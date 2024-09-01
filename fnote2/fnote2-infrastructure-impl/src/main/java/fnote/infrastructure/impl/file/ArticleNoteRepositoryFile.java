@@ -72,15 +72,9 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
     private String getFileName(CplArticle cplArticle) {
         String fileName = cplArticle.getArticleContent().title()
-                .replaceAll("\\*", "").replaceAll("\\\\", "").replaceAll("_", "")
-                .replaceAll("#", "")
-//                .replaceAll(" ", "")
+                .replaceAll("[*\\\\#_]", "") // 使用字符类简化替换
                 .trim();
-        if (cplArticle.getArticleContent().authEnum().equals(ArticleAuthEnum.REAL_OPEN)) {
-            return fileName + ".f.md";
-        } else {
-            return fileName + ".flyNote";
-        }
+        return fileName + (cplArticle.getArticleContent().authEnum().equals(ArticleAuthEnum.REAL_OPEN) ? ".f.md" : ".flyNote");
     }
 
     private String getUpdateFileName(CplArticle cplArticle, File file) {
