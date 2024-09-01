@@ -28,9 +28,9 @@ import java.util.stream.Stream;
 public class ArticleQueryImpl implements ArticleQuery {
 
     private ArticleRepository articleRepository;
-    //列表过滤
+    // 列表过滤
     private Map<String, List<CplArticlesFilter>> cplArticlesFilterMap;
-    //单个过滤
+    // 单个过滤
     private Map<String, List<CplArticleFilter>> cplArticleFilterMap;
     private static final int LIMIT_SIZE = 10000;
 
@@ -40,12 +40,12 @@ public class ArticleQueryImpl implements ArticleQuery {
     public List<ArticleView4List> queryShortArticleViews(ArticleQueryParam queryParam) throws RepositoryException {
         FlyPreconditions.requireNotEmpty(queryParam, "QueryParam must not be null or empty");
         
-        //定义查询结果
+        // 定义查询结果
         final List<CplArticle> articles = new ArrayList<>();
-
-        //计数器
+        // 计数器
         AtomicInteger count = new AtomicInteger(0);
-        //创建回调函数
+
+        // 创建回调函数
         Function<CplArticle, CplArticle> function = cplArticle -> {
             if (count.incrementAndGet() < LIMIT_SIZE) {
                 return filterAndAddArticle(cplArticle, queryParam, articles);
@@ -53,11 +53,12 @@ public class ArticleQueryImpl implements ArticleQuery {
             return null;
         };
 
-        //遍历路径，执行查询
+        // 遍历路径，执行查询
         for (Path path : getQueryArticlePaths(queryParam)) {
             articleRepository.findCplArticlesByPin(queryParam.getPin(), path, function);
         }
 
+        // 应用文章列表过滤器并返回结果
         return applyArticlesFilters(articles, queryParam);
     }
 
@@ -66,11 +67,11 @@ public class ArticleQueryImpl implements ArticleQuery {
             return null;
         }
 
-        //执行单个文章扩展点
+        // 执行单个文章扩展点
         List<CplArticleFilter> filterList = cplArticleFilterMap.get(queryParam.getBuId());
         if (filterList != null) {
             for (CplArticleFilter filter : filterList) {
-                //集合过滤器，为了整体能编排，使用的集合
+                // 集合过滤器，为了整体能编排，使用的集合
                 try {
                     cplArticle = filter.filter(cplArticle, queryParam);
                     if (cplArticle == null) {
@@ -87,13 +88,13 @@ public class ArticleQueryImpl implements ArticleQuery {
     }
 
     private List<ArticleView4List> applyArticlesFilters(List<CplArticle> articles, ArticleQueryParam queryParam) {
-        //执行文章列表扩展点
+        // 执行文章列表扩展点
         Stream<CplArticle> stream = articles.stream();
 
         List<CplArticlesFilter> filterList = cplArticlesFilterMap.get(queryParam.getBuId());
         if (filterList != null) {
             for (CplArticlesFilter filter : filterList) {
-                //集合过滤器，为了整体能编排，使用的集合
+                // 集合过滤器，为了整体能编排，使用的集合
                 stream = filter.filter(stream, queryParam);
             }
         }
@@ -103,10 +104,10 @@ public class ArticleQueryImpl implements ArticleQuery {
 
     private List<Path> getQueryArticlePaths(ArticleQueryParam queryParam) {
         if (StringUtils.isNotBlank(queryParam.getRootPath())) {
-            //指定目录文章
+            // 指定目录文章
             return List.of(Path.of(queryParam.getRootPath()));
         }
-        //查询用户默认目录文章
+        // 查询用户默认目录文章
         return pathService.getAllArticleDirPaths(queryParam.getFlyContext().getPin());
     }
 
