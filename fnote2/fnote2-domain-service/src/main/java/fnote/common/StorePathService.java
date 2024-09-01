@@ -37,11 +37,11 @@ public abstract class StorePathService {
 
     }
 
-    public Path getRootPtah(String storeName) {
+    public Path getRootPath(String storeName) {
         return userRootPath;
     }
 
-    public Path getTempRootPtah(String storeName) {
+    public Path getTempRootPath(String storeName) {
         return tempRootPath;
     }
 
