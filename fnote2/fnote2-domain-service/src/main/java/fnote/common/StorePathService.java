@@ -22,7 +22,7 @@ public abstract class StorePathService {
     public static final String PATH_CUSTOM = "flyCustomRootPath";
     private Path userRootPath;
     private Path tempRootPath;
-    private Map<String, String> storeDirStrMap;
+    private Map<String, String> storeDirPathMap;
     //customDocPath
     protected Map<String, String> customPathMap;
 
@@ -53,16 +53,13 @@ public abstract class StorePathService {
         return tempRootPath.resolve(pin);
     }
 
-
     public Path getUDirPath(String storeName, String pin) {
-        String storeDirStr = storeDirStrMap.get(storeName);
-        if (StringUtils.isBlank(storeDirStr)) {
-            throw new UnsupportedOperationException("directDir getUDirPath");
-        } else {
-            return getURootPath(pin).resolve(storeDirStr);
+        String storeDirPath = storeDirPathMap.get(storeName);
+        if (StringUtils.isBlank(storeDirPath)) {
+            throw new UnsupportedOperationException("Invalid store name for getUDirPath");
         }
+        return getURootPath(pin).resolve(storeDirPath);
     }
-
 
     public boolean isInStoreDir(Path absolutePath) {
         return true;
@@ -92,7 +89,6 @@ public abstract class StorePathService {
         return getAllArticleDirPaths(pin).get(0).resolve("default");
     }
 
-
     public List<Path> getUserDiskDirPaths(FlyContext flyContext) {
         if (flyContext.isAdmin()) {
             return List.of(Path.of(System.getProperty("user.home")));
@@ -105,10 +101,9 @@ public abstract class StorePathService {
         return getUserDiskDirPaths(flyContext);
     }
 
-    public void setStoreDirStrMap(Map<String, String> storeDirStrMap) {
-        this.storeDirStrMap = storeDirStrMap;
+    public void setStoreDirPathMap(Map<String, String> storeDirPathMap) {
+        this.storeDirPathMap = storeDirPathMap;
     }
-
 
     public void setUserRootPath(String userRootPath) {
         this.userRootPath = Path.of(PropertisUtil.adjustPath(userRootPath));
