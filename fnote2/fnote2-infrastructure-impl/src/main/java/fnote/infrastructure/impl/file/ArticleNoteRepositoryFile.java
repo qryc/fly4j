@@ -36,7 +36,6 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
     private final int maxArticleCount = 1000;
 
-
     private record PinSpace(String pin, String workPath) {
         @Override
         public boolean equals(Object o) {
@@ -56,11 +55,9 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         }
     }
 
-
     private Path getDraftFilePath(String pin, String filename, Long id) {
         return pathService.getUTempRootPath(pin).resolve(PATH_DRAFT).resolve(DateUtil.getDateStr4Name(new Date()) + filename);
     }
-
 
     private String replaceFileName(String fileName) {
         return fileName.replaceAll("[*\\\\_]", "");
@@ -92,10 +89,10 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             //解析文章
             if (fname.endsWith(".flyNote") || fname.endsWith(".md")) {
                 CplArticle cplArticle = analysisCplArticle(file, pin);
-                if (null != function) {
+                if (function != null) {
                     //执行过滤链过滤
                     cplArticle = function.apply(cplArticle);
-                    if (null != cplArticle) {
+                    if (cplArticle != null) {
                         articles.add(cplArticle);
                     }
                 } else {
@@ -108,13 +105,11 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         return articles;
     }
 
-
     private List<CplArticle> cloneList(List<CplArticle> list) {
         ArrayList<CplArticle> cloneList = new ArrayList<>();
         list.forEach(cplArticle -> ExceptionUtil.wrapperRuntime(() -> cloneList.add(cplArticle.clone())));
         return cloneList;
     }
-
 
     @Override
     public String insertCplArticle(CplArticle cplArticle) throws RepositoryException {
@@ -123,7 +118,6 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             if (cplArticle.getExtId() == null) {
                 cplArticle.setExtId(System.currentTimeMillis());
             }
-
 
             /**计算保存路径*/
             Path articlePath;
@@ -148,19 +142,15 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             cplArticle.setNoteFileStr(articlePath.toString());
             return articlePath.toString();
         });
-
     }
-
 
     @Override
     public void deleteCplArticleById(IdPin idPin) throws RepositoryException {
-
         RepositoryException.wrapper(() -> {
             var path = Path.of(idPin.getNoteFileStr());
             draft(idPin.getPin(), path.toFile(), null);
             Files.deleteIfExists(path);
         });
-
     }
 
     public boolean isFile(String fileName) {
@@ -186,7 +176,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             //从文件系统更新
             File file = path.toFile();
 
-//            写入草搞
+            //写入草稿
             draft(cplArticle.getPin(), file, cplArticle.getExtId());
 
             //再次匹配ID，防止误修改
@@ -196,7 +186,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             if (newStoreFileName.equals(file.getName())) {
                 Files.writeString(file.toPath(), articleJson);
                 cplArticle.setNoteFileStr(file.toPath().toString());
-            } else {//文件名改变，重命名文件，再覆盖写文件
+            } else { //文件名改变，重命名文件，再覆盖写文件
                 var newFilePath = file.toPath().getParent().resolve(newStoreFileName);
                 if (Files.exists(newFilePath)) {
                     throw new FileAlreadyExistsException(newFilePath.toString());
@@ -206,8 +196,6 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
                 cplArticle.setNoteFileStr(newFilePath.toString());
             }
         });
-
-
     }
 
     private static String getArticleJson(CplArticle cplArticle) {
@@ -227,28 +215,24 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             articleJsonBuilder.append(MD_SPLIT_END).append(StringConst.LF);
 
             articleJson = articleJsonBuilder.toString();
-
         }
         return articleJson;
     }
-
 
     /**
      * 不使用缓存内容，会使用缓存索引
      */
     @Override
     public CplArticle getCplArticleById4Edit(IdPin idPin) throws RepositoryException {
-        if (null != idPin.getNoteFileStr()) {
+        if (idPin.getNoteFileStr() != null) {
             //通过文章路径获取
             return RepositoryException.wrapperR(() -> {
                 var path = Path.of(idPin.getNoteFileStr());
                 return analysisCplArticle(path.toFile(), idPin.getPin());
-
             });
         } else {
             throw new UnsupportedOperationException();
         }
-
     }
 
     private CplArticle analysisCplArticle(File file, String pin) throws Exception {
@@ -257,7 +241,6 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
         //flynote加密格式
         if (file.getName().endsWith(".flyNote") && str.startsWith("{")) {
-
             var articleDo = JsonUtils.readValue(str, ArticleDo.class);
             var cplArticle = articleDo.buildCplArticle(path);
             cplArticle.setFile(file);
@@ -265,7 +248,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         }
 
         //.f.md格式
-        if (file.getName().endsWith(".flyNote") && !str.startsWith("{") || file.getName().endsWith(".f.md")) {
+        if ((file.getName().endsWith(".flyNote") && !str.startsWith("{")) || file.getName().endsWith(".f.md")) {
             //从MD的附加信息解析组织信息，不带标题和内容
             String[] arrs = str.split(MD_SPLIT_START);
             String json = arrs[1].replaceAll(MD_SPLIT_END, "");
@@ -389,7 +372,6 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             cplArticle.setArticleOrganize(articleOrganize);
             cplArticle.setNoteFileStr(path.toString());
             return cplArticle;
-
         }
 
         public ArticleDo setId(Long id) {
@@ -505,7 +487,6 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             this.extMap = extMap;
             return this;
         }
-
     }
 
     public void setPathService(StorePathService pathService) {
