@@ -58,11 +58,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
 
     private Path getDraftFilePath(String pin, String filename, Long id) {
-        if (null != id) {
-            return pathService.getUTempRootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
-        } else {
-            return pathService.getUTempRootPath(pin).resolve("draft").resolve(DateUtil.getDateStr4Name(new Date()) + filename);
-        }
+        return pathService.getUTempRootPath(pin).resolve(PATH_DRAFT).resolve(DateUtil.getDateStr4Name(new Date()) + filename);
     }
 
 
@@ -108,9 +104,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
                 }
             }
         }));
-
-        //按开始时间排序
-        Collections.sort(articles, (a1, a2) -> a1.getCreateTime().compareTo(a2.getCreateTime()));
+        articles.sort(Comparator.comparing(CplArticle::getCreateTime));
         return articles;
     }
 
@@ -132,7 +126,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
 
             /**计算保存路径*/
-            Path articlePath = null;
+            Path articlePath;
             var fileName = getFileName(cplArticle);
             String pin = cplArticle.getPin();
             String currentWorkRootPathStr = FlyContext.getCurrentWorkRootPath(cplArticle.getPin());
@@ -146,7 +140,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             //保存博客
             String articleJson = getArticleJson(cplArticle);
             if (Files.exists(articlePath)) {
-                throw new RepositoryException("article already exsits:" + articlePath);
+                throw new RepositoryException("article already exists:" + articlePath);
             }
             if (Files.notExists(articlePath.getParent()))
                 Files.createDirectories(articlePath.getParent());
@@ -323,9 +317,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
             cplArticle.setFile(file);
             return cplArticle;
         }
-        throw new RuntimeException("不支持的文件格式");
-
-
+        throw new RuntimeException("Unsupported file format");
     }
 
     @Override
@@ -335,7 +327,6 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
     @Override
     public CplArticle getCplArticleById4ViewById(String pin, Path rootPath, long id) throws RepositoryException {
-        CplArticle result = null;
         Function<CplArticle, CplArticle> function = cplArticle -> {
             if (cplArticle.getExtId() != null && id == cplArticle.getExtId()) {
                 return cplArticle;
