@@ -67,7 +67,7 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
 
 
     private String replaceFileName(String fileName) {
-        return fileName.replaceAll("\\*", "").replaceAll("\\\\", "").replaceAll("_", "");
+        return fileName.replaceAll("[*\\\\_]", "");
     }
 
     private String getFileName(CplArticle cplArticle) {
@@ -82,25 +82,13 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         if (file.getName().endsWith(".f.md")) {
             fileName = file.getName().substring(0, file.getName().length() - 5);
         }
-        if (cplArticle.getArticleContent().authEnum().equals(ArticleAuthEnum.REAL_OPEN)) {
-            return fileName + ".f.md";
-        } else {
-            return fileName + ".flyNote";
-        }
+        return fileName + (cplArticle.getArticleContent().authEnum().equals(ArticleAuthEnum.REAL_OPEN) ? ".f.md" : ".flyNote");
     }
 
     @Override
     public List<CplArticle> findCplArticlesByPin(String pin, Path rootPath, Function<CplArticle, CplArticle> function) throws RepositoryException {
         var articles = new ArrayList<CplArticle>();
-        Predicate<File> refusePredicate = new Predicate<File>() {
-            @Override
-            public boolean test(File file) {
-                if (file.getName().equals("draft")) {
-                    return true;
-                }
-                return false;
-            }
-        };
+        Predicate<File> refusePredicate = file -> file.getName().equals("draft");
         FileUtil.walkAllFile(rootPath.toFile(), refusePredicate, file -> ExceptionUtil.wrapperRuntime(() -> {
             //通过扩展名来识别文章
             var fname = file.getName();
