@@ -251,27 +251,13 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         if ((file.getName().endsWith(".flyNote") && !str.startsWith("{")) || file.getName().endsWith(".f.md")) {
             //从MD的附加信息解析组织信息，不带标题和内容
             String[] arrs = str.split(MD_SPLIT_START);
+            String titleAndContent = arrs[0];
             String json = arrs[1].replaceAll(MD_SPLIT_END, "");
             var articleDo = JsonUtils.readValue(json, ArticleDo.class);
             var cplArticle = articleDo.buildCplArticle(path);
 
             //补充标题和内容
-            cplArticle.setArticleContent(ArticleContent.buildArticleContent(cplArticle.getArticleContent().authEnum(), arrs[0], StringUtils.LF));
-//            var indexTitle = arrs[0].indexOf(StringUtils.LF);
-//            if (indexTitle == -1) {
-//                //如果没有换行符，使用全部做标题
-//                cplArticle.setArticleContent(cplArticle.getArticleContent().of(arrs[0], ""));
-//            } else {
-//                //根据内容截断第一行为标题,剩下的为内容
-//                var title = arrs[0].substring(0, indexTitle).trim();
-//                //截断内容
-//                var content = arrs[0].substring(indexTitle + 1);
-//                //截断空行
-//                if (content.endsWith(StringConst.LF)) {
-//                    content = content.substring(0, content.length() - 1);
-//                }
-//                cplArticle.setArticleContent(cplArticle.getArticleContent().of(title, content));
-//            }
+            cplArticle.setArticleContent(ArticleContent.buildArticleContent(cplArticle.getArticleContent().authEnum(), titleAndContent, StringUtils.LF));
             cplArticle.setFile(file);
             return cplArticle;
 
