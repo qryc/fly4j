@@ -3,7 +3,6 @@
 <html>
 <head>
     <title id="title">
-       f
     </title>
     #parse("/WEB-INF/vm/common/head.vm")
     <link href="/style/${flyContext.viewConfig.viewArticleCss}" rel="stylesheet" type="text/css"/>
@@ -19,31 +18,35 @@
         }
 
     </script>
-    #if(${cplArticle.extId} == 841||${cplArticle.extId} == 625)
-        <link href="/style/tableContent.css" rel="stylesheet" type="text/css"/>
-    #end
+##    消除首页特定样式
+##    #if(${cplArticle.extId} == 841||${cplArticle.extId} == 625)
+##        <link href="/style/tableContent.css" rel="stylesheet" type="text/css"/>
+##    #end
 </head>
 <body>
 
 <main id="mainDiv">
+    #parse("/WEB-INF/vm/common/menu.vm")
     <div id="articleVue">
         #parse("/WEB-INF/vm/common/menu.vm")
+
 
         #if(!${clientConfig.fullScreen})
             <table style="border-color: transparent;table-layout: fixed;margin: 0 0;" width="100%">
                 <tr>
-                    <td style="vertical-align:top;border-color: transparent">
-                        #parse("/WEB-INF/vm/article/viewArticle_1.vm")
-                    </td>
                     <td style="border-color: transparent;vertical-align:top;word-wrap:break-word;font-size: 0.8em; margin: 0 0;"
                         width="250px">
 
-                        <br/> <br/> <br/> <br/>
-                        <div class="graySecondFont">
-                            $!{articleInfoVo.articleViewMenu}
-                        </div>
+
                         #parse("/WEB-INF/vm/common/dtree.vm")
                     </td>
+                    <td style="vertical-align:top;border-color: transparent">
+                        <div class="graySecondFont" style="float: right">
+                            $!{articleInfoVo.articleViewMenu}
+                        </div>
+                        #parse("/WEB-INF/vm/article/viewArticle_1.vm")
+                    </td>
+
 
 
                 </tr>
