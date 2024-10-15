@@ -19,12 +19,7 @@ public class GitService {
 
 
     static {
-        gitPullPushDirs.add("/root/FlyData2023");
-        gitPullPushDirs.add("/root/DocPrivate");
-        gitPullPushDirs.add("/root/DocPublic");
-
-
-        gitPullDirs.add("/root/PicBed");
+        gitPullPushDirs.add("/root/root/transfer2server");
     }
 
     public static void main(String[] args) throws Exception {

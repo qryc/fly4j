@@ -67,15 +67,13 @@
 
     <beans profile="online">
         <!--        <context:property-placeholder location="classpath:properties.online/fly.properties"/>-->
-        <context:property-placeholder location="file:/root/FlyData2023/config/properties.online/fly.properties"/>
+        <context:property-placeholder location="file:/root/transfer2server/FlyData2023/config/properties.online/fly.properties"/>
 
     </beans>
     <beans profile="dev">
-        <!--        <context:property-placeholder location="classpath:properties.dev/fly.properties"/>-->
-        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.dev/fly.properties"/>
+        <context:property-placeholder location="file:/Volumes/HomeWork/transfer2server/FlyData2023/config/properties.dev/fly.properties"/>
     </beans>
     <beans profile="dev_online_data">
-        <!--        <context:property-placeholder location="classpath:properties.dev_online_data/fly.properties"/>-->
-        <context:property-placeholder location="file:/Volumes/HomeWork/1-code/FlyData2023/config/properties.dev_online_data/fly.properties"/>
+        <context:property-placeholder location="file:/Volumes/HomeWork/transfer2server/FlyData2023/config/properties.dev_online_data/fly.properties"/>
     </beans>
 </beans>
