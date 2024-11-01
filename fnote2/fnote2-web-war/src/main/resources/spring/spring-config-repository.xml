@@ -16,9 +16,10 @@
             </list>
         </constructor-arg>
     </bean>
-    <bean id="pathService" class="qryc.user.CustomPathService" init-method="init">
+    <bean id="pathService" class="fnote.common.CustomPathService" init-method="init">
         <property name="userRootPath" value="${userRootPath}"></property>
         <property name="tempRootPath" value="${tempRootPath}"></property>
+        <property name="customPath" value="${customPath}"></property>
         <property name="customPathMap">
             <map>
                 <entry key="DocPublic" value="${DocPublic}"/>
@@ -54,10 +55,10 @@
                     <list>
                         <bean class="qryc.article.AlbumTree">
                         </bean>
-<!--                        配置不展示outline-->
-<!--                        <bean class="farticle.domain.view.ArticleOutlineTree">-->
-<!--                            <property name="articleLoad" ref="articleLoad"></property>-->
-<!--                        </bean>-->
+                        <!--                        配置不展示outline-->
+                        <!--                        <bean class="farticle.domain.view.ArticleOutlineTree">-->
+                        <!--                            <property name="articleLoad" ref="articleLoad"></property>-->
+                        <!--                        </bean>-->
 
                     </list>
                 </entry>
@@ -74,8 +75,8 @@
         <property name="predicateMap">
             <map>
                 <entry key="filePredicate4Browser">
-                        <bean class="farticle.domain.view.FilePredicate4Browser">
-                        </bean>
+                    <bean class="farticle.domain.view.FilePredicate4Browser">
+                    </bean>
                 </entry>
                 <entry key="treeFilePredicate">
                     <bean class="farticle.domain.view.TreeFilePredicate">
