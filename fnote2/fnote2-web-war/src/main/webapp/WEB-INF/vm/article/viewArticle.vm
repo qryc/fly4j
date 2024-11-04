@@ -22,6 +22,7 @@
 
 <main id="mainDiv">
     #parse("/WEB-INF/vm/common/menu.vm")
+    $!{articleInfoVo.articleViewMenu}
     #if(!${clientConfig.fullScreen})
         <table style="border-color: transparent;table-layout: fixed;margin: 0 0;" width="100%">
             <tr>
@@ -33,7 +34,7 @@
                 </td>
                 <td style="vertical-align:top;border-color: transparent">
                     <div class="graySecondFont" style="float: right">
-                        $!{articleInfoVo.articleViewMenu}
+
                     </div>
                     #parse("/WEB-INF/vm/article/viewArticle_1.vm")
                 </td>

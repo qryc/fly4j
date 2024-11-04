@@ -41,7 +41,7 @@
 
 </header>
 
-#if(${currLocation}=='viewArticle' && ${pageConfig.pc})
+#if(${currLocation}=='viewArticleNot' && ${pageConfig.pc})
 <script>
     $("#topDiv").hide();
 </script>
