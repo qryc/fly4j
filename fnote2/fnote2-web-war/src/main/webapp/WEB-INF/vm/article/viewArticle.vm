@@ -16,50 +16,35 @@
             }
             return true;
         }
-
     </script>
-##    消除首页特定样式
-##    #if(${cplArticle.extId} == 841||${cplArticle.extId} == 625)
-##        <link href="/style/tableContent.css" rel="stylesheet" type="text/css"/>
-##    #end
 </head>
 <body>
 
 <main id="mainDiv">
     #parse("/WEB-INF/vm/common/menu.vm")
-    <div id="articleVue">
-        #parse("/WEB-INF/vm/common/menu.vm")
+    #if(!${clientConfig.fullScreen})
+        <table style="border-color: transparent;table-layout: fixed;margin: 0 0;" width="100%">
+            <tr>
+                <td style="border-color: transparent;vertical-align:top;word-wrap:break-word;font-size: 0.8em; margin: 0 0;"
+                    width="250px">
 
 
-        #if(!${clientConfig.fullScreen})
-            <table style="border-color: transparent;table-layout: fixed;margin: 0 0;" width="100%">
-                <tr>
-                    <td style="border-color: transparent;vertical-align:top;word-wrap:break-word;font-size: 0.8em; margin: 0 0;"
-                        width="250px">
-
-
-                        #parse("/WEB-INF/vm/common/dtree.vm")
-                    </td>
-                    <td style="vertical-align:top;border-color: transparent">
-                        <div class="graySecondFont" style="float: right">
-                            $!{articleInfoVo.articleViewMenu}
-                        </div>
-                        #parse("/WEB-INF/vm/article/viewArticle_1.vm")
-                    </td>
-
-
-
-                </tr>
-            </table>
-        #else
-            <div class="entry-header">
-                $!{articleInfoVo.articleViewMenu}
-            </div>
-            #parse("/WEB-INF/vm/article/viewArticle_1.vm")
-        #end
-
-    </div>
-
+                    #parse("/WEB-INF/vm/common/dtree.vm")
+                </td>
+                <td style="vertical-align:top;border-color: transparent">
+                    <div class="graySecondFont" style="float: right">
+                        $!{articleInfoVo.articleViewMenu}
+                    </div>
+                    #parse("/WEB-INF/vm/article/viewArticle_1.vm")
+                </td>
+            </tr>
+        </table>
+    #else
+        <div class="entry-header">
+            $!{articleInfoVo.articleViewMenu}
+        </div>
+        #parse("/WEB-INF/vm/article/viewArticle_1.vm")
+    #end
 
     <script type="text/javascript">
             #if(!${clientConfig.fullScreen})
@@ -84,25 +69,6 @@
 
         AddImgClickEvent();
 
-        const app = {
-            data() {
-                return {
-                    articleView: '',
-                    menu: ''
-                }
-            },
-            mounted() {
-                axios.get('/menu/menuJson.do?noteFileStr=$!noteFileStr')
-                        .then(response => {
-                            this.menu = response.data;
-                        })
-                        .catch(function (error) { // 请求失败处理
-                            console.log(error);
-                        });
-            }
-        }
-
-        Vue.createApp(app).mount('#articleVue')
     </script>
 </main>
 </body>
