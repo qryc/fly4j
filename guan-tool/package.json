@@ -1,0 +1,14 @@
+{
+  "name": "guan-tool",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "qryc",
+  "license": "ISC",
+  "description": "guan tool",
+  "devDependencies": {
+    "electron": "^33.2.0"
+  }
+}
