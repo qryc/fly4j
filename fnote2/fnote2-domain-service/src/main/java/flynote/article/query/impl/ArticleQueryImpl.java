@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -39,29 +38,30 @@ public class ArticleQueryImpl implements ArticleQuery {
     @Override
     public List<ArticleView4List> queryShortArticleViews(ArticleQueryParam queryParam) throws RepositoryException {
         FlyPreconditions.requireNotEmpty(queryParam, "QueryParam must not be null or empty");
-        
+
         //定义查询结果
         final List<CplArticle> filteredArticles = new ArrayList<>();
 
         //计数器
         AtomicInteger articleCount = new AtomicInteger(0);
-        //创建回调函数
-        Function<CplArticle, CplArticle> articleProcessor = article -> {
-            if (articleCount.incrementAndGet() < MAX_ARTICLES) {
-                return filterAndAddArticle(article, queryParam, filteredArticles);
-            }
-            return null;
-        };
 
         //遍历路径，执行查询
         for (Path path : getQueryArticlePaths(queryParam)) {
-            articleRepository.findCplArticlesByPin(queryParam.getPin(), path, articleProcessor);
+            System.out.println("path:" + path.toString());
+            articleRepository.walkCplArticlesByPin(queryParam.getPin(), path, cplArticle -> {
+                if (articleCount.incrementAndGet() < MAX_ARTICLES) {
+                    CplArticle filterArticle = filterArticle(cplArticle, queryParam, filteredArticles);
+                    if (filterArticle != null) {
+                        filteredArticles.add(filterArticle);
+                    }
+                }
+            });
         }
 
         return applyArticleListFilters(filteredArticles, queryParam);
     }
 
-    private CplArticle filterAndAddArticle(CplArticle article, ArticleQueryParam queryParam, List<CplArticle> filteredArticles) {
+    private CplArticle filterArticle(CplArticle article, ArticleQueryParam queryParam, List<CplArticle> filteredArticles) {
         if (article == null) {
             return null;
         }

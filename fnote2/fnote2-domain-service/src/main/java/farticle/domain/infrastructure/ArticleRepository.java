@@ -6,6 +6,7 @@ import fnote.user.domain.entity.IdPin;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface ArticleRepository {
@@ -17,6 +18,8 @@ public interface ArticleRepository {
     void deleteCplArticleById(IdPin idPin) throws RepositoryException;
 
     List<CplArticle> findCplArticlesByPin(String pin, Path rootPath, Function<CplArticle, CplArticle> function) throws RepositoryException;
+
+    void walkCplArticlesByPin(String pin, Path rootPath, Consumer<CplArticle> consumer) throws RepositoryException;
 
     String insertCplArticle(CplArticle cplArticle) throws RepositoryException;
 

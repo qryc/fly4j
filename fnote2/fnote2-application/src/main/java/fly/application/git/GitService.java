@@ -19,7 +19,7 @@ public class GitService {
 
 
     static {
-        gitPullPushDirs.add("/root/root/transfer2server");
+        gitPullPushDirs.add("/root/export/transfer2server");
     }
 
     public static void main(String[] args) throws Exception {

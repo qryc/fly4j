@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -103,6 +104,23 @@ public class ArticleNoteRepositoryFile implements ArticleRepository {
         }));
         articles.sort(Comparator.comparing(CplArticle::getCreateTime));
         return articles;
+    }
+
+    @Override
+    public void walkCplArticlesByPin(String pin, Path rootPath, Consumer<CplArticle> consumer) throws RepositoryException {
+        Predicate<File> refusePredicate = file -> file.getName().equals("draft");
+        FileUtil.walkAllFile(rootPath.toFile(), refusePredicate, file -> ExceptionUtil.wrapperRuntime(() -> {
+            //通过扩展名来识别文章
+            var fname = file.getName();
+            //解析文章
+            if (fname.endsWith(".flyNote") || fname.endsWith(".md")) {
+                CplArticle cplArticle = analysisCplArticle(file, pin);
+                if (consumer != null) {
+                    //执行过滤链过滤
+                    consumer.accept(cplArticle);
+                }
+            }
+        }));
     }
 
     private List<CplArticle> cloneList(List<CplArticle> list) {
