@@ -10,12 +10,13 @@ public class VocabularyAnalysis {
     public static void main(String[] args) throws IOException {
 
         String baseDir = "/Volumes/HomeWork/transfer2server/MdArticle/z4 英语学习/vocabulary/";
+        String baseDirTemp = "/Volumes/HomeWork/temp/";
         List<String> fileNames = List.of(baseDir + "myCOCA1.txt"
                 , baseDir + "myCOCA2.txt"
                 , baseDir + "myCOCA3.txt");
         Map<String, String> vocabularyMap = new LinkedHashMap<>();
 
-        FileUtils.deleteDirectory(new File(baseDir + "result"));
+        FileUtils.deleteDirectory(new File(baseDirTemp + "result"));
 
 
         for (String fileName : fileNames) {
@@ -33,7 +34,7 @@ public class VocabularyAnalysis {
 
             if (tempVocabularys.size() != result.size()) {
                 System.out.println("repeat：%d to %d in file %s".formatted(tempVocabularys.size(), result.size(), fileName));
-                File resultFile = new File(baseDir + "result/result" + fileName.split("/")[fileName.split("/").length - 1] + ".txt");
+                File resultFile = new File(baseDirTemp + "result/result" + fileName.split("/")[fileName.split("/").length - 1] + ".txt");
                 FileUtils.writeLines(resultFile, result);
             } else {
                 System.out.println("no repeat in file %s".formatted(fileName));
