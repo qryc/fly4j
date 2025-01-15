@@ -6,14 +6,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * 多个单词文件去重
+ */
 public class VocabularyAnalysis {
     public static void main(String[] args) throws IOException {
 
         String baseDir = "/Volumes/HomeWork/transfer2server/MdArticle/z4 英语学习/vocabulary/";
         String baseDirTemp = "/Volumes/HomeWork/temp/";
-        List<String> fileNames = List.of(baseDir + "myCOCA1.txt"
+        List<String> fileNames = List.of(
+                baseDir + "myKnow.txt"
+                ,baseDir + "myCOCA1.txt"
                 , baseDir + "myCOCA2.txt"
-                , baseDir + "myCOCA3.txt");
+                , baseDir + "myCOCA3.txt"
+                , baseDir + "newAdd.txt"
+        );
         Map<String, String> vocabularyMap = new LinkedHashMap<>();
 
         FileUtils.deleteDirectory(new File(baseDirTemp + "result"));
