@@ -16,7 +16,7 @@ public class VocabularyAnalysis {
         String baseDirTemp = "/Volumes/HomeWork/temp/";
         List<String> fileNames = List.of(
                 baseDir + "myKnow.txt"
-                ,baseDir + "myCOCA1.txt"
+                , baseDir + "myCOCA1.txt"
                 , baseDir + "myCOCA2.txt"
                 , baseDir + "myCOCA3.txt"
                 , baseDir + "newAdd.txt"
@@ -44,7 +44,7 @@ public class VocabularyAnalysis {
                 File resultFile = new File(baseDirTemp + "result/result" + fileName.split("/")[fileName.split("/").length - 1] + ".txt");
                 FileUtils.writeLines(resultFile, result);
             } else {
-                System.out.println("no repeat in file %s".formatted(fileName));
+                System.out.println("no repeat in file %s,size %d".formatted(fileName, tempVocabularys.size()));
 
             }
 

@@ -45,12 +45,11 @@ public class ArticleQueryImpl implements ArticleQuery {
         //计数器
         AtomicInteger articleCount = new AtomicInteger(0);
 
-        //遍历路径，执行查询
+        //遍历路径，执行查询,使用回调函数,在回调函数中执行扩展点，目的是一次遍历直接出结果
         for (Path path : getQueryArticlePaths(queryParam)) {
-            System.out.println("path:" + path.toString());
             articleRepository.walkCplArticlesByPin(queryParam.getPin(), path, cplArticle -> {
                 if (articleCount.incrementAndGet() < MAX_ARTICLES) {
-                    CplArticle filterArticle = filterArticle(cplArticle, queryParam, filteredArticles);
+                    CplArticle filterArticle = exeFilterArticleSPI(cplArticle, queryParam);
                     if (filterArticle != null) {
                         filteredArticles.add(filterArticle);
                     }
@@ -58,10 +57,11 @@ public class ArticleQueryImpl implements ArticleQuery {
             });
         }
 
+        //转换为展示对象
         return applyArticleListFilters(filteredArticles, queryParam);
     }
 
-    private CplArticle filterArticle(CplArticle article, ArticleQueryParam queryParam, List<CplArticle> filteredArticles) {
+    private CplArticle exeFilterArticleSPI(CplArticle article, ArticleQueryParam queryParam) {
         if (article == null) {
             return null;
         }
@@ -81,8 +81,6 @@ public class ArticleQueryImpl implements ArticleQuery {
                 }
             }
         }
-
-        filteredArticles.add(article);
         return article;
     }
 
