@@ -54,10 +54,10 @@ public class DeployServiceImpl implements DeployService {
         System.out.println(("CHECK OS:" + System.getProperty("os.spaceName")));
 
         //检查文件系统
-        if (Files.exists(pathService.getRootPtah(StorePathService.PATH_ARTICLE))) {
-            System.out.println(("CHECK ROOTPATH:" + pathService.getRootPtah(StorePathService.PATH_ARTICLE)) + " exists");
+        if (Files.exists(pathService.getRootDirPath(StorePathService.PATH_ARTICLE))) {
+            System.out.println(("CHECK ROOTPATH:" + pathService.getRootDirPath(StorePathService.PATH_ARTICLE)) + " exists");
         } else {
-            System.out.println(("CHECK ROOTPATH:" + pathService.getRootPtah(StorePathService.PATH_ARTICLE)) + " not exists!!!!");
+            System.out.println(("CHECK ROOTPATH:" + pathService.getRootDirPath(StorePathService.PATH_ARTICLE)) + " not exists!!!!");
 
         }
         log.info(StringConst.getConsoleTitle("fly ENV check end"));

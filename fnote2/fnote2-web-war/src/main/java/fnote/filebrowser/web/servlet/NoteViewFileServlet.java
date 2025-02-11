@@ -98,7 +98,7 @@ public class NoteViewFileServlet extends HttpServlet {
         if (loginUser.isAdmin()) {
             return Path.of(System.getProperty("user.home"));
         }
-        return pathService.getURootPath(viewPin);
+        return pathService.getUserDirPath(viewPin);
     }
 
     public void filter(HttpServletResponse response, String relativePath, Path filePath) throws IOException, BreakException {

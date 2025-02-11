@@ -25,6 +25,6 @@ public class NoteDownloadServlet extends DownloadServlet {
         if (loginUser.isAdmin()) {
             return Path.of(System.getProperty("user.home"));
         }
-        return pathService.getURootPath(loginUser.pin());
+        return pathService.getUserDirPath(loginUser.pin());
     }
 }

@@ -26,8 +26,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class ArticleNoteRepositoryFile implements ArticleRepository {
-    private static final Logger log = LoggerFactory.getLogger(ArticleNoteRepositoryFile.class);
+public class ArticleRepositoryByFile implements ArticleRepository {
+    private static final Logger log = LoggerFactory.getLogger(ArticleRepositoryByFile.class);
     //控制修改的时候是否使用缓存
     private StorePathService pathService;
     private static final String PATH_ARTICLE = "article";

@@ -110,7 +110,7 @@ public class BrowserController {
 //        if ("company".equals(flyContext.clientConfig().getExtStringValue("workspace"))) {
 //            return pathService.getUserDirPath(FlyConst.PATH_ARTICLE,flyContext.getPin()).resolve("pubDir");
 //        }
-        return pathService.getURootPath(flyContext.getPin());
+        return pathService.getUserDirPath(flyContext.getPin());
     }
 
 
@@ -346,7 +346,7 @@ public class BrowserController {
 //     `   if (currDirPath != null && currDirPath.toString().contains("FlyCustom")) {
 //            return pathService.getURootPath(StorePathService.PATH_CUSTOM, flyContext.getPin());
 //        }`
-        return pathService.getURootPath( flyContext.getPin());
+        return pathService.getUserDirPath( flyContext.getPin());
     }
 
 }

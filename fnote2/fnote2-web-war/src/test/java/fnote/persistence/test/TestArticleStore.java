@@ -27,7 +27,7 @@ public class TestArticleStore {
 
     @Before
     public void setup() throws Exception {
-        FileUtils.deleteQuietly(pathService.getRootPtah(StorePathService.PATH_ARTICLE).toFile());
+        FileUtils.deleteQuietly(pathService.getRootDirPath(StorePathService.PATH_ARTICLE).toFile());
     }
 
     @Test

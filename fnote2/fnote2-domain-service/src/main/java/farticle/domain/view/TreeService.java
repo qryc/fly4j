@@ -124,7 +124,7 @@ public class TreeService {
         Dtree dtree = new Dtree("目录", "");
 
         //默认文章树
-        List<Path> paths = pathService.getAllArticleDirPaths(flyContext.getPin());
+        List<Path> paths = pathService.getUserArticleDirPaths(flyContext.getPin());
         paths.forEach(path -> {
             if (paths.size() > 1)
                 dtree.addDtreeObjToRoot(path.toFile().getName(), "");

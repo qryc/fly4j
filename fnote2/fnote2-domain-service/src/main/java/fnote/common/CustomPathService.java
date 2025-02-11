@@ -2,12 +2,9 @@ package fnote.common;
 
 import fnote.domain.config.FlyContext;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CustomPathService extends StorePathService {
     protected Map<String, String> user2CustomRoot = new HashMap<>();
@@ -24,10 +21,10 @@ public class CustomPathService extends StorePathService {
 
 
     @Override
-    public List<Path> getAllArticleDirPaths(String pin) {
+    public List<Path> getUserArticleDirPaths(String pin) {
         if (StringUtils.isEmpty(user2CustomRoot.get(pin))) {
             //默认路径
-            return super.getAllArticleDirPaths(pin);
+            return super.getUserArticleDirPaths(pin);
         } else {
             //如果有自定义路径，优先返回自定义路径
             Path path = Path.of(user2CustomRoot.get(pin));

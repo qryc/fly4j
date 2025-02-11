@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserRepositoryFile implements UserRepository {
+public class UserRepositoryByFile implements UserRepository {
     private String userInfoCryptPwd;
     //用户密码，默认用户文章加密密码
     private String defaultUserArticlePwd;
@@ -66,7 +66,7 @@ public class UserRepositoryFile implements UserRepository {
     @Override
     public void delUser(String pin) throws RepositoryException {
         RepositoryException.wrapper(() -> {
-            FileUtils.deleteDirectory(pathService.getURootPath(pin).toFile());
+            FileUtils.deleteDirectory(pathService.getUserDirPath(pin).toFile());
         });
 
     }
@@ -75,7 +75,7 @@ public class UserRepositoryFile implements UserRepository {
     @Override
     public List<IUserInfo> findAllUserInfo() throws RepositoryException {
         var userInfos = new ArrayList<IUserInfo>();
-        var file = pathService.getRootPtah(StorePathService.PATH_USER).toFile();
+        var file = pathService.getRootDirPath(StorePathService.PATH_USER).toFile();
         for (var cFile : file.listFiles()) {
             boolean isUserDir = !file.getName().startsWith(".")
                     && cFile.isDirectory();
@@ -177,8 +177,8 @@ public class UserRepositoryFile implements UserRepository {
     @Override
     public void createUserDirs(String pin) throws IOException {
         //创建用户的数据目录
-        if (Files.notExists(pathService.getURootPath(pin)))
-            Files.createDirectories(pathService.getURootPath(pin));
+        if (Files.notExists(pathService.getUserDirPath(pin)))
+            Files.createDirectories(pathService.getUserDirPath(pin));
 //        //创建用户备份路径目录
 //        if (Files.notExists(FlyConfig.getUserDir4Back(pin)))
 //            Files.createDirectories(FlyConfig.getUserDir4Back(pin));

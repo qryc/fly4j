@@ -20,8 +20,8 @@ public abstract class StorePathService {
     public static final String PATH_USER = "user";
     public static final String PATH_BACK = "back";
     public static final String PATH_CUSTOM = "flyCustomRootPath";
-    private Path userRootPath;
-    private Path tempRootPath;
+    private Path rootDirPath;
+    private Path tempDirPath;
     private Map<String, String> storeDirStrMap;
     //customDocPath
     protected Map<String, String> customPathMap;
@@ -37,29 +37,44 @@ public abstract class StorePathService {
 
     }
 
-    public Path getRootPtah(String storeName) {
-        return userRootPath;
+    public Path getRootDirPath(String storeName) {
+        return rootDirPath;
     }
 
-    public Path getTempRootPtah(String storeName) {
-        return tempRootPath;
+    public Path getUserDirPath(String pin) {
+        return rootDirPath.resolve(pin);
     }
 
-    public Path getURootPath(String pin) {
-        return userRootPath.resolve(pin);
+    /**
+     * 文章路径，或者自定义，或内定
+     */
+    public List<Path> getUserArticleDirPaths(String pin) {
+        return Stream.of(
+                getUserDirPath(pin).resolve(PATH_ARTICLE)
+        ).toList();
     }
+
+    public Path getArticleDefaultPath(String pin, String userLabel) {
+        return getUserDirPath(pin).resolve(PATH_ARTICLE).resolve("default");
+    }
+
+
+    public Path getTempDirPath(String storeName) {
+        return tempDirPath;
+    }
+
 
     public Path getUTempRootPath(String pin) {
-        return tempRootPath.resolve(pin);
+        return tempDirPath.resolve(pin);
     }
 
 
-    public Path getUDirPath(String storeName, String pin) {
+    private Path getUDirPath(String storeName, String pin) {
         String storeDirStr = storeDirStrMap.get(storeName);
         if (StringUtils.isBlank(storeDirStr)) {
             throw new UnsupportedOperationException("directDir getUDirPath");
         } else {
-            return getURootPath(pin).resolve(storeDirStr);
+            return getUserDirPath(pin).resolve(storeDirStr);
         }
     }
 
@@ -78,18 +93,9 @@ public abstract class StorePathService {
      * 图片路径，包含文章下的图片，以及图床
      */
     public List<Path> getUserPicDirPaths(String pin) {
-        return Stream.of(this.getUDirPath(PATH_ARTICLE, pin).resolve("pic")).toList();
-    }
-
-    /**
-     * 文章路径，或者自定义，或内定
-     */
-    public List<Path> getAllArticleDirPaths(String pin) {
-        return Stream.of(this.getUDirPath(PATH_ARTICLE, pin)).toList();
-    }
-
-    public Path getArticleDefaultPath(String pin, String userLabel) {
-        return getAllArticleDirPaths(pin).get(0).resolve("default");
+        return Stream.of(
+                getUserDirPath(pin).resolve(PATH_ARTICLE).resolve("pic")
+        ).toList();
     }
 
 
@@ -110,12 +116,12 @@ public abstract class StorePathService {
     }
 
 
-    public void setUserRootPath(String userRootPath) {
-        this.userRootPath = Path.of(PropertisUtil.adjustPath(userRootPath));
+    public void setRootDirPath(String rootDirPath) {
+        this.rootDirPath = Path.of(PropertisUtil.adjustPath(rootDirPath));
     }
 
-    public void setTempRootPath(String tempRootPath) {
-        this.tempRootPath = Path.of(PropertisUtil.adjustPath(tempRootPath));
+    public void setTempDirPath(String tempDirPath) {
+        this.tempDirPath = Path.of(PropertisUtil.adjustPath(tempDirPath));
     }
 
     public void setCustomPathMap(Map<String, String> customPathMap) {

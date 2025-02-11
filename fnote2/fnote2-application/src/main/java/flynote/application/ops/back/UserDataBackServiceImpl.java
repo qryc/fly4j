@@ -39,7 +39,7 @@ public class UserDataBackServiceImpl implements UserDataBackService {
             return;
         }
         //备份用户下的备份数据目录
-        var sourceDirPath = pathService.getURootPath(pin);
+        var sourceDirPath = pathService.getUserDirPath(pin);
         //备份到用户下载Zip目录
         var destZipDirPath = pathService.getUTempRootPath(pin).resolve("zipData");
         //取得压缩密码

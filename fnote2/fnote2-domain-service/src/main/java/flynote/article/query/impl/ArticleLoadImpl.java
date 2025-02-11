@@ -20,7 +20,7 @@ public class ArticleLoadImpl implements ArticleLoad {
 
     @Override
     public List<Path> getAllArticleDirPaths(FlyContext flyContext) {
-        return pathService.getAllArticleDirPaths(flyContext.getPin());
+        return pathService.getUserArticleDirPaths(flyContext.getPin());
     }
 
 

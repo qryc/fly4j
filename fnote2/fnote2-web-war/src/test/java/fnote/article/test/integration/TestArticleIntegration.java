@@ -46,7 +46,7 @@ public abstract class TestArticleIntegration {
 
     @After
     public void tearDown() throws Exception {
-        FileUtils.deleteQuietly(articlePathService.getRootPtah(StorePathService.PATH_ARTICLE).toFile());
+        FileUtils.deleteQuietly(articlePathService.getRootDirPath(StorePathService.PATH_ARTICLE).toFile());
     }
 
 }

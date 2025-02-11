@@ -105,7 +105,7 @@ public class ArticleQueryImpl implements ArticleQuery {
             return List.of(Path.of(queryParam.getRootPath()));
         }
         //查询用户默认目录文章
-        return pathService.getAllArticleDirPaths(queryParam.getFlyContext().getPin());
+        return pathService.getUserArticleDirPaths(queryParam.getFlyContext().getPin());
     }
 
     public void setPathService(StorePathService pathService) {

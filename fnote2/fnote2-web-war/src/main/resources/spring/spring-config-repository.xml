@@ -17,8 +17,8 @@
         </constructor-arg>
     </bean>
     <bean id="pathService" class="fnote.common.CustomPathService" init-method="init">
-        <property name="userRootPath" value="${userRootPath}"></property>
-        <property name="tempRootPath" value="${tempRootPath}"></property>
+        <property name="rootDirPath" value="${userRootPath}"></property>
+        <property name="tempDirPath" value="${tempRootPath}"></property>
         <property name="customPath" value="${customPath}"></property>
         <property name="customPathMap">
             <map>
@@ -38,14 +38,14 @@
         </property>
 
     </bean>
-    <bean id="userRepositoryFile" class="fnote.infrastructure.impl.file.UserRepositoryFile">
+    <bean id="userRepositoryFile" class="fnote.infrastructure.impl.file.UserRepositoryByFile">
         <property name="pathService" ref="pathService"></property>
         <property name="userInfoCryptPwd" value="${deployConfig.userInfoCryptPwd}"></property>
         <property name="defaultUserArticlePwd" value="${defaultUserArticlePwd}"></property>
     </bean>
 
     <bean id="articleRepositoryFile" name="articleNoteRepositoryFile"
-          class="fnote.infrastructure.impl.file.ArticleNoteRepositoryFile">
+          class="fnote.infrastructure.impl.file.ArticleRepositoryByFile">
         <property name="pathService" ref="pathService"></property>
     </bean>
     <bean id="dtreeUtil" class="farticle.domain.view.TreeService">
