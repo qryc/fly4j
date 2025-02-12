@@ -8,7 +8,6 @@ import farticle.domain.infrastructure.ArticleRepository;
 import fly4j.common.domain.IExtMap;
 import fly4j.common.file.FileUtil;
 import fly4j.common.util.*;
-import fnote.common.StorePathService;
 import fnote.domain.config.FlyContext;
 import fnote.user.domain.entity.BaseDomain;
 import fnote.user.domain.entity.IdPin;
@@ -29,7 +28,7 @@ import java.util.function.Predicate;
 public class ArticleRepositoryByFile implements ArticleRepository {
     private static final Logger log = LoggerFactory.getLogger(ArticleRepositoryByFile.class);
     //控制修改的时候是否使用缓存
-    private StorePathService pathService;
+    private RepoPathService repoPathService;
     private static final String PATH_ARTICLE = "article";
     private static final String PATH_DRAFT = "draft";
     private static final String MD_SPLIT_START = "<!-- " + "-~".repeat(10);
@@ -57,7 +56,7 @@ public class ArticleRepositoryByFile implements ArticleRepository {
     }
 
     private Path getDraftFilePath(String pin, String filename, Long id) {
-        return pathService.getUTempRootPath(pin).resolve(PATH_DRAFT).resolve(DateUtil.getDateStr4Name(new Date()) + filename);
+        return repoPathService.getUTempRootPath(pin).resolve(PATH_DRAFT).resolve(DateUtil.getDateStr4Name(new Date()) + filename);
     }
 
     private String replaceFileName(String fileName) {
@@ -144,7 +143,7 @@ public class ArticleRepositoryByFile implements ArticleRepository {
             String currentWorkRootPathStr = FlyContext.getCurrentWorkRootPath(cplArticle.getPin());
             if (StringUtils.isEmpty(currentWorkRootPathStr)) {
                 //没有指定目录，保存默认目录
-                articlePath = pathService.getArticleDefaultPath(pin, "").resolve(fileName);
+                articlePath = repoPathService.getArticleDefaultPath(pin, "").resolve(fileName);
             } else {
                 articlePath = Path.of(currentWorkRootPathStr).resolve(fileName);
             }
@@ -493,7 +492,7 @@ public class ArticleRepositoryByFile implements ArticleRepository {
         }
     }
 
-    public void setPathService(StorePathService pathService) {
-        this.pathService = pathService;
+    public void setRepoPathService(RepoPathService pathService) {
+        this.repoPathService = pathService;
     }
 }

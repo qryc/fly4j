@@ -3,7 +3,6 @@ package fnote.infrastructure.impl.file;
 import fly4j.common.crypto.AESUtil;
 import fly4j.common.util.JsonUtils;
 import fly4j.common.util.RepositoryException;
-import fnote.common.StorePathService;
 import fnote.user.domain.entity.BaseDomain;
 import fnote.user.domain.entity.IUserInfo;
 import fnote.user.domain.entity.UserConfig;
@@ -12,9 +11,9 @@ import fnote.user.domain.infrastructure.UserRepository;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,18 +23,14 @@ public class UserRepositoryByFile implements UserRepository {
     private String userInfoCryptPwd;
     //用户密码，默认用户文章加密密码
     private String defaultUserArticlePwd;
-    private StorePathService pathService;
+    private RepoPathService repoPathService;
 
-    public Path getStoreFilePathWithPin(String pin) {
-        return pathService.getUDirPath(StorePathService.PATH_USER, pin).resolve("user_" + pin + ".gwf");
-
-    }
 
     @Override
     public void insertUserInfo(IUserInfo userInfo) throws RepositoryException {
         RepositoryException.wrapper(() -> {
             if (userInfo instanceof UserInfo flyUserInfo) {
-                var filePath = this.getStoreFilePathWithPin(flyUserInfo.getPin());
+                var filePath = repoPathService.getUserinfoFilePath(flyUserInfo.getPin());
                 var json = JsonUtils.writeValueAsString(new UserInfoDo(flyUserInfo, userInfoCryptPwd));
                 if (Files.notExists(filePath.getParent()))
                     Files.createDirectories(filePath.getParent());
@@ -52,7 +47,7 @@ public class UserRepositoryByFile implements UserRepository {
     @Override
     public IUserInfo getUserinfo(String pin) throws RepositoryException {
         return RepositoryException.wrapperR(() -> {
-            var path = this.getStoreFilePathWithPin(pin);
+            var path = repoPathService.getUserinfoFilePath(pin);
             if (Files.notExists(path)) {
                 return null;
             }
@@ -66,7 +61,7 @@ public class UserRepositoryByFile implements UserRepository {
     @Override
     public void delUser(String pin) throws RepositoryException {
         RepositoryException.wrapper(() -> {
-            FileUtils.deleteDirectory(pathService.getUserDirPath(pin).toFile());
+            FileUtils.deleteDirectory(repoPathService.getUserinfoFilePath(pin).toFile());
         });
 
     }
@@ -74,8 +69,8 @@ public class UserRepositoryByFile implements UserRepository {
 
     @Override
     public List<IUserInfo> findAllUserInfo() throws RepositoryException {
-        var userInfos = new ArrayList<IUserInfo>();
-        var file = pathService.getRootDirPath(StorePathService.PATH_USER).toFile();
+        List<IUserInfo> userInfos = new ArrayList<IUserInfo>();
+        File file = repoPathService.getRootDirPath().toFile();
         for (var cFile : file.listFiles()) {
             boolean isUserDir = !file.getName().startsWith(".")
                     && cFile.isDirectory();
@@ -177,8 +172,8 @@ public class UserRepositoryByFile implements UserRepository {
     @Override
     public void createUserDirs(String pin) throws IOException {
         //创建用户的数据目录
-        if (Files.notExists(pathService.getUserDirPath(pin)))
-            Files.createDirectories(pathService.getUserDirPath(pin));
+        if (Files.notExists(repoPathService.getUserDirPath(pin)))
+            Files.createDirectories(repoPathService.getUserDirPath(pin));
 //        //创建用户备份路径目录
 //        if (Files.notExists(FlyConfig.getUserDir4Back(pin)))
 //            Files.createDirectories(FlyConfig.getUserDir4Back(pin));
@@ -189,8 +184,8 @@ public class UserRepositoryByFile implements UserRepository {
     }
 
 
-    public void setPathService(StorePathService pathService) {
-        this.pathService = pathService;
+    public void setRepoPathService(RepoPathService repoPathService) {
+        this.repoPathService = repoPathService;
     }
 
 }

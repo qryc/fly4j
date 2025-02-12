@@ -2,7 +2,6 @@ package fnote.web.listener;
 
 import fly.application.git.GitService;
 import fly4j.common.util.IpUtil;
-import fnote.common.StorePathService;
 import fnote.domain.config.FlyConfig;
 import fnote.user.listener.BootInfoLogger;
 import org.slf4j.Logger;

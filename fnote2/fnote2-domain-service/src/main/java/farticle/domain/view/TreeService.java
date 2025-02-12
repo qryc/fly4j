@@ -3,7 +3,7 @@ package farticle.domain.view;
 import farticle.domain.entity.Dtree;
 import farticle.domain.entity.DtreeObj;
 import flynote.article.query.ArticleLoad;
-import fnote.common.StorePathService;
+import fnote.common.DomainPathService;
 import fnote.domain.config.FlyContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class TreeService {
 
     static final Logger log = LoggerFactory.getLogger(TreeService.class);
     private ArticleLoad articleLoad;
-    private StorePathService pathService;
+    private DomainPathService pathService;
     static String articlesUrl = "/article/articles.do?buId=lastEdit&rootPath=";
     public static String viewUrl = "/article/viewArticle.do?noteFileStr=";
     public static String editUrl = "/articleMaintain/toEditArticle.do?edithome=list&noteFileStr=";
@@ -134,7 +134,7 @@ public class TreeService {
         return dtree.getDtreeObjs();
     }
 
-    public void setPathService(StorePathService pathService) {
+    public void setPathService(DomainPathService pathService) {
         this.pathService = pathService;
     }
 

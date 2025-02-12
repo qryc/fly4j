@@ -2,7 +2,7 @@ package flynote.article.query.impl;
 
 import farticle.domain.infrastructure.ArticleRepository;
 import flynote.article.query.ArticleLoad;
-import fnote.common.StorePathService;
+import fnote.common.DomainPathService;
 import fnote.domain.config.FlyContext;
 
 import java.nio.file.Path;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ArticleLoadImpl implements ArticleLoad {
     private ArticleRepository articleRepository;
     //    private List<ArticleLoadFilter> filters;
-    private StorePathService pathService;
+    private DomainPathService pathService;
 
     @Override
     public List<Path> getAllArticleDirPaths(FlyContext flyContext) {
@@ -32,7 +32,7 @@ public class ArticleLoadImpl implements ArticleLoad {
 //        this.filters = filters;
 //    }
 
-    public ArticleLoadImpl setPathService(StorePathService pathService) {
+    public ArticleLoadImpl setPathService(DomainPathService pathService) {
         this.pathService = pathService;
         return this;
     }

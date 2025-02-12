@@ -8,7 +8,7 @@ import fly4j.common.mail.MailUtil2;
 import fly4j.common.os.OsUtil;
 import fly4j.common.util.DateUtil;
 import fly4j.common.util.RepositoryException;
-import fnote.common.StorePathService;
+import fnote.common.DomainPathService;
 import fnote.domain.config.FlyConfig;
 import fnote.domain.config.LogConst;
 import fnote.user.domain.entity.UserInfo;
@@ -31,7 +31,7 @@ public class UserDataBackServiceImpl implements UserDataBackService {
     private UserRepository userRepository;
     private FileAndDirPredicate fileAndDirPredicate;
     private MailUtil2 mailUtil2;
-    private StorePathService pathService;
+    private DomainPathService pathService;
 
     @Override
     public void backSiteAndSendEmail(final String pin) throws IOException, RepositoryException {
@@ -84,10 +84,10 @@ public class UserDataBackServiceImpl implements UserDataBackService {
         var backupFilesInfo = new BackupFilesInfo();
 
         // 查找最新下载
-        var targetZipFilePath = pathService.getUDirPath(StorePathService.PATH_BACK, pin);// 得到备份目标路径
+        var targetZipFilePath = pathService.getUserBackDirPath(pin);// 得到备份目标路径
         var zipFiles = targetZipFilePath.toFile().listFiles((dir, name) -> name.endsWith(".zip"));
         if (null != zipFiles) {
-            backupFilesInfo.setDownFileNames(FileInfoUtil.getFileInfos(zipFiles, pathService.getUDirPath(StorePathService.PATH_BACK, pin)));
+            backupFilesInfo.setDownFileNames(FileInfoUtil.getFileInfos(zipFiles, pathService.getUserDirPath(pin)));
             backupFilesInfo.sortDownFileNames();
         }
 
@@ -99,7 +99,7 @@ public class UserDataBackServiceImpl implements UserDataBackService {
     public String getLastDownFilePath(String pin) {
 
         // 查找最新下载
-        var targetZipFilePath = pathService.getUDirPath(StorePathService.PATH_BACK, pin);// 得到备份目标路径
+        var targetZipFilePath = pathService.getUserBackDirPath(pin);// 得到备份目标路径
         var zipFilesArray = targetZipFilePath.toFile().listFiles((dir, name) -> name.endsWith(".zip"));
         var zipFiles = Arrays.asList(zipFilesArray);
         Collections.sort(zipFiles, (f1, f2) -> (int) (f2.lastModified() - f1.lastModified()));
@@ -121,7 +121,7 @@ public class UserDataBackServiceImpl implements UserDataBackService {
         this.mailUtil2 = mailUtil2;
     }
 
-    public void setPathService(StorePathService pathService) {
+    public void setPathService(DomainPathService pathService) {
         this.pathService = pathService;
     }
 }

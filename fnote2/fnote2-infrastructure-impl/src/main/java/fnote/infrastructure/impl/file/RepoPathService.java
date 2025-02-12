@@ -1,20 +1,19 @@
-package fnote.common;
+package fnote.infrastructure.impl.file;
 
-
+import fnote.common.DomainPathService;
+import fnote.common.PropertisUtil;
 import fnote.domain.config.FlyContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by qryc on 2021/9/22
- */
-public abstract class StorePathService {
+public class RepoPathService implements DomainPathService {
     /// 路径配置
     public static final String PATH_ARTICLE = "article";
     public static final String PATH_USER = "user";
@@ -25,6 +24,9 @@ public abstract class StorePathService {
     private Map<String, String> storeDirStrMap;
     //customDocPath
     protected Map<String, String> customPathMap;
+
+    protected Map<String, String> user2CustomRoot = new HashMap<>();
+
 
     public static void main(String[] args) {
 //        Path path = Path.of("/Volumes/HomeWork/1-Fly/FlyPic");
@@ -37,21 +39,37 @@ public abstract class StorePathService {
 
     }
 
-    public Path getRootDirPath(String storeName) {
+    @Override
+    public Path getRootDirPath() {
         return rootDirPath;
     }
 
+    @Override
     public Path getUserDirPath(String pin) {
         return rootDirPath.resolve(pin);
     }
 
+    public Path getUserinfoFilePath(String pin) {
+        return this.getUDirPath(PATH_USER, pin).resolve("user_" + pin + ".gwf");
+
+    }
     /**
      * 文章路径，或者自定义，或内定
      */
+    @Override
     public List<Path> getUserArticleDirPaths(String pin) {
-        return Stream.of(
-                getUserDirPath(pin).resolve(PATH_ARTICLE)
-        ).toList();
+
+        if (StringUtils.isEmpty(user2CustomRoot.get(pin))) {
+            //默认路径
+            return Stream.of(
+                    getUserDirPath(pin).resolve(PATH_ARTICLE)
+            ).toList();
+        } else {
+            //如果有自定义路径，优先返回自定义路径
+            Path path = Path.of(user2CustomRoot.get(pin));
+            return List.of(path);
+
+        }
     }
 
     public Path getArticleDefaultPath(String pin, String userLabel) {
@@ -64,6 +82,7 @@ public abstract class StorePathService {
     }
 
 
+    @Override
     public Path getUTempRootPath(String pin) {
         return tempDirPath.resolve(pin);
     }
@@ -78,6 +97,10 @@ public abstract class StorePathService {
         }
     }
 
+    @Override
+    public Path getUserBackDirPath(String pin) {
+        return this.getUDirPath(PATH_BACK, pin);
+    }
 
     public boolean isInStoreDir(Path absolutePath) {
         return true;
@@ -96,20 +119,31 @@ public abstract class StorePathService {
         return Stream.of(
                 getUserDirPath(pin).resolve(PATH_ARTICLE).resolve("pic")
         ).toList();
+//        Path path = Path.of(user2CustomRoot.get(pin));
+//        return List.of(path);
     }
 
 
+    @Override
     public List<Path> getUserDiskDirPaths(FlyContext flyContext) {
         if (flyContext.isAdmin()) {
             return List.of(Path.of(System.getProperty("user.home")));
         }
         //用户未配置，返回用户默认
         return Stream.of(this.getUDirPath(PATH_ARTICLE, flyContext.getPin())).toList();
+//        Path path = Path.of(user2CustomRoot.get(flyContext.getPin()));
+//        return List.of(path);
     }
 
     public List<Path> getFlyDiskCanSelect(FlyContext flyContext) {
         return getUserDiskDirPaths(flyContext);
+//        Path path = Path.of(user2CustomRoot.get(flyContext.getPin()));
+//        return List.of(path);
     }
+
+    /**
+     * ****** getter and setter below **********
+     */
 
     public void setStoreDirStrMap(Map<String, String> storeDirStrMap) {
         this.storeDirStrMap = storeDirStrMap;
@@ -126,5 +160,11 @@ public abstract class StorePathService {
 
     public void setCustomPathMap(Map<String, String> customPathMap) {
         this.customPathMap = customPathMap;
+    }
+
+    public void setCustomPath(String customPath) {
+        String uname = customPath.split(",")[0];
+        String path = customPath.split(",")[1];
+        user2CustomRoot.put(uname, path);
     }
 }

@@ -5,7 +5,6 @@ import fly4j.common.http.ajax.FetchSend;
 import fly4j.common.mail.MailUtil2;
 import fly4j.common.util.ExceptionUtil;
 import fly4j.common.util.RepositoryException;
-import fnote.common.StorePathService;
 import fnote.domain.config.ClientConfig;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;

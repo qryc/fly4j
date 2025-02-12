@@ -7,7 +7,7 @@ import fly4j.common.http.FileUpload;
 import fly4j.common.http.WebUtil;
 import fly4j.common.util.FlyPreconditions;
 import fly4j.common.util.RepositoryException;
-import fnote.common.StorePathService;
+import fnote.common.DomainPathService;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;
 import fnote.filebrowser.core.BrowserResult;
@@ -51,7 +51,7 @@ public class BrowserController {
 
     private int fileuploadMaxSize = 5120000;
     @Resource
-    private StorePathService pathService;
+    private DomainPathService pathService;
     @Resource
     private FlyContextFacade flyContextFacade;
     @Resource
@@ -346,7 +346,7 @@ public class BrowserController {
 //     `   if (currDirPath != null && currDirPath.toString().contains("FlyCustom")) {
 //            return pathService.getURootPath(StorePathService.PATH_CUSTOM, flyContext.getPin());
 //        }`
-        return pathService.getUserDirPath( flyContext.getPin());
+        return pathService.getUserDirPath(flyContext.getPin());
     }
 
 }

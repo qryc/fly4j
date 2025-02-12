@@ -9,7 +9,7 @@ import farticle.domain.view.ArticleView4List;
 import fly4j.common.util.FlyPreconditions;
 import fly4j.common.util.RepositoryException;
 import flynote.article.query.ArticleQuery;
-import fnote.common.StorePathService;
+import fnote.common.DomainPathService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
@@ -33,7 +33,7 @@ public class ArticleQueryImpl implements ArticleQuery {
     private Map<String, List<CplArticleFilter>> singleArticleFilterMap;
     private static final int MAX_ARTICLES = 10000;
 
-    private StorePathService pathService;
+    private DomainPathService pathService;
 
     @Override
     public List<ArticleView4List> queryShortArticleViews(ArticleQueryParam queryParam) throws RepositoryException {
@@ -108,7 +108,7 @@ public class ArticleQueryImpl implements ArticleQuery {
         return pathService.getUserArticleDirPaths(queryParam.getFlyContext().getPin());
     }
 
-    public void setPathService(StorePathService pathService) {
+    public void setPathService(DomainPathService pathService) {
         this.pathService = pathService;
     }
 

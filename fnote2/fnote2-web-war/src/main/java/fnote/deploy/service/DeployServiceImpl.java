@@ -2,7 +2,6 @@ package fnote.deploy.service;
 
 import fly4j.common.util.RepositoryException;
 import fly4j.common.util.StringConst;
-import fnote.common.StorePathService;
 import fnote.user.domain.entity.UserInfo;
 import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.domain.service.DeployService;

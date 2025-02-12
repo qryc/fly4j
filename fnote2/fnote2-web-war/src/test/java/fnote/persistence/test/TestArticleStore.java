@@ -1,7 +1,6 @@
 package fnote.persistence.test;
 
 import farticle.domain.infrastructure.ArticleRepository;
-import fnote.common.StorePathService;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
