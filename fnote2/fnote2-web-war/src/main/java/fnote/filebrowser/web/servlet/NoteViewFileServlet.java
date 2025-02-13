@@ -5,6 +5,7 @@ import fly4j.common.http.FileDown;
 import fly4j.common.util.BreakException;
 import fnote.article.share.AuthShareServiceImpl;
 import fnote.article.web.controller.PublishedController;
+import fnote.common.DomainPathService;
 import fnote.common.web.SpringContextHolder;
 import fnote.user.domain.entity.LoginUser;
 import fnote.user.domain.service.LoginService;
@@ -36,7 +37,7 @@ public class NoteViewFileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginService loginService = SpringContextHolder.getBean("loginService");
         LoginUser loginUser = loginService.getLoginUserByCookieCheckedSession(request);
-        StorePathService pathService = SpringContextHolder.getBean("pathService");
+        DomainPathService pathService = SpringContextHolder.getBean("pathService");
         String absolutePath = request.getParameter("absolutePath");
         final String relativePath = request.getParameter("relativePath") != null ? request.getParameter("relativePath").trim() : null;
 
@@ -72,7 +73,7 @@ public class NoteViewFileServlet extends HttpServlet {
          * 未登录用户访问其它资源，直接返回
          */
         LoginService loginService = SpringContextHolder.getBean("loginService");
-        StorePathService pathService = SpringContextHolder.getBean("pathService");
+        DomainPathService pathService = SpringContextHolder.getBean("pathService");
         LoginUser loginUser = loginService.getLoginUserByCookieCheckedSession(request);
         String viewPin = "";
         if (null == loginUser) {
@@ -101,7 +102,7 @@ public class NoteViewFileServlet extends HttpServlet {
     }
 
     public void filter(HttpServletResponse response, String relativePath, Path filePath) throws IOException, BreakException {
-        StorePathService pathService = SpringContextHolder.getBean("pathService");
+        DomainPathService pathService = SpringContextHolder.getBean("pathService");
         //必须是工作空间下的文件
         if (!pathService.isInStoreDir(filePath)) {
             throw new BreakException();

@@ -16,5 +16,11 @@ public interface DomainPathService {
 
     Path getUserBackDirPath(String pin);
 
+    boolean isInStoreDir(Path absolutePath);
+
+    List<Path> getUserPicDirPaths(String pin);
+
     List<Path> getUserDiskDirPaths(FlyContext flyContext);
+
+    List<Path> getFlyDiskCanSelect(FlyContext flyContext);
 }

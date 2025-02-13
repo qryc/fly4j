@@ -7,7 +7,6 @@
     <bean id="deployService" class="fnote.deploy.service.DeployServiceImpl">
         <property name="userRepository" ref="userRepositoryFile"></property>
         <property name="userService" ref="userService"></property>
-        <property name="pathService" ref="pathService"></property>
     </bean>
     <bean id="manual" class="flynote.application.manual.ManualByFile"></bean>
 

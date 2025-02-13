@@ -2,6 +2,7 @@ package fnote.web.listener;
 
 import fly.application.git.GitService;
 import fly4j.common.util.IpUtil;
+import fnote.common.DomainPathService;
 import fnote.domain.config.FlyConfig;
 import fnote.user.listener.BootInfoLogger;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
  */
 public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationListener<ContextRefreshedEvent> {
     static final Logger log = LoggerFactory.getLogger(GitService.class);
-    private StorePathService pathService;
+    private DomainPathService pathService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -28,7 +29,7 @@ public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationLis
 //            NoteBootInfoLogger.out("TempPath:", FlyConfig.getTempPath(), 20);
 //            NoteBootInfoLogger.out("UserDirPath:", FlyConfig.getUserHome4Data("${userName}"), 20);
 //            NoteBootInfoLogger.out("BackDataDirPath:", backPathService.getUserDir4Data("${userName}"), 20);
-            NoteBootInfoLogger.out("ArticlesDirPath:", pathService.getUDirPath(StorePathService.PATH_ARTICLE, "${userName}"), 20);
+//            NoteBootInfoLogger.out("ArticlesDirPath:", pathService.getUDirPath(StorePathService.PATH_ARTICLE, "${userName}"), 20);
 //            NoteBootInfoLogger.out("getCustomDocPath:", pathService.getCustomDocPath(), 20);
 
 //            NoteBootInfoLogger.out("GitDirPath:", pathService.getURootPath(StorePathService.PATH_GIT, "${userName}"), 20);
@@ -43,7 +44,7 @@ public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationLis
         }
     }
 
-    public void setPathService(StorePathService pathService) {
+    public void setPathService(DomainPathService pathService) {
         this.pathService = pathService;
     }
 }

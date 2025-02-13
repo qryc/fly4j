@@ -2,6 +2,7 @@ package fnote.deploy.service;
 
 import fly4j.common.util.RepositoryException;
 import fly4j.common.util.StringConst;
+import fnote.common.DomainPathService;
 import fnote.user.domain.entity.UserInfo;
 import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.domain.service.DeployService;
@@ -20,7 +21,6 @@ public class DeployServiceImpl implements DeployService {
     private static final Logger log = LoggerFactory.getLogger(DeployServiceImpl.class);
     private UserRepository userRepository;
     private UserService userService;
-    private StorePathService pathService;
 
     @Override
     public boolean isSiteInit() throws RepositoryException {
@@ -52,14 +52,6 @@ public class DeployServiceImpl implements DeployService {
         log.info(StringConst.getConsoleTitle("fly ENV check"));
         System.out.println(("CHECK OS:" + System.getProperty("os.spaceName")));
 
-        //检查文件系统
-        if (Files.exists(pathService.getRootDirPath(StorePathService.PATH_ARTICLE))) {
-            System.out.println(("CHECK ROOTPATH:" + pathService.getRootDirPath(StorePathService.PATH_ARTICLE)) + " exists");
-        } else {
-            System.out.println(("CHECK ROOTPATH:" + pathService.getRootDirPath(StorePathService.PATH_ARTICLE)) + " not exists!!!!");
-
-        }
-        log.info(StringConst.getConsoleTitle("fly ENV check end"));
 
     }
 
@@ -71,7 +63,4 @@ public class DeployServiceImpl implements DeployService {
         this.userService = userService;
     }
 
-    public void setPathService(StorePathService pathService) {
-        this.pathService = pathService;
-    }
 }

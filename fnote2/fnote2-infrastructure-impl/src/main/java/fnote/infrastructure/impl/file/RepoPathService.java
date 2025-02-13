@@ -102,6 +102,7 @@ public class RepoPathService implements DomainPathService {
         return this.getUDirPath(PATH_BACK, pin);
     }
 
+    @Override
     public boolean isInStoreDir(Path absolutePath) {
         return true;
 //        for (PathConfigModel configModel : storeNameToPCM.values()) {
@@ -115,6 +116,7 @@ public class RepoPathService implements DomainPathService {
     /**
      * 图片路径，包含文章下的图片，以及图床
      */
+    @Override
     public List<Path> getUserPicDirPaths(String pin) {
         return Stream.of(
                 getUserDirPath(pin).resolve(PATH_ARTICLE).resolve("pic")
@@ -135,6 +137,7 @@ public class RepoPathService implements DomainPathService {
 //        return List.of(path);
     }
 
+    @Override
     public List<Path> getFlyDiskCanSelect(FlyContext flyContext) {
         return getUserDiskDirPaths(flyContext);
 //        Path path = Path.of(user2CustomRoot.get(flyContext.getPin()));

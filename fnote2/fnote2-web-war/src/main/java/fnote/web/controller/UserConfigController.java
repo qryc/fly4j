@@ -5,6 +5,7 @@ import fly4j.common.http.ajax.FetchSend;
 import fly4j.common.mail.MailUtil2;
 import fly4j.common.util.ExceptionUtil;
 import fly4j.common.util.RepositoryException;
+import fnote.common.DomainPathService;
 import fnote.domain.config.ClientConfig;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;
@@ -55,7 +56,7 @@ public class UserConfigController extends MenuController {
     @Resource
     private TreeService dtreeUtil;
     @Resource
-    private StorePathService pathService;
+    private DomainPathService pathService;
 
 
     @RequestMapping(value = "toPersonalSet.do")

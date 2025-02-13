@@ -16,7 +16,7 @@
             </list>
         </constructor-arg>
     </bean>
-    <bean id="pathService" class="fnote.common.CustomPathService" init-method="init">
+    <bean id="pathService" class="fnote.infrastructure.impl.file.RepoPathService">
         <property name="rootDirPath" value="${userRootPath}"></property>
         <property name="tempDirPath" value="${tempRootPath}"></property>
         <property name="customPath" value="${customPath}"></property>

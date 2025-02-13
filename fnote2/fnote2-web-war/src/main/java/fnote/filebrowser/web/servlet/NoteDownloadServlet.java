@@ -1,6 +1,7 @@
 package fnote.filebrowser.web.servlet;
 
 import fly4j.common.util.BreakException;
+import fnote.common.DomainPathService;
 import fnote.common.web.SpringContextHolder;
 import fnote.user.domain.entity.LoginUser;
 import fnote.user.domain.service.LoginService;
@@ -15,7 +16,7 @@ public class NoteDownloadServlet extends DownloadServlet {
     @Override
     protected Path getDiskRootPath(HttpServletRequest request, HttpServletResponse response) throws IOException, BreakException {
         LoginService loginService = SpringContextHolder.getBean("loginService");
-        StorePathService pathService = SpringContextHolder.getBean("pathService");
+        DomainPathService pathService = SpringContextHolder.getBean("pathService");
         LoginUser loginUser = loginService.getLoginUserByCookieCheckedSession(request);
         if (null == loginUser) {
             FlyWebUtil.sendRedirectMsg(response, "未授权用户不可访问!");
