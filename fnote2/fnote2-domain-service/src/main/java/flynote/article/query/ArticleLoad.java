@@ -72,7 +72,7 @@ public interface ArticleLoad {
         return cplArticle;
     }
 
-    List<Path> getAllArticleDirPaths(FlyContext flyContext);
+    Path getAllArticleDirPaths(FlyContext flyContext);
 
 
     ArticleRepository getArticleRepository();

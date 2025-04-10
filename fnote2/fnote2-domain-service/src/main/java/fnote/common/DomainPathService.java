@@ -10,7 +10,9 @@ public interface DomainPathService {
 
     Path getUserDirPath(String pin);
 
-    List<Path> getUserArticleDirPaths(String pin);
+    Path getUserinfoFilePath(String pin);
+
+    Path getUserArticleDirPaths(String pin);
 
     Path getUTempRootPath(String pin);
 

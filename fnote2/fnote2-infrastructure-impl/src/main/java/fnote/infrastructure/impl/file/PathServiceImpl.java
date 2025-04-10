@@ -49,31 +49,21 @@ public class PathServiceImpl implements DomainPathService {
         return rootDirPath.resolve(pin);
     }
 
+    @Override
     public Path getUserinfoFilePath(String pin) {
-        return this.getUDirPath(PATH_USER, pin).resolve("user_" + pin + ".gwf");
-
+        return rootDirPath.resolve(pin).resolve(".bullDozer").resolve("userInfo").resolve("user_" + pin + ".gwf");
     }
+
     /**
-     * 文章路径，或者自定义，或内定
+     * 文章默认路径路径
      */
     @Override
-    public List<Path> getUserArticleDirPaths(String pin) {
-
-        if (StringUtils.isEmpty(user2CustomRoot.get(pin))) {
-            //默认路径
-            return Stream.of(
-                    getUserDirPath(pin).resolve(PATH_ARTICLE)
-            ).toList();
-        } else {
-            //如果有自定义路径，优先返回自定义路径
-            Path path = Path.of(user2CustomRoot.get(pin));
-            return List.of(path);
-
-        }
+    public Path getUserArticleDirPaths(String pin) {
+        return rootDirPath.resolve(pin);
     }
 
     public Path getArticleDefaultPath(String pin, String userLabel) {
-        return getUserDirPath(pin).resolve(PATH_ARTICLE).resolve("default");
+        return getUserArticleDirPaths(pin).resolve("default");
     }
 
 
