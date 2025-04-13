@@ -48,14 +48,9 @@ public interface ArticleLoad {
     }
 
     default CplArticle getCplArticle4ViewById(FlyContext flyContext, long id, String encryptPwd) throws RepositoryException {
-        List<Path> paths = this.getAllArticleDirPaths(flyContext);
+        Path path = this.getAllArticleDirPaths(flyContext);
         CplArticle cplArticle = null;
-        for (Path path : paths) {
-            cplArticle = getArticleRepository().getCplArticleById4ViewById(flyContext.getPin(), path, id);
-            if (null != cplArticle) {
-                break;
-            }
-        }
+        cplArticle = getArticleRepository().getCplArticleById4ViewById(flyContext.getPin(), path, id);
 
         if (null == cplArticle) {
             return null;

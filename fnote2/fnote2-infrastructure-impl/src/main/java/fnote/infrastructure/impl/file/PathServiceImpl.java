@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PathServiceImpl implements DomainPathService {
+public class PathServiceImpl implements RepoPathService,DomainPathService {
     /// 路径配置
     public static final String PATH_ARTICLE = "article";
     public static final String PATH_USER = "user";

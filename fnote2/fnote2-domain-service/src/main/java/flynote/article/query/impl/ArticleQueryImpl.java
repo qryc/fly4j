@@ -99,10 +99,10 @@ public class ArticleQueryImpl implements ArticleQuery {
         return articleStream.map(article -> new ArticleView4List(article, queryParam.getFlyContext())).toList();
     }
 
-    private List<Path> getQueryArticlePaths(ArticleQueryParam queryParam) {
+    private Path getQueryArticlePaths(ArticleQueryParam queryParam) {
         if (StringUtils.isNotBlank(queryParam.getRootPath())) {
             //指定目录文章
-            return List.of(Path.of(queryParam.getRootPath()));
+            return Path.of(queryParam.getRootPath());
         }
         //查询用户默认目录文章
         return pathService.getUserArticleDirPaths(queryParam.getFlyContext().getPin());

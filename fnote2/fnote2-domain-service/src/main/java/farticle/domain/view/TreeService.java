@@ -124,13 +124,12 @@ public class TreeService {
         Dtree dtree = new Dtree("目录", "");
 
         //默认文章树
-        List<Path> paths = pathService.getUserArticleDirPaths(flyContext.getPin());
-        paths.forEach(path -> {
-            if (paths.size() > 1)
-                dtree.addDtreeObjToRoot(path.toFile().getName(), "");
-            FileFilter fileFilter = predicateMap.get("treeFilePredicate");
-            this.addChildrenFolders2DTree(path.toFile(), dtree.getRoot().getId(), dtree, this.treeConfigMap.get("articles"), flyContext, fileFilter);
-        });
+        Path path = pathService.getUserArticleDirPaths(flyContext.getPin());
+
+        dtree.addDtreeObjToRoot(path.toFile().getName(), "");
+        FileFilter fileFilter = predicateMap.get("treeFilePredicate");
+        this.addChildrenFolders2DTree(path.toFile(), dtree.getRoot().getId(), dtree, this.treeConfigMap.get("articles"), flyContext, fileFilter);
+
         return dtree.getDtreeObjs();
     }
 
