@@ -1,7 +1,6 @@
 package fnote.article.test.integration;
 
 import farticle.domain.infrastructure.ArticleRepository;
-import fnote.infrastructure.impl.file.RepoPathService;
 import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.domain.service.DeployService;
 import fnote.user.domain.service.UserService;

@@ -19,12 +19,6 @@ public interface UserDataBackService {
     void backSiteAndSendEmail(String pin) throws IOException, RepositoryException;
 
 
-    /**
-     * 得到用户的备份文件列表
-     */
-    BackupFilesInfo getBackupFilesInfo(String pin);
-
-    String getLastDownFilePath(String pin);
 
 
 }

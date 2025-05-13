@@ -8,6 +8,7 @@ import farticle.domain.infrastructure.ArticleRepository;
 import fly4j.common.domain.IExtMap;
 import fly4j.common.file.FileUtil;
 import fly4j.common.util.*;
+import fnote.common.PathService;
 import fnote.domain.config.FlyContext;
 import fnote.user.domain.entity.BaseDomain;
 import fnote.user.domain.entity.IdPin;
@@ -28,8 +29,7 @@ import java.util.function.Predicate;
 public class ArticleRepositoryByFile implements ArticleRepository {
     private static final Logger log = LoggerFactory.getLogger(ArticleRepositoryByFile.class);
     //控制修改的时候是否使用缓存
-    private RepoPathService repoPathService;
-    private static final String PATH_ARTICLE = "article";
+    private PathService pathService;
     private static final String PATH_DRAFT = "draft";
     private static final String MD_SPLIT_START = "<!-- " + "-~".repeat(10);
     private static final String MD_SPLIT_END = "-->";
@@ -56,7 +56,7 @@ public class ArticleRepositoryByFile implements ArticleRepository {
     }
 
     private Path getDraftFilePath(String pin, String filename, Long id) {
-        return repoPathService.getUTempRootPath(pin).resolve(PATH_DRAFT).resolve(DateUtil.getDateStr4Name(new Date()) + filename);
+        return pathService.getUserDir(pin).resolve(PATH_DRAFT).resolve(DateUtil.getDateStr4Name(new Date()) + filename);
     }
 
     private String replaceFileName(String fileName) {
@@ -143,7 +143,7 @@ public class ArticleRepositoryByFile implements ArticleRepository {
             String currentWorkRootPathStr = FlyContext.getCurrentWorkRootPath(cplArticle.getPin());
             if (StringUtils.isEmpty(currentWorkRootPathStr)) {
                 //没有指定目录，保存默认目录
-                articlePath = repoPathService.getArticleDefaultPath(pin, "").resolve(fileName);
+                articlePath = this.getArticleDefaultPath(pin, "").resolve(fileName);
             } else {
                 articlePath = Path.of(currentWorkRootPathStr).resolve(fileName);
             }
@@ -492,7 +492,11 @@ public class ArticleRepositoryByFile implements ArticleRepository {
         }
     }
 
-    public void setRepoPathService(RepoPathService pathService) {
-        this.repoPathService = pathService;
+    public Path getArticleDefaultPath(String pin, String userLabel) {
+        return pathService.getUserDir(pin).resolve("default");
+    }
+
+    public void setPathService(PathService pathService) {
+        this.pathService = pathService;
     }
 }

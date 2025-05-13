@@ -20,14 +20,6 @@
         <property name="rootDirPath" value="${userRootPath}"></property>
         <property name="tempDirPath" value="${tempRootPath}"></property>
         <property name="customPath" value="${customPath}"></property>
-        <property name="customPathMap">
-            <map>
-                <entry key="DocPublic" value="${DocPublic}"/>
-                <entry key="DocPrivate" value="${DocPrivate}"/>
-                <entry key="PicBed" value="${PicBed}"/>
-                <entry key="logs" value="${logs}"/>
-            </map>
-        </property>
         <property name="storeDirStrMap">
             <map>
                 <entry key="back" value="zipData"/>
@@ -39,14 +31,14 @@
 
     </bean>
     <bean id="userRepositoryFile" class="fnote.infrastructure.impl.file.UserRepositoryByFile">
-        <property name="repoPathService" ref="pathService"></property>
+        <property name="pathService" ref="pathService"></property>
         <property name="userInfoCryptPwd" value="${deployConfig.userInfoCryptPwd}"></property>
         <property name="defaultUserArticlePwd" value="${defaultUserArticlePwd}"></property>
     </bean>
 
     <bean id="articleRepositoryFile" name="articleNoteRepositoryFile"
           class="fnote.infrastructure.impl.file.ArticleRepositoryByFile">
-        <property name="repoPathService" ref="pathService"></property>
+        <property name="pathService" ref="pathService"></property>
     </bean>
     <bean id="dtreeUtil" class="farticle.domain.view.TreeService">
         <property name="articleTreeMap">

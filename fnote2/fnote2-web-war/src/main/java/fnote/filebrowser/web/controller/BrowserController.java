@@ -7,7 +7,7 @@ import fly4j.common.http.FileUpload;
 import fly4j.common.http.WebUtil;
 import fly4j.common.util.FlyPreconditions;
 import fly4j.common.util.RepositoryException;
-import fnote.common.DomainPathService;
+import fnote.common.PathService;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;
 import fnote.filebrowser.core.BrowserResult;
@@ -51,7 +51,7 @@ public class BrowserController {
 
     private int fileuploadMaxSize = 5120000;
     @Resource
-    private DomainPathService pathService;
+    private PathService pathService;
     @Resource
     private FlyContextFacade flyContextFacade;
     @Resource
@@ -110,7 +110,7 @@ public class BrowserController {
 //        if ("company".equals(flyContext.clientConfig().getExtStringValue("workspace"))) {
 //            return pathService.getUserDirPath(FlyConst.PATH_ARTICLE,flyContext.getPin()).resolve("pubDir");
 //        }
-        return pathService.getUserDirPath(flyContext.getPin());
+        return pathService.getUserDir(flyContext.getPin());
     }
 
 
@@ -261,8 +261,7 @@ public class BrowserController {
         modelMap.put("rootPath", FlyContext.getCurrentWorkRootPath(flyContext.getPin()));
 
         List<Path> paths = new ArrayList<>();
-//        paths.add(this.getDefaultPath(request, resp));
-        paths.addAll(pathService.getUserDiskDirPaths(flyContext));
+        paths.add(pathService.getUserDir(flyContext.getPin()));
         modelMap.put("dtreeObjs", dtreeUtil.getDtree4Browser(flyContext, paths));
 
         return "netdisk/browser";
@@ -346,7 +345,7 @@ public class BrowserController {
 //     `   if (currDirPath != null && currDirPath.toString().contains("FlyCustom")) {
 //            return pathService.getURootPath(StorePathService.PATH_CUSTOM, flyContext.getPin());
 //        }`
-        return pathService.getUserDirPath(flyContext.getPin());
+        return pathService.getUserDir(flyContext.getPin());
     }
 
 }

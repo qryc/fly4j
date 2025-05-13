@@ -2,11 +2,10 @@ package flynote.article.query.impl;
 
 import farticle.domain.infrastructure.ArticleRepository;
 import flynote.article.query.ArticleLoad;
-import fnote.common.DomainPathService;
+import fnote.common.PathService;
 import fnote.domain.config.FlyContext;
 
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * query blog by html
@@ -16,11 +15,11 @@ import java.util.List;
 public class ArticleLoadImpl implements ArticleLoad {
     private ArticleRepository articleRepository;
     //    private List<ArticleLoadFilter> filters;
-    private DomainPathService pathService;
+    private PathService pathService;
 
     @Override
     public Path getAllArticleDirPaths(FlyContext flyContext) {
-        return pathService.getUserArticleDirPaths(flyContext.getPin());
+        return pathService.getUserDir(flyContext.getPin());
     }
 
 
@@ -32,7 +31,7 @@ public class ArticleLoadImpl implements ArticleLoad {
 //        this.filters = filters;
 //    }
 
-    public ArticleLoadImpl setPathService(DomainPathService pathService) {
+    public ArticleLoadImpl setPathService(PathService pathService) {
         this.pathService = pathService;
         return this;
     }

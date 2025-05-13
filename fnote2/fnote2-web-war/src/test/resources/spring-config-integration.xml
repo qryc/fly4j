@@ -14,7 +14,7 @@
 
     <!--用户配置-->
     <bean id="userRepositoryFile" class="fnote.infrastructure.impl.file.UserRepositoryByFile">
-        <property name="repoPathService" ref="pathService"></property>
+        <property name="pathService" ref="pathService"></property>
         <property name="userInfoCryptPwd" value="${deployConfig.userInfoCryptPwd}"></property>
         <property name="defaultUserArticlePwd" value="${defaultUserArticlePwd}"></property>
     </bean>

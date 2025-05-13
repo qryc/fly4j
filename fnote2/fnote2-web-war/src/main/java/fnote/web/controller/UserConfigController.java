@@ -5,7 +5,7 @@ import fly4j.common.http.ajax.FetchSend;
 import fly4j.common.mail.MailUtil2;
 import fly4j.common.util.ExceptionUtil;
 import fly4j.common.util.RepositoryException;
-import fnote.common.DomainPathService;
+import fnote.common.PathService;
 import fnote.domain.config.ClientConfig;
 import fnote.domain.config.FlyContext;
 import fnote.domain.config.FlyContextFacade;
@@ -56,7 +56,7 @@ public class UserConfigController extends MenuController {
     @Resource
     private TreeService dtreeUtil;
     @Resource
-    private DomainPathService pathService;
+    private PathService pathService;
 
 
     @RequestMapping(value = "toPersonalSet.do")
@@ -99,8 +99,7 @@ public class UserConfigController extends MenuController {
             //设置选择项目
             List<String> selectDirs = new ArrayList<>();
 
-            selectDirs.addAll(pathService.getFlyDiskCanSelect(flyContext).stream().map(path -> path.toFile().getAbsolutePath())
-                    .collect(Collectors.toList()));
+            selectDirs.add(pathService.getUserDir(flyContext.getPin()).toString());
             context.put("selectDirs", selectDirs);
             //加载用户页面配置信息，只对当前浏览器有效
             context.put("clientConfig", flyContext.clientConfig());

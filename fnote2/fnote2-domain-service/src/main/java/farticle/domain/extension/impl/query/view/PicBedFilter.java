@@ -2,7 +2,7 @@ package farticle.domain.extension.impl.query.view;
 
 import farticle.domain.extension.query.ArticleViewFilter;
 import farticle.domain.view.ArticleView;
-import fnote.common.DomainPathService;
+import fnote.common.PathService;
 import fnote.domain.config.FlyConfig;
 import fnote.domain.config.FlyContext;
 
@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PicBedFilter implements ArticleViewFilter {
-    private DomainPathService pathService;
+    private PathService pathService;
     private Map<String, String> orignToReplese4Local = new HashMap<>();
     private boolean replace2Local = false;
 
@@ -67,7 +67,7 @@ public class PicBedFilter implements ArticleViewFilter {
     }
 
 
-    public void setPathService(DomainPathService pathService) {
+    public void setPathService(PathService pathService) {
         this.pathService = pathService;
     }
 }

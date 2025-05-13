@@ -3,6 +3,7 @@ package fnote.infrastructure.impl.file;
 import fly4j.common.crypto.AESUtil;
 import fly4j.common.util.JsonUtils;
 import fly4j.common.util.RepositoryException;
+import fnote.common.PathService;
 import fnote.user.domain.entity.BaseDomain;
 import fnote.user.domain.entity.IUserInfo;
 import fnote.user.domain.entity.UserConfig;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +25,17 @@ public class UserRepositoryByFile implements UserRepository {
     private String userInfoCryptPwd;
     //用户密码，默认用户文章加密密码
     private String defaultUserArticlePwd;
-    private RepoPathService repoPathService;
+    private PathService pathService;
 
+    private Path getUserinfoFilePath(String pin) {
+        return pathService.getConfigDir().resolve("userInfo").resolve("user_" + pin + ".gwf");
+    }
 
     @Override
     public void insertUserInfo(IUserInfo userInfo) throws RepositoryException {
         RepositoryException.wrapper(() -> {
             if (userInfo instanceof UserInfo flyUserInfo) {
-                var filePath = repoPathService.getUserinfoFilePath(flyUserInfo.getPin());
+                var filePath = this.getUserinfoFilePath(flyUserInfo.getPin());
                 var json = JsonUtils.writeValueAsString(new UserInfoDo(flyUserInfo, userInfoCryptPwd));
                 if (Files.notExists(filePath.getParent()))
                     Files.createDirectories(filePath.getParent());
@@ -47,7 +52,7 @@ public class UserRepositoryByFile implements UserRepository {
     @Override
     public IUserInfo getUserinfo(String pin) throws RepositoryException {
         return RepositoryException.wrapperR(() -> {
-            var path = repoPathService.getUserinfoFilePath(pin);
+            var path = this.getUserinfoFilePath(pin);
             if (Files.notExists(path)) {
                 return null;
             }
@@ -61,7 +66,7 @@ public class UserRepositoryByFile implements UserRepository {
     @Override
     public void delUser(String pin) throws RepositoryException {
         RepositoryException.wrapper(() -> {
-            FileUtils.deleteDirectory(repoPathService.getUserinfoFilePath(pin).toFile());
+            FileUtils.deleteDirectory(this.getUserinfoFilePath(pin).toFile());
         });
 
     }
@@ -70,7 +75,7 @@ public class UserRepositoryByFile implements UserRepository {
     @Override
     public List<IUserInfo> findAllUserInfo() throws RepositoryException {
         List<IUserInfo> userInfos = new ArrayList<IUserInfo>();
-        File file = repoPathService.getRootDirPath().toFile();
+        File file = pathService.getRootDir().toFile();
         for (var cFile : file.listFiles()) {
             boolean isUserDir = !file.getName().startsWith(".")
                     && cFile.isDirectory();
@@ -172,8 +177,8 @@ public class UserRepositoryByFile implements UserRepository {
     @Override
     public void createUserDirs(String pin) throws IOException {
         //创建用户的数据目录
-        if (Files.notExists(repoPathService.getUserDirPath(pin)))
-            Files.createDirectories(repoPathService.getUserDirPath(pin));
+        if (Files.notExists(pathService.getUserDir(pin)))
+            Files.createDirectories(pathService.getUserDir(pin));
 //        //创建用户备份路径目录
 //        if (Files.notExists(FlyConfig.getUserDir4Back(pin)))
 //            Files.createDirectories(FlyConfig.getUserDir4Back(pin));
@@ -184,8 +189,8 @@ public class UserRepositoryByFile implements UserRepository {
     }
 
 
-    public void setRepoPathService(RepoPathService repoPathService) {
-        this.repoPathService = repoPathService;
+    public void setPathService(PathService pathService) {
+        this.pathService = pathService;
     }
 
 }

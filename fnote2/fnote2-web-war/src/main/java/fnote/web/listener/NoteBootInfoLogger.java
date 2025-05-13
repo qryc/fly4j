@@ -2,7 +2,7 @@ package fnote.web.listener;
 
 import fly.application.git.GitService;
 import fly4j.common.util.IpUtil;
-import fnote.common.DomainPathService;
+import fnote.common.PathService;
 import fnote.domain.config.FlyConfig;
 import fnote.user.listener.BootInfoLogger;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
  */
 public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationListener<ContextRefreshedEvent> {
     static final Logger log = LoggerFactory.getLogger(GitService.class);
-    private DomainPathService pathService;
+    private PathService pathService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -44,7 +44,7 @@ public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationLis
         }
     }
 
-    public void setPathService(DomainPathService pathService) {
+    public void setPathService(PathService pathService) {
         this.pathService = pathService;
     }
 }

@@ -8,7 +8,7 @@ import fly4j.common.mail.MailUtil2;
 import fly4j.common.os.OsUtil;
 import fly4j.common.util.DateUtil;
 import fly4j.common.util.RepositoryException;
-import fnote.common.DomainPathService;
+import fnote.common.PathService;
 import fnote.domain.config.FlyConfig;
 import fnote.domain.config.LogConst;
 import fnote.user.domain.entity.UserInfo;
@@ -31,7 +31,7 @@ public class UserDataBackServiceImpl implements UserDataBackService {
     private UserRepository userRepository;
     private FileAndDirPredicate fileAndDirPredicate;
     private MailUtil2 mailUtil2;
-    private DomainPathService pathService;
+    private PathService pathService;
 
     @Override
     public void backSiteAndSendEmail(final String pin) throws IOException, RepositoryException {
@@ -39,9 +39,9 @@ public class UserDataBackServiceImpl implements UserDataBackService {
             return;
         }
         //备份用户下的备份数据目录
-        var sourceDirPath = pathService.getUserDirPath(pin);
+        var sourceDirPath = pathService.getUserDir(pin);
         //备份到用户下载Zip目录
-        var destZipDirPath = pathService.getUTempRootPath(pin).resolve("zipData");
+        var destZipDirPath = pathService.getConfigDir().resolve("zipData");
         //取得压缩密码
         var zipPwd = ((UserInfo) userRepository.getUserinfo(pin))
                 .getExtMapValue(UserInfo.EXT_ZIPPWD);
@@ -52,7 +52,8 @@ public class UserDataBackServiceImpl implements UserDataBackService {
         var destZipFilePath = Path.of(destZipDirPath.toString(), OsUtil.getSimpleOsName() + pin + DateUtil.getHourStr4Name(new Date()) + ".zip");
 
         var flyResult = DirZipService.zipDirWithVerify(sourceDirPath.toFile(), destZipFilePath.toFile(), zipPwd, fileAndDirPredicate);
-        sendMail(destZipFilePath, pin, flyResult);
+        //暂不发送邮件，只本地生成备份文件
+        //sendMail(destZipFilePath, pin, flyResult);
     }
 
     private void sendMail(Path zipFilePath, String pin, FlyResult flyResult) {
@@ -74,41 +75,6 @@ public class UserDataBackServiceImpl implements UserDataBackService {
     }
 
 
-    /**
-     * 生成压缩文件备份文件信息
-     *
-     * @return
-     */
-    @Override
-    public BackupFilesInfo getBackupFilesInfo(String pin) {
-        var backupFilesInfo = new BackupFilesInfo();
-
-        // 查找最新下载
-        var targetZipFilePath = pathService.getUserBackDirPath(pin);// 得到备份目标路径
-        var zipFiles = targetZipFilePath.toFile().listFiles((dir, name) -> name.endsWith(".zip"));
-        if (null != zipFiles) {
-            backupFilesInfo.setDownFileNames(FileInfoUtil.getFileInfos(zipFiles, pathService.getUserDirPath(pin)));
-            backupFilesInfo.sortDownFileNames();
-        }
-
-
-        return backupFilesInfo;
-    }
-
-    @Override
-    public String getLastDownFilePath(String pin) {
-
-        // 查找最新下载
-        var targetZipFilePath = pathService.getUserBackDirPath(pin);// 得到备份目标路径
-        var zipFilesArray = targetZipFilePath.toFile().listFiles((dir, name) -> name.endsWith(".zip"));
-        var zipFiles = Arrays.asList(zipFilesArray);
-        Collections.sort(zipFiles, (f1, f2) -> (int) (f2.lastModified() - f1.lastModified()));
-
-
-        return zipFiles.get(0).getAbsolutePath();
-    }
-
-
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -121,7 +87,7 @@ public class UserDataBackServiceImpl implements UserDataBackService {
         this.mailUtil2 = mailUtil2;
     }
 
-    public void setPathService(DomainPathService pathService) {
+    public void setPathService(PathService pathService) {
         this.pathService = pathService;
     }
 }
