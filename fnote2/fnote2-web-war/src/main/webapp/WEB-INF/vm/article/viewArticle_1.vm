@@ -1,9 +1,12 @@
 
+##<div class="entry-header">
+##</div>
+
 
 <!-- 追加区域-->
 #parse("/WEB-INF/vm/article/viewArticleAppend.vm")
+<h1 style="margin: 0 0;">${articleInfoVo.titleHtml}</h1>$!{articleInfoVo.articleViewMenu}
 
-<h1 style="margin: 0 0;">${articleInfoVo.titleHtml}</h1>
 #if(${viewCode})
     <pre>
         ${articleInfoVo.html}

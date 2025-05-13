@@ -37,21 +37,6 @@ public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationLis
             } catch (RepositoryException e) {
                 throw new RuntimeException(e);
             }
-
-//            NoteBootInfoLogger.out("TempPath:", FlyConfig.getTempPath(), 20);
-//            NoteBootInfoLogger.out("UserDirPath:", FlyConfig.getUserHome4Data("${userName}"), 20);
-//            NoteBootInfoLogger.out("BackDataDirPath:", backPathService.getUserDir4Data("${userName}"), 20);
-//            NoteBootInfoLogger.out("ArticlesDirPath:", pathService.getUDirPath(StorePathService.PATH_ARTICLE, "${userName}"), 20);
-//            NoteBootInfoLogger.out("getCustomDocPath:", pathService.getCustomDocPath(), 20);
-
-//            NoteBootInfoLogger.out("GitDirPath:", pathService.getURootPath(StorePathService.PATH_GIT, "${userName}"), 20);
-//            NoteBootInfoLogger.out("ArticleFilePath:", articlePathService.getStoreFilePath(IdPin.of(1L, "${userName}")), 20);
-//            try {
-//                if (deployConfigRepository.getDeployConfig() != null && deployConfigRepository.getDeployConfig().getSysEmailConfig() != null)
-//                    NoteBootInfoLogger.out("emailConfig:", deployConfigRepository.getDeployConfig().getSysEmailConfig().getFromEmail(), 20);
-//            } catch (RepositoryException e) {
-//                e.printStackTrace();
-//            }
             log.info("NoteBootInfoLogger end-info");
         }
     }

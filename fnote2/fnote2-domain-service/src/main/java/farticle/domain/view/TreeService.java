@@ -125,8 +125,6 @@ public class TreeService {
 
         //默认文章树
         Path path = pathService.getUserDir(flyContext.getPin());
-
-        dtree.addDtreeObjToRoot(path.toFile().getName(), "");
         FileFilter fileFilter = predicateMap.get("treeFilePredicate");
         this.addChildrenFolders2DTree(path.toFile(), dtree.getRoot().getId(), dtree, this.treeConfigMap.get("articles"), flyContext, fileFilter);
 
