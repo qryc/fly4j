@@ -22,6 +22,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * 显示或下载图片，以及下载其它文件
@@ -51,14 +52,12 @@ public class NoteViewFileServlet extends HttpServlet {
                 FileDown.viewFile(response, Path.of(absolutePath).toFile());
             }
             /**相对路径*/
-
             if (StringUtils.isNotBlank(relativePath)) {
                 log.debug("relativePath:" + URLDecoder.decode(relativePath, StandardCharsets.UTF_8));
                 try {
-                    Path filePath = pathService.getUserPicDirPaths(loginUser.pin()).stream()
+                    Path filePath = Optional.of(pathService.getUserDir(loginUser.pin()))
                             .map(path -> path.resolve(URLDecoder.decode(relativePath, StandardCharsets.UTF_8)))
-                            .filter(path -> Files.exists(path)).findFirst().get();
-
+                            .filter(path -> Files.exists(path)).get();
                     filter(response, relativePath, filePath);
                     FileDown.viewFile(response, filePath.toFile());
                 } catch (BreakException e) {

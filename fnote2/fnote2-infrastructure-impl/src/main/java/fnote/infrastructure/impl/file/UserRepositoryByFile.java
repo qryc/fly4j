@@ -16,10 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UserRepositoryByFile implements UserRepository {
     private String userInfoCryptPwd;
@@ -76,12 +73,11 @@ public class UserRepositoryByFile implements UserRepository {
     public List<IUserInfo> findAllUserInfo() throws RepositoryException {
         List<IUserInfo> userInfos = new ArrayList<IUserInfo>();
         File file = pathService.getRootDir().toFile();
-        for (var cFile : file.listFiles()) {
-            boolean isUserDir = !file.getName().startsWith(".")
+        for (File cFile : file.listFiles()) {
+            boolean isUserDir = !cFile.getName().startsWith(".")
                     && cFile.isDirectory();
             if (isUserDir) {
-                var userInfo = getUserinfo(cFile.getName());
-                userInfos.add(userInfo);
+                Optional.ofNullable(getUserinfo(cFile.getName())).ifPresent(iUserInfo -> userInfos.add(iUserInfo));
             }
         }
         return userInfos;

@@ -2,8 +2,10 @@ package fnote.web.listener;
 
 import fly.application.git.GitService;
 import fly4j.common.util.IpUtil;
+import fly4j.common.util.RepositoryException;
 import fnote.common.PathService;
 import fnote.domain.config.FlyConfig;
+import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.listener.BootInfoLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationListener<ContextRefreshedEvent> {
     static final Logger log = LoggerFactory.getLogger(GitService.class);
     private PathService pathService;
+    private UserRepository userRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -25,7 +28,16 @@ public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationLis
             IpUtil.getLocalIPList().forEach(ip -> NoteBootInfoLogger.out("ip:", ip, 20));
             NoteBootInfoLogger.out("profile:", FlyConfig.profile, 20);
             NoteBootInfoLogger.out("OnLine:", FlyConfig.onLine, 20);
-//            NoteBootInfoLogger.out("HomePath:", FlyConfig.getHomePath(), 20);
+            NoteBootInfoLogger.out("RootDir:", pathService.getRootDir(), 20);
+            NoteBootInfoLogger.out("ConfigDir:", pathService.getConfigDir(), 20);
+            try {
+                userRepository.findAllUserInfo().forEach(iUserInfo -> {
+                    NoteBootInfoLogger.out(iUserInfo.getPin() + "'UserDir:", pathService.getUserDir(iUserInfo.getPin()), 20);
+                });
+            } catch (RepositoryException e) {
+                throw new RuntimeException(e);
+            }
+
 //            NoteBootInfoLogger.out("TempPath:", FlyConfig.getTempPath(), 20);
 //            NoteBootInfoLogger.out("UserDirPath:", FlyConfig.getUserHome4Data("${userName}"), 20);
 //            NoteBootInfoLogger.out("BackDataDirPath:", backPathService.getUserDir4Data("${userName}"), 20);
@@ -46,5 +58,9 @@ public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationLis
 
     public void setPathService(PathService pathService) {
         this.pathService = pathService;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

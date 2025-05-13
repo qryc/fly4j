@@ -1,6 +1,7 @@
 package fnote.article.test.integration;
 
 import farticle.domain.infrastructure.ArticleRepository;
+import fnote.common.PathService;
 import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.domain.service.DeployService;
 import fnote.user.domain.service.UserService;
@@ -24,7 +25,7 @@ public abstract class TestArticleIntegration {
     @Resource
     private DeployService deployService;
     @Resource
-    private RepoPathService articlePathService;
+    private PathService articlePathService;
 
     @Before
     public void setup() throws Exception {
@@ -45,7 +46,7 @@ public abstract class TestArticleIntegration {
 
     @After
     public void tearDown() throws Exception {
-        FileUtils.deleteQuietly(articlePathService.getRootDirPath().toFile());
+        FileUtils.deleteQuietly(articlePathService.getRootDir().toFile());
     }
 
 }

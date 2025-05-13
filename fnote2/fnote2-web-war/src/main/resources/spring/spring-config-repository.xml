@@ -16,19 +16,8 @@
             </list>
         </constructor-arg>
     </bean>
-    <bean id="pathService" class="fnote.infrastructure.impl.file.PathServiceImpl">
-        <property name="rootDirPath" value="${userRootPath}"></property>
-        <property name="tempDirPath" value="${tempRootPath}"></property>
-        <property name="customPath" value="${customPath}"></property>
-        <property name="storeDirStrMap">
-            <map>
-                <entry key="back" value="zipData"/>
-                <entry key="user" value="userInfo"/>
-                <entry key="article" value="notes"/>
-                <entry key="draft" value="draft"/>
-            </map>
-        </property>
-
+    <bean id="pathService" class="fnote.infrastructure.impl.file.RedirectPathServiceImpl">
+        <property name="rootDirPath" value="${rootDirPath}"></property>
     </bean>
     <bean id="userRepositoryFile" class="fnote.infrastructure.impl.file.UserRepositoryByFile">
         <property name="pathService" ref="pathService"></property>

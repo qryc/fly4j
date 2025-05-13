@@ -1,6 +1,7 @@
 package fnote.persistence.test;
 
 import farticle.domain.infrastructure.ArticleRepository;
+import fnote.common.PathService;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -22,11 +23,11 @@ public class TestArticleStore {
     @Resource
     private ArticleRepository articleRepositoryFile;
     @Resource
-    private RepoPathService pathService;
+    private PathService pathService;
 
     @Before
     public void setup() throws Exception {
-        FileUtils.deleteQuietly(pathService.getRootDirPath().toFile());
+        FileUtils.deleteQuietly(pathService.getRootDir().toFile());
     }
 
     @Test

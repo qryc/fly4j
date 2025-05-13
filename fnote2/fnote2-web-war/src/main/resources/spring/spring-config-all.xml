@@ -35,6 +35,7 @@
     <!--    <import resource="classpath:spring/spring-config-dt.xml"/>-->
     <bean class="fnote.web.listener.NoteBootInfoLogger">
         <property name="pathService" ref="pathService"></property>
+        <property name="userRepository" ref="userRepositoryFile"></property>
     </bean>
     <import resource="classpath:spring/spring-config-menu.xml"/>
 

@@ -19,6 +19,11 @@ public class UserInfo extends BaseDomain<UserInfo> implements IUserInfo {
     //自定义用户配置
     private Map<String, String> extMap = new HashMap<>();
 
+    @Override
+    public String toString() {
+        return getPin();
+    }
+
     public UserConfig getUserConfig() {
         return userConfig;
     }
