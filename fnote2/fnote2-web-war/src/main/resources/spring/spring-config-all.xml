@@ -41,7 +41,7 @@
 
     <beans profile="online">
         <!--  <context:property-placeholder location="classpath:properties.online/fly.properties"/>-->
-        <context:property-placeholder location="file:/root/export/transfer2server/FlyData2023/config/properties.online/fly.properties"/>
+        <context:property-placeholder location="file:/root/export/myBulldozer/.bulldozer/config/properties.online/fly.properties"/>
 
     </beans>
     <beans profile="dev">

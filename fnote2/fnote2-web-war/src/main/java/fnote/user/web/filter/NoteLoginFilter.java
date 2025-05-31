@@ -47,9 +47,9 @@ public class NoteLoginFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException,
             ServletException {
         LoginService loginService = SpringContextHolder.getBean("loginService");
-        var request = (HttpServletRequest) req;
-        var response = (HttpServletResponse) res;
-        var reqURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        String reqURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
         log.debug("doFilter reqURI:" + reqURI);
 
         if (beforeBeforeFilter(request, response)) return;
