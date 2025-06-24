@@ -2,6 +2,7 @@ package fnote.user.listener;
 
 import fnote.domain.config.FlyConfig;
 import fnote.user.domain.service.DeployService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
@@ -10,16 +11,19 @@ import org.springframework.context.event.ContextRefreshedEvent;
  */
 public class BootInfoLogger implements ApplicationListener<ContextRefreshedEvent> {
     protected DeployService deployService;
-    private static boolean switchSplitFlag = true;
 
     public static void out(String pre, Object msg, int size) {
         System.out.print(pre);
         for (int i = 0; i < size - pre.length(); i++) {
-            System.out.print(switchSplitFlag ? " " : "-");
+            System.out.print("-");
         }
-        System.out.println(msg.toString());
-        switchSplitFlag = !switchSplitFlag;
+        if (msg != null) {
+            System.out.println(msg.toString());
+        } else {
+            System.out.println("");
+        }
     }
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {

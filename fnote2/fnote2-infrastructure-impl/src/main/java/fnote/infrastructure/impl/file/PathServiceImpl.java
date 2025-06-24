@@ -2,12 +2,14 @@ package fnote.infrastructure.impl.file;
 
 import fnote.common.PathService;
 import fnote.common.PropertisUtil;
-import fnote.domain.config.FlyContext;
 
 import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.Stream;
 
+/**
+ * RootDir:------------/Volumes/myBulldozer
+ * ConfigDir:          /Volumes/myBulldozer/.bullDozer
+ * xxx'UserDir:-----/Volumes/myBulldozer/xxxUser
+ */
 public class PathServiceImpl implements PathService {
     /// 路径配置
     private Path rootDirPath;

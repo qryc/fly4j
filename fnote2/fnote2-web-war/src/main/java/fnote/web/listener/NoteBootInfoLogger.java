@@ -28,27 +28,28 @@ public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationLis
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (contextRefreshedEvent.getApplicationContext().getParent() == null) {//保证只执行一次
             //启动的时候打印程序相关目录
-            NoteBootInfoLogger.out("NoteBootInfoLogger:", "", 20);
-            IpUtil.getLocalIPList().forEach(ip -> NoteBootInfoLogger.out("ip:", ip, 20));
-            NoteBootInfoLogger.out("profile:", FlyConfig.profile, 20);
-            NoteBootInfoLogger.out("OnLine:", FlyConfig.onLine, 20);
-            NoteBootInfoLogger.out("RootDir:", pathService.getRootDir(), 20);
-            NoteBootInfoLogger.out("ConfigDir:", pathService.getConfigDir(), 20);
+            int size = 50;
+            NoteBootInfoLogger.out("NoteBootInfoLogger", "start log", size);
+            IpUtil.getLocalIPList().forEach(ip -> NoteBootInfoLogger.out("ip:", ip, size));
+            NoteBootInfoLogger.out("profile:", FlyConfig.profile, size);
+            NoteBootInfoLogger.out("OnLine:", FlyConfig.onLine, size);
+            NoteBootInfoLogger.out("RootDir:", pathService.getRootDir(), size);
+            NoteBootInfoLogger.out("ConfigDir:", pathService.getConfigDir(), size);
 
             try {
                 List<IUserInfo> userInfos = userRepository.findAllUserInfo();
                 if (CollectionUtils.isEmpty(userInfos)) {
-                    NoteBootInfoLogger.out("no user exist:", "config wrong!!!!!", 20);
-                }else {
+                    NoteBootInfoLogger.out("no user exist:", "config wrong!!!!!", size);
+                } else {
                     userInfos.forEach(iUserInfo -> {
-                        NoteBootInfoLogger.out(iUserInfo.getPin() + "'UserDir:", pathService.getUserDir(iUserInfo.getPin()), 20);
+                        NoteBootInfoLogger.out(iUserInfo.getPin() + "'UserDir:", pathService.getUserDir(iUserInfo.getPin()), size);
                     });
                 }
 
             } catch (RepositoryException e) {
                 throw new RuntimeException(e);
             }
-            log.info("NoteBootInfoLogger end-info");
+            NoteBootInfoLogger.out("NoteBootInfoLogger", "end log", size);
         }
     }
 
