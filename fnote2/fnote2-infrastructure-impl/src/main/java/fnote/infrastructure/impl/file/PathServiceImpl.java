@@ -26,7 +26,7 @@ public class PathServiceImpl implements PathService {
 
     @Override
     public Path getConfigDir() {
-        return rootDirPath.resolve(".bullDozer");
+        return rootDirPath.resolve(".bulldozer");
     }
 
 

@@ -11,6 +11,8 @@ import fnote.user.domain.entity.UserInfo;
 import fnote.user.domain.infrastructure.UserRepository;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,13 +21,15 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class UserRepositoryByFile implements UserRepository {
+    static final Logger log = LoggerFactory.getLogger(UserRepositoryByFile.class);
+
     private String userInfoCryptPwd;
     //用户密码，默认用户文章加密密码
     private String defaultUserArticlePwd;
     private PathService pathService;
 
     private Path getUserinfoFilePath(String pin) {
-        return pathService.getConfigDir().resolve("userInfo").resolve("user_" + pin + ".gwf");
+        return pathService.getConfigDir().resolve("userinfo").resolve("user_" + pin + ".gwf");
     }
 
     @Override
@@ -49,12 +53,14 @@ public class UserRepositoryByFile implements UserRepository {
     @Override
     public IUserInfo getUserinfo(String pin) throws RepositoryException {
         return RepositoryException.wrapperR(() -> {
-            var path = this.getUserinfoFilePath(pin);
+            Path path = this.getUserinfoFilePath(pin);
+            log.info("getUserinfo:"+path.toString());
             if (Files.notExists(path)) {
                 return null;
             }
             var json = Files.readString(path);
             var infoDo = JsonUtils.readValue(json, UserInfoDo.class);
+            log.info("infoDo:"+infoDo);
             return null == infoDo ? null : infoDo.buildBo(userInfoCryptPwd);
         });
     }
@@ -76,6 +82,7 @@ public class UserRepositoryByFile implements UserRepository {
         for (File cFile : file.listFiles()) {
             boolean isUserDir = !cFile.getName().startsWith(".")
                     && cFile.isDirectory();
+            log.info(cFile.getAbsolutePath() + " " + isUserDir);
             if (isUserDir) {
                 Optional.ofNullable(getUserinfo(cFile.getName())).ifPresent(iUserInfo -> userInfos.add(iUserInfo));
             }
