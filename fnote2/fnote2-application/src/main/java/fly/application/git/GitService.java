@@ -14,110 +14,59 @@ import java.util.stream.Stream;
 
 public class GitService {
     static final Logger log = LoggerFactory.getLogger(GitService.class);
-    private static List<String> gitPullPushDirs = new ArrayList<>();
-    private static List<String> gitPullDirs = new ArrayList<>();
+    private static List<String> gitDirs = new ArrayList<>();
 
 
     static {
-        gitPullPushDirs.add("/root/export/transfer2server");
+        gitDirs.add("/root/export/myBulldozer");
+        gitDirs.add("/root/export/MdArticle");
     }
 
-    public static void main(String[] args) throws Exception {
-//        commitAndPush();
-//        System.out.println(gitPullPushDirs);
-
-        Stream.concat(gitPullPushDirs.stream(), gitPullDirs.stream()).forEach((dir) -> {
-            System.out.println(dir);
-        });
-    }
-
-    public static String exe(String type, String source) {
-        try {
-            return switch (type) {
-                case "status" -> status();
-                case "pull" -> pull(source);
-                case "pullAll" -> pullAll(source);
-                case "commitAndPush" -> commitAndPush(source);
-                default -> "notSurport";
-            };
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
 
     public static void asynPullAndCommitGit(String source) {
-        if (FlyConfig.onLine) {
-            new Thread() {
-                @Override
-                public void run() {
-                    GitService.pullAndCommitGit(source);
-                }
-            }.start();
-
+        if (!FlyConfig.onLine) {
+            log.info("test environment not permit to exe git asynPullAndCommitGit " + source);
+            return;
         }
+        new Thread() {
+            @Override
+            public void run() {
+                GitService.pullAndCommitGit(source);
+            }
+        }.start();
+
     }
 
     /**
      * 同步信息
      */
-    public static String pullAndCommitGit(String source) {
-        final StringBuilder strBuilder = new StringBuilder();
-
-        //拉取最新版本
-        Stream.concat(gitPullPushDirs.stream(), gitPullDirs.stream()).forEach((dir) -> {
-            log.info(source + " Git:cd %s; git pull".formatted(dir));
-            strBuilder.append(exeCommand("cd %s; git pull".formatted(dir)));
+    public static void pullAndCommitGit(String source) {
+        if (!FlyConfig.onLine) {
+            log.info("test environment not permit to exe git pullAndCommitGit " + source);
+            return;
+        }
+        gitDirs.stream().forEach((dir) -> {
+            //拉取最新版本
+            pull(source, dir);
+            //提交变化
+            commitAndPush(source, dir);
         });
-        //提交变化
-        gitPullPushDirs.forEach((dir) -> {
-            log.info(source + " Git:cd %s; git add . ; git commit -am 'init' ; git push".formatted(dir));
-            strBuilder.append(exeCommand("cd %s; git add . ; git commit -am 'init' ; git push".formatted(dir)));
-        });
-        return strBuilder.toString();
     }
 
-    private static String pull(String source) throws IOException, InterruptedException {
-        final StringBuilder strBuilder = new StringBuilder();
-
-        gitPullPushDirs.forEach((dir) -> {
-            log.info(source + " Git:cd %s; git pull".formatted(dir));
-            strBuilder.append(exeCommand("cd %s; git pull".formatted(dir)));
-        });
-        return strBuilder.toString();
+    private static void commitAndPush(String source, String dir) {
+        log.info(source + " Git:cd %s; git add . ; git commit -am 'init' ; git push".formatted(dir));
+        log.info(exeCommand("cd %s; git add . ; git commit -am 'init' ; git push".formatted(dir)));
     }
 
-    /**
-     * 拉取所有
-     */
-    public static String pullAll(String source) throws IOException, InterruptedException {
-        log.info("Git:cd all" + source);
-        final StringBuilder strBuilder = new StringBuilder();
-        Stream.concat(gitPullPushDirs.stream(), gitPullDirs.stream()).forEach((dir) -> {
-            log.info(source + ":Git:cd %s; git pull".formatted(dir));
-            if (FlyConfig.onLine) {
-                strBuilder.append(exeCommand("cd %s; git pull".formatted(dir)));
-            } else {
-
-            }
-        });
-
-        return strBuilder.toString();
-
+    private static void pull(String source, String dir) {
+        log.info(source + " Git:cd %s; git pull".formatted(dir));
+        log.info(exeCommand("cd %s; git pull".formatted(dir)));
     }
 
-    private static String commitAndPush(String source) throws IOException, InterruptedException {
-        log.info(source+" Git:cd /root/FLY; git add . ; git commit -am 'init' ; git push");
-        return exeCommand("cd /root/FLY; git add . ; git commit -am 'init' ; git push");
-    }
 
     private static String status() throws IOException, InterruptedException {
         log.info("Git:cd /root/FLY; git status -s");
         return exeCommand("cd /root/FLY; git status -s");
-    }
-
-    private static String push(String source) throws IOException, InterruptedException {
-        log.info(source+" Git:cd /root/FLY; git push");
-        return exeCommand("cd /root/FLY; git push");
     }
 
     private static String exeCommand(String command) {

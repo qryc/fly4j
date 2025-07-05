@@ -26,8 +26,6 @@
         <property name="pathService" ref="pathService"></property>
     </bean>
     <bean id="backUserDataJob" class="flynote.application.ops.back.job.BackUserDataJob" init-method="startJob">
-        <property name="mailUtil2" ref="mailUtil2"></property>
-        <property name="monitorFilePath" value="${monitorFilePath}"></property>
         <property name="openBack" value="true"></property>
         <property name="backSiteHour" value="20"></property>
         <property name="backJobCache">

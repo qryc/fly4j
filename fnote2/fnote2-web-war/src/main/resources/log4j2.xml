@@ -21,7 +21,7 @@
         <logger name="org.springframework" level="error"></logger>
         <logger name="org.mybatis" level="error"></logger>
         <logger name="org.apache.velocity" level="error"></logger>
-        <logger name="fly.application.git.GitService" level="error"></logger>
+        <logger name="fly.application.git.GitService" level="info"></logger>
         <root level="info">
             <appender-ref ref="Console"/>
             <appender-ref ref="fileLog"/>

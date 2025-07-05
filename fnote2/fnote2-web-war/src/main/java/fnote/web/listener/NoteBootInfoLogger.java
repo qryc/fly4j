@@ -3,6 +3,7 @@ package fnote.web.listener;
 import fly.application.git.GitService;
 import fly4j.common.util.IpUtil;
 import fly4j.common.util.RepositoryException;
+import fnote.common.LogUtil;
 import fnote.common.PathService;
 import fnote.domain.config.FlyConfig;
 import fnote.user.domain.entity.IUserInfo;
@@ -29,27 +30,27 @@ public class NoteBootInfoLogger extends BootInfoLogger implements ApplicationLis
         if (contextRefreshedEvent.getApplicationContext().getParent() == null) {//保证只执行一次
             //启动的时候打印程序相关目录
             int size = 50;
-            NoteBootInfoLogger.out("NoteBootInfoLogger", "start log", size);
-            IpUtil.getLocalIPList().forEach(ip -> NoteBootInfoLogger.out("ip:", ip, size));
-            NoteBootInfoLogger.out("profile:", FlyConfig.profile, size);
-            NoteBootInfoLogger.out("OnLine:", FlyConfig.onLine, size);
-            NoteBootInfoLogger.out("RootDir:", pathService.getRootDir(), size);
-            NoteBootInfoLogger.out("ConfigDir:", pathService.getConfigDir(), size);
+            LogUtil.out("NoteBootInfoLogger", "start log", size);
+            IpUtil.getLocalIPList().forEach(ip -> LogUtil.out("ip:", ip, size));
+            LogUtil.out("profile:", FlyConfig.profile, size);
+            LogUtil.out("OnLine:", FlyConfig.onLine, size);
+            LogUtil.out("RootDir:", pathService.getRootDir(), size);
+            LogUtil.out("ConfigDir:", pathService.getConfigDir(), size);
 
             try {
                 List<IUserInfo> userInfos = userRepository.findAllUserInfo();
                 if (CollectionUtils.isEmpty(userInfos)) {
-                    NoteBootInfoLogger.out("no user exist:", "config wrong!!!!!", size);
+                    LogUtil.out("no user exist:", "config wrong!!!!!", size);
                 } else {
                     userInfos.forEach(iUserInfo -> {
-                        NoteBootInfoLogger.out(iUserInfo.getPin() + "'UserDir:", pathService.getUserDir(iUserInfo.getPin()), size);
+                        LogUtil.out(iUserInfo.getPin() + "'UserDir:", pathService.getUserDir(iUserInfo.getPin()), size);
                     });
                 }
 
             } catch (RepositoryException e) {
                 throw new RuntimeException(e);
             }
-            NoteBootInfoLogger.out("NoteBootInfoLogger", "end log", size);
+            LogUtil.out("NoteBootInfoLogger", "end log", size);
         }
     }
 

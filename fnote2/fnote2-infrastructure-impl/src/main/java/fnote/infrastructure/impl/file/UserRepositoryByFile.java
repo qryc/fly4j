@@ -54,13 +54,13 @@ public class UserRepositoryByFile implements UserRepository {
     public IUserInfo getUserinfo(String pin) throws RepositoryException {
         return RepositoryException.wrapperR(() -> {
             Path path = this.getUserinfoFilePath(pin);
-            log.info("getUserinfo:"+path.toString());
+            log.debug("getUserinfo:"+path.toString());
             if (Files.notExists(path)) {
                 return null;
             }
             var json = Files.readString(path);
             var infoDo = JsonUtils.readValue(json, UserInfoDo.class);
-            log.info("infoDo:"+infoDo);
+            log.debug("infoDo:"+infoDo);
             return null == infoDo ? null : infoDo.buildBo(userInfoCryptPwd);
         });
     }
@@ -82,7 +82,7 @@ public class UserRepositoryByFile implements UserRepository {
         for (File cFile : file.listFiles()) {
             boolean isUserDir = !cFile.getName().startsWith(".")
                     && cFile.isDirectory();
-            log.info(cFile.getAbsolutePath() + " " + isUserDir);
+            log.debug(cFile.getAbsolutePath() + " " + isUserDir);
             if (isUserDir) {
                 Optional.ofNullable(getUserinfo(cFile.getName())).ifPresent(iUserInfo -> userInfos.add(iUserInfo));
             }

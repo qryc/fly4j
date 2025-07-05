@@ -2,25 +2,19 @@ package flynote.application.ops.back.job;
 
 import fly.application.git.GitService;
 import fly4j.common.cache.FlyCache;
-import fly4j.common.file.FileUtil;
-import fly4j.common.mail.MailUtil2;
 import fly4j.common.util.DateUtil;
 import fly4j.common.util.EatExceptionRunnable;
 import fly4j.common.util.RepositoryException;
 import flynote.application.ops.back.UserDataBackService;
-import fnote.domain.config.FlyConfig;
+import fnote.common.LogUtil;
 import fnote.domain.config.LogConst;
 import fnote.user.domain.infrastructure.UserRepository;
 import fnote.user.domain.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,16 +23,14 @@ import java.util.concurrent.TimeUnit;
  * @author qryc
  */
 public class BackUserDataJob {
-    private static final Log log = LogFactory.getLog(BackUserDataJob.class);
+    private static final Logger log = LoggerFactory.getLogger(BackUserDataJob.class);
     private static final Logger backLogger = LoggerFactory.getLogger(LogConst.FILE_BACK);
     private boolean openBack = false;
+    private boolean emailBack = false;
     private int backSiteHour = 18;
     private UserDataBackService userDataBackService;
     private UserRepository userRepository;
     private FlyCache backJobCache;
-    private static String preMd5 = "";
-    private String monitorFilePath;
-    private MailUtil2 mailUtil2;
 
     public void startJob() {
 
@@ -49,14 +41,15 @@ public class BackUserDataJob {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                log.debug("-".repeat(10) + "startJob");
+                LogUtil.out("BackUserDataJob", "startJob", 50);
+                log.info("BackUserDataJob-startJob");
                 try {
-                    GitService.pullAll("startJob");
+                    GitService.pullAndCommitGit("startJob");
                 } catch (Exception e) {
                     log.error("startJob GitService.pullAll", e);
                 }
                 //如果到了备份小时，并且本小时未备份过，执行备份
-                boolean emailBack = false;
+
                 if (emailBack && DateUtil.getCurrHour() == backSiteHour && null == backJobCache.get("backAllUserData")) {
                     backLogger.info("backAllUserData start");
                     backJobCache.put("backAllUserData", System.currentTimeMillis(), TimeUnit.HOURS.toMillis(2));
@@ -67,27 +60,6 @@ public class BackUserDataJob {
                     }
                     backLogger.info("backAllUserData end");
                 }
-                //监控文件变化
-                boolean monitorFileChange = false;
-                if (monitorFileChange) {
-                    try {
-                        if (StringUtils.isNoneBlank(monitorFilePath)) {
-                            String currentMd5 = FileUtil.getMD5(new File(monitorFilePath));
-                            if (!preMd5.equals(currentMd5)) {
-                                String content = DateUtil.getDateStr(new Date()) + "文件变化2，文件=" + monitorFilePath + " , MD5=" + currentMd5 + " preMd5=" + preMd5;
-                                System.out.println(content);
-                                if (FlyConfig.onLine) {
-                                    mailUtil2.sendSimpleMail("文件变化", content, "panpan_002@126.com");
-                                }
-                            }
-                            preMd5 = currentMd5;
-                        }
-                    } catch (EmailException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
             }
         }).start();
     }
@@ -135,11 +107,4 @@ public class BackUserDataJob {
         this.backJobCache = backJobCache;
     }
 
-    public void setMonitorFilePath(String monitorFilePath) {
-        this.monitorFilePath = monitorFilePath;
-    }
-
-    public void setMailUtil2(MailUtil2 mailUtil2) {
-        this.mailUtil2 = mailUtil2;
-    }
 }
