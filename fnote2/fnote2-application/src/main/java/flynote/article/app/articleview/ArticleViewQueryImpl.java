@@ -1,5 +1,6 @@
 package flynote.article.app.articleview;
 
+import farticle.domain.entity.CplArticle;
 import farticle.domain.extension.query.ArticleViewFilter;
 import farticle.domain.view.ArticleView;
 import farticle.domain.view.ArticleViewQuery;
@@ -35,17 +36,18 @@ public class ArticleViewQueryImpl implements ArticleViewQuery {
     }
 
     public ArticleView getArticleViewWithFilter(IdPin idPin, FlyContext flyContext) throws RepositoryException {
-        var cplArticle = getArticleLoad().getCplArticleDecryptByFilePath(idPin, flyContext.getEncryptPwd());
-        ArticleView articleView = new ArticleView(cplArticle);
-        if (null != getFilterList()) {
-            for (var filter : getFilterList()) {
-                //集合过滤器，为了整体能编排，使用的集合
-                if (null != cplArticle) {
-                    filter.filter(articleView, flyContext);
-                }
-            }
+        CplArticle cplArticle = getArticleLoad().getCplArticleDecryptByFilePath(idPin, flyContext.getEncryptPwd());
+        if (null == cplArticle) {
+            return null;
         }
 
+        ArticleView articleView = new ArticleView(cplArticle);
+        if (null != getFilterList()) {
+            for (ArticleViewFilter filter : getFilterList()) {
+                //集合过滤器，为了整体能编排，使用的集合
+                filter.filter(articleView, flyContext);
+            }
+        }
         return articleView;
     }
 
