@@ -223,8 +223,8 @@ public class ArticleController extends MenuController {
 
         try {
             /** 参数校验 */
-            var noteFileStr = req.getParameter("noteFileStr");
-            var id = req.getParameter("id");
+            String noteFileStr = req.getParameter("noteFileStr");
+            String id = req.getParameter("id");
             if (StringUtils.isBlank(noteFileStr) && StringUtils.isBlank(id)) {
                 throw new IllegalArgumentException("article noteFileStr and id is all null");
             }
