@@ -7,6 +7,7 @@ import fnote.domain.config.FlyConfig;
 import fnote.domain.config.FlyContext;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,25 +29,24 @@ public class PicBedFilter implements ArticleViewFilter {
     public void filter(ArticleView articleView, FlyContext flyContext) {
         String content = articleView.getHtml();
 
-        //替换本地图片
+        //replace local picture host
         if (!FlyConfig.onLine && replace2Local) {
             for (Map.Entry<String, String> orignToRepleseEntry : orignToReplese4Local.entrySet()) {
                 content = content.replaceAll(orignToRepleseEntry.getKey(), orignToRepleseEntry.getValue());
             }
         }
 
-        //替换为绝对路径
-        String pattern = "<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
-        Pattern imgPattern = Pattern.compile(pattern);
+        //replace absolute img path
+        Pattern imgPattern = Pattern.compile("<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>");
         Matcher matcher = imgPattern.matcher(articleView.getHtml());
         while (matcher.find()) {
+            //find src
             String src = matcher.group(1);
+            //replace src
 //            System.out.println("src: " + URLDecoder.decode(src, StandardCharsets.UTF_8));
-            //直接替换博客地址为绝对路径
             Path srcPath = Path.of(articleView.getCplArticle().getNoteFileStr()).getParent().resolve(URLDecoder.decode(src, StandardCharsets.UTF_8));
             if (Files.exists(srcPath)) {
-//                content = content.replaceAll(src, URLEncoder.encode(srcPath.toString(), StandardCharsets.UTF_8));
-                content = content.replaceAll(src, srcPath.toString());
+                content = content.replaceAll(src, URLEncoder.encode(srcPath.toString(),StandardCharsets.UTF_8));
 
             }
         }
