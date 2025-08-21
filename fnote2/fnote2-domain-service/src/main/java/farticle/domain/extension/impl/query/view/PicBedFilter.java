@@ -20,6 +20,7 @@ public class PicBedFilter implements ArticleViewFilter {
     private PathService pathService;
     private Map<String, String> orignToReplese4Local = new HashMap<>();
     private boolean replace2Local = false;
+    private String srcInImgHtmlRegex="<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
 
     public PicBedFilter() {
         orignToReplese4Local.put("http://fly4j.cn/", "http://localhost:8080/");
@@ -37,17 +38,16 @@ public class PicBedFilter implements ArticleViewFilter {
         }
 
         //replace absolute img path
-        Pattern imgPattern = Pattern.compile("<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>");
+        Pattern imgPattern = Pattern.compile(srcInImgHtmlRegex);
         Matcher matcher = imgPattern.matcher(articleView.getHtml());
         while (matcher.find()) {
-            //find src
+            //match find src
             String src = matcher.group(1);
-            //replace src
-//            System.out.println("src: " + URLDecoder.decode(src, StandardCharsets.UTF_8));
+            //absolute src path
             Path srcPath = Path.of(articleView.getCplArticle().getNoteFileStr()).getParent().resolve(URLDecoder.decode(src, StandardCharsets.UTF_8));
             if (Files.exists(srcPath)) {
+                //replace src with absolute src
                 content = content.replaceAll(src, URLEncoder.encode(srcPath.toString(),StandardCharsets.UTF_8));
-
             }
         }
         articleView.setHtml(content);
