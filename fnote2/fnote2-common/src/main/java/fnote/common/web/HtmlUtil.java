@@ -19,9 +19,4 @@ public class HtmlUtil {
         return srcList;
     }
 
-    public static void main(String[] args) {
-        String html = "<img src='example1.jpg'> <img src=\"example2.jpg\"> <img src=\"example3.jpg\">";
-        List<String> srcList = getSrcFromImagTag(html);
-        srcList.forEach(System.out::println);
-    }
 }
