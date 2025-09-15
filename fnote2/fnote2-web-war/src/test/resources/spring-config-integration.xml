@@ -6,7 +6,7 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-autowire="byName">
     <!--    <context:property-placeholder location="classpath:properties.test/fly.properties"/>-->
-    <context:property-placeholder location="file:/Volumes/HomeWork/myBulldozer/.bulldozer/config/properties.test/fly.properties"/>
+    <context:property-placeholder location="file:/Volumes/HomeWork/8-FlyData/myBulldozer/.bulldozer/config/properties.test/fly.properties"/>
 
 
     <!-- 通用配置  -->
