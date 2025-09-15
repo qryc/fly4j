@@ -70,9 +70,9 @@
         <context:property-placeholder location="file:/root/export/myBulldozer/.bulldozer/config/properties.online/fly.properties"/>
     </beans>
     <beans profile="dev">
-        <context:property-placeholder location="file:/Volumes/HomeWork/myBulldozer/.bulldozer/config/properties.dev/fly.properties"/>
+        <context:property-placeholder location="file:/Volumes/HomeWork/8-FlyData/myBulldozer/.bulldozer/config/properties.dev/fly.properties"/>
     </beans>
     <beans profile="dev_online_data">
-        <context:property-placeholder location="file:/Volumes/HomeWork/myBulldozer/.bulldozer/config/properties.dev_online_data/fly.properties"/>
+        <context:property-placeholder location="file:/Volumes/HomeWork/8-FlyData/myBulldozer/.bulldozer/config/properties.dev_online_data/fly.properties"/>
     </beans>
 </beans>

@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
 
 public class PicBedFilter implements ArticleViewFilter {
     private PathService pathService;
-    private Map<String, String> orignToReplese4Local = new HashMap<>();
     private boolean replace2Local = false;
+    private Map<String, String> orignToReplese4Local = new HashMap<>();
 
 
     public PicBedFilter() {
@@ -51,8 +51,6 @@ public class PicBedFilter implements ArticleViewFilter {
         }
         articleView.setHtml(content);
     }
-
-
 
 
     public void setPathService(PathService pathService) {
